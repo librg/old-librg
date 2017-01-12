@@ -1,10 +1,13 @@
+###
 # CMake entry point
+###
 cmake_minimum_required (VERSION 2.6)
 project (Server)
 
-# find_package(OpenGL REQUIRED)
 
-
+###
+# Predefines to block make at the root
+###
 if( CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR )
     message( FATAL_ERROR "Please select another Build Directory ! (and give it a clever name, like bin_Visual2012_64bits/)" )
 endif()
@@ -15,6 +18,10 @@ if( CMAKE_BINARY_DIR MATCHES " " )
     message( "Your Build Directory contains spaces. If you experience problems when compiling, this can be the cause." )
 endif()
 
+
+###
+# Custom building flags
+###
 if(WIN32)
 
 else()
@@ -23,12 +30,16 @@ else()
 endif()
 
 
-
+###
 # Compile vendor dependencies
-add_subdirectory (vendor)
-add_subdirectory(vendor/libuv)
+###
+add_subdirectory (vendor/RakNet)
+add_subdirectory (vendor/libuv)
 
+###
+# Hacks
 # On Visual 2005 and above, this module can set the debug working directory
+###
 cmake_policy(SET CMP0026 OLD)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/vendor/rpavlik-cmake-modules-fe2273")
 include(CreateLaunchers)
@@ -36,6 +47,9 @@ include(MSVCMultipleProcessCompile) # /MP
 set(CMAKE_MACOSX_RPATH 1)
 
 
+###
+# Includes for libs and remote sources
+###
 include_directories(
     vendor/RakNet/
     vendor/libuv/libuv/include
@@ -43,20 +57,21 @@ include_directories(
     .
 )
 
-set(ALL_LIBS
-    RakNetDLL
-    uv
-)
 
-
-# Tutorial 1
+###
+# Includes for current source executable
+###
 add_executable(server
     server/Core.cpp
     server/main.cpp
 )
 
+###
+# Linking libraries
+###
 target_link_libraries(server
-    ${ALL_LIBS}
+    RakNetDLL
+    uv
 )
 
 target_include_directories(server PUBLIC
