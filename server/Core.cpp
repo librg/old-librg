@@ -1,7 +1,9 @@
 #include "stdinc.h"
 
-namespace MOEB::Server
+namespace MOServer
 {
+    Core* Core::mInstance;
+
     Core::Core()
     {
         this->Init();
@@ -21,7 +23,7 @@ namespace MOEB::Server
 
         test.append("==================================================\n");
         test.append("==                                              ==\n");
-        test.append("==                                              ==\n");
+        test.append("==                  WUT                         ==\n");
         test.append("==                                              ==\n");
         test.append("==================================================\n");
 

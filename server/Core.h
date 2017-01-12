@@ -1,11 +1,11 @@
 #pragma once
 
-namespace MOEB::Server
+namespace MOServer
 {
     class Core
     {
         private:
-            Core* mInstance;
+            static Core* mInstance;
             bool mRunning;
 
         public:
@@ -14,7 +14,7 @@ namespace MOEB::Server
 
             void Init();
             void Tick();
-            Core* Instance();
+            static Core* Instance();
 
             /**
              * Return if core is currently running
