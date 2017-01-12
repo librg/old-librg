@@ -1,32 +1,33 @@
+#include "stdinc.h"
+
+// // 5ms
+// const float TICK_INTEVAL = 0.005;
+
+// int main(int argc, char * argv[])
+// {
+//     // create and initialize
+//     MOEB::Server::Core* core = new MOEB::Server::Core();
+
+//     // push and wait
+//     while (core->IsRunning())
+//     {
+//         core->Tick();
+//         sleep(TICK_INTEVAL);
+//     }
+// }
+
 #include <stdio.h>
-#include <RakPeerInterface.h>
+#include <stdlib.h>
+#include <uv.h>
 
-#define MAX_CLIENTS 10
-#define SERVER_PORT 60000
+int main() {
+    uv_loop_t *loop = malloc(sizeof(uv_loop_t));
+    uv_loop_init(loop);
 
-int main(void)
-{
-    char str[512];
-    RakNet::RakPeerInterface *peer = RakNet::RakPeerInterface::GetInstance();
-    bool isServer;
+    printf("Now quitting.\n");
+    uv_run(loop, UV_RUN_DEFAULT);
 
-    printf("(C) or (S)erver?\n");
-    gets(str);
-    if ((str[0]=='c')||(str[0]=='C'))
-    {
-        RakNet::SocketDescriptor sd;
-        peer->Startup(1,&sd, 1);
-        isServer = false;
-    } else {
-        RakNet::SocketDescriptor sd(SERVER_PORT,0);
-        peer->Startup(MAX_CLIENTS, &sd, 1);
-        isServer = true;
-    }
-
-
-    // TODO - Add code body here
-
-    RakNet::RakPeerInterface::DestroyInstance(peer);
-
+    uv_loop_close(loop);
+    free(loop);
     return 0;
 }

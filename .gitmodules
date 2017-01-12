@@ -1,0 +1,6 @@
+[submodule "vendor/libuv"]
+	path = vendor/libuv
+	url = https://github.com/jen20/libuv-cmake
+[submodule "vendor/RakNet"]
+	path = vendor/RakNet
+	url = https://github.com/OculusVR/RakNet.git
