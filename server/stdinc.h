@@ -19,4 +19,6 @@
 // #include "Network/Handlers/ServerSyncHandler.h"
 // #include "Network/Handlers/ServerRakNetHandler.h"
 
+#include "Network/Manager.h"
+
 #include "Core.h"

@@ -8,6 +8,8 @@ namespace MOServer
             static Core* mInstance;
             bool mRunning;
 
+            Network::Manager* mNetworkManager;
+
         public:
             Core();
             ~Core();

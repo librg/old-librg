@@ -62,8 +62,13 @@ include_directories(
 # Includes for current source executable
 ###
 add_executable(server
-    server/Core.cpp
     server/main.cpp
+    server/Core.cpp
+    server/network/Manager.cpp
+)
+
+add_executable(client-test
+    client-test/main.cpp
 )
 
 ###
@@ -75,6 +80,14 @@ target_link_libraries(server
 )
 
 target_include_directories(server PUBLIC
+    vendor/RakNet/Source
+)
+
+target_link_libraries(client-test
+    RakNetDLL
+)
+
+target_include_directories(client-test PUBLIC
     vendor/RakNet/Source
 )
 
