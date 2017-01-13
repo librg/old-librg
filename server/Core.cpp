@@ -11,7 +11,19 @@ namespace MOServer
 
     Core::~Core()
     {
+        this->Log("Destroying core...");
+    }
 
+    void Core::Log(const char* format, ...)
+    {
+        va_list ap;
+        char message[1024] = { 0 };
+        va_start(ap, format);
+        vsprintf(message, format, ap);
+        va_end(ap);
+
+        // TODO(inlife): move to async trigger -> callback
+        printf("[SERVER] [%s] - %s\n", Utils::currentDateTime().c_str(), message);
     }
 
     /**
@@ -23,7 +35,7 @@ namespace MOServer
 
         test.append("==================================================\n");
         test.append("==                                              ==\n");
-        test.append("==                  WUT                         ==\n");
+        test.append("==                 ¯\\_(ツ)_/¯                   ==\n");
         test.append("==                                              ==\n");
         test.append("==================================================\n");
 
@@ -36,17 +48,16 @@ namespace MOServer
     /**
      * Main ticker function
      */
-    void Core::Tick()
+    void Core::Tick(int64_t tick)
     {
-        // std::cout << "tick tock\n";
+        // this->Log("tick tock: %d", tick);
     }
 
     /**
-     * Return current isntance of the core
-     * @return Core*
+     * Main idle function
      */
-    Core* Core::Instance()
+    void Core::Idle()
     {
-        return mInstance;
+        // this->Log("idle...");
     }
 }

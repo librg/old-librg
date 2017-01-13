@@ -1,66 +1,90 @@
 #include "stdinc.h"
 
-// // 5ms
-// const float TICK_INTEVAL = 0.005;
-
-// int main(int argc, char * argv[])
-// {
-//     // create and initialize
-//     MOEB::Server::Core* core = new MOEB::Server::Core();
-
-//     // push and wait
-//     while (core->IsRunning())
-//     {
-//         core->Tick();
-//         sleep(TICK_INTEVAL);
-//     }
-// }
-
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <uv.h>
-
-// int main() {
-//     uv_loop_t *loop = new uv_loop_t;// = malloc(sizeof(uv_loop_t));
-//     uv_loop_init(loop);
-
-//     printf("Now quitting.\n");
-//     uv_run(loop, UV_RUN_DEFAULT);
-
-//     uv_loop_close(loop);
-//     // free(loop);
-//     delete loop;
-//     return 0;
-// }
-
-#include <stdio.h>
-#include <uv.h>
-
 int64_t counter = 0;
+char buffer[1024];
 
-void main_loop(uv_idle_t* handle) {
-    counter++;
-
-    MOServer::Core::Instance()->Tick();
-
-    if (counter >= 10e6)
-        uv_idle_stop(handle);
+/**
+ * Main loop ticker
+ * @param handle [description]
+ */
+void timed_loop(uv_timer_t* handle)
+{
+    MOServer::Core::Instance()->Tick(counter++);
 }
 
-int main() {
+/**
+ * Main loop ticker
+ * @param handle [description]
+ */
+void idle_loop(uv_idle_t* handle)
+{
+    MOServer::Core::Instance()->Idle();
+}
+
+
+/**
+ * System signal hanlder
+ * @param req
+ * @param signum
+ */
+void signal_handler(uv_signal_t *req, int signum)
+{
+    // stop for ctrl+C
+    if (signum == 2) {
+        printf("Exiting!\n");
+        uv_stop(uv_default_loop());
+    }
+
+    uv_signal_stop(req);
+}
+
+/**
+ * TODO(inlife): make input handling
+ * @param req
+ */
+void on_type(uv_fs_t *req) {
+    printf("onconsole %s\n", buffer);
+    buffer[0] = 0;
+}
+
+/**
+ * Main program enter point
+ * @param  argc
+ * @param  argv
+ * @return exit code
+ */
+int main(int argc, char * argv[]) {
     uv_idle_t idler;
+    uv_timer_t timer_req;
+    uv_fs_t stdin_watcher;
 
     // create and initialize
     MOServer::Core* core = new MOServer::Core();
 
-    uv_idle_init(uv_default_loop(), &idler);
-    uv_idle_start(&idler, main_loop);
+    // define main timed loop (network send)
+    // start after 1 sec, each 15 ms
+    uv_timer_init(uv_default_loop(), &timer_req);
+    uv_timer_start(&timer_req, timed_loop, 1000, 15);
 
-    printf("starting main loop...\n");
+    // define main idle loop (network receieve)
+    uv_idle_init(uv_default_loop(), &idler);
+    uv_idle_start(&idler, idle_loop);
+
+    // singal handling
+    uv_signal_t sig;
+    uv_signal_init(uv_default_loop(), &sig);
+    uv_signal_start(&sig, signal_handler, SIGINT);
+
+    // input handling
+    // uv_buf_t buf = uv_buf_init(buffer, 1024);
+    // uv_fs_read(uv_default_loop(), &stdin_watcher, 0, &buf, 1, -1, on_type);
+
+    // starting loop
     uv_run(uv_default_loop(), UV_RUN_DEFAULT);
 
+    // after work is done, closing loop
     uv_loop_close(uv_default_loop());
-    delete core;
 
+    delete core;
     return 0;
 }

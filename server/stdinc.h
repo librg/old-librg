@@ -1,8 +1,8 @@
 #pragma once
 #pragma warning(disable : 4996)
 
-#include <thread>
-#include <chrono>
+#include <stdio.h>
+#include <uv.h>
 #include <string>
 #include <map>
 
