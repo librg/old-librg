@@ -13,7 +13,7 @@
 
 // squirrel
 #define _SQ64
-#include "squirrel.h"
+#include <squirrel.h>
 
 #include <Utils.h>
 

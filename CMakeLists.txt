@@ -29,8 +29,8 @@ else()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wc++1z-extensions")
 endif()
 
-set(RAKNET_ENABLE_STATIC FALSE)
-set(DISABLE_STATIC TRUE)
+set(RAKNET_ENABLE_STATIC 0)
+# set(DISABLE_STATIC TRUE)
 
 ###
 # Compile vendor dependencies
@@ -57,7 +57,6 @@ include_directories(
     vendor/RakNet/
     vendor/squirrel/include
     vendor/squirrel/squirrel
-    vendor/squirrel/sqstdlib
     vendor/libuv/libuv/include
     shared/
     .
@@ -83,13 +82,15 @@ add_executable(server
 target_link_libraries(server
     RakNetDLL
     uv
-    squirrel
-    sqstdlib
+    # squirrel
+    # sqstdlib
 )
 
 target_include_directories(server PUBLIC
     vendor/RakNet/Source
-    vendor/squirrel/include
+    # vendor/squirrel/include
+    # vendor/squirrel/squirrel
+    # vendor/squirrel/squirrel
 )
 
 # target_link_libraries(client-test
