@@ -12,7 +12,7 @@
 #include <BitStream.h>
 
 // squirrel
-#define _SQ64
+// #define _SQ64
 #include <squirrel.h>
 
 #include <Utils.h>

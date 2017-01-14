@@ -37,7 +37,7 @@ set(RAKNET_ENABLE_STATIC 0)
 ###
 add_subdirectory (vendor/RakNet)
 add_subdirectory (vendor/libuv)
-add_subdirectory (vendor/squirrel)
+add_subdirectory (vendor/squirrel-lang)
 
 ###
 # Hacks
@@ -49,14 +49,13 @@ include(CreateLaunchers)
 include(MSVCMultipleProcessCompile) # /MP
 set(CMAKE_MACOSX_RPATH 1)
 
-
 ###
 # Includes for libs and remote sources
 ###
 include_directories(
     vendor/RakNet/
-    vendor/squirrel/include
-    vendor/squirrel/squirrel
+    # vendor/squirrel/include
+    # vendor/squirrel/squirrel
     vendor/libuv/libuv/include
     shared/
     .
@@ -82,7 +81,7 @@ add_executable(server
 target_link_libraries(server
     RakNetDLL
     uv
-    # squirrel
+    squirrel
     # sqstdlib
 )
 
