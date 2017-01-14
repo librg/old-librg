@@ -71,9 +71,9 @@ add_executable(server
     server/network/Manager.cpp
 )
 
-# add_executable(client-test
-#     client-test/main.cpp
-# )
+add_executable(client-test
+    client-test/main.cpp
+)
 
 ###
 # Linking libraries
@@ -92,13 +92,13 @@ target_include_directories(server PUBLIC
     # vendor/squirrel/squirrel
 )
 
-# target_link_libraries(client-test
-#     RakNetDLL
-# )
+target_link_libraries(client-test
+    RakNetDLL
+)
 
-# target_include_directories(client-test PUBLIC
-#     vendor/RakNet/Source
-# )
+target_include_directories(client-test PUBLIC
+    vendor/RakNet/Source
+)
 
 # Xcode and Visual working directories
 set_target_properties(server PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/server/")
