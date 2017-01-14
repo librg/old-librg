@@ -22,12 +22,9 @@ endif()
 ###
 # Custom building flags
 ###
-if(WIN32)
-
-else()
-  # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-result -Wno-unused-parameter -std=gnu++11 -Wall -Wextra -Werror")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wc++1z-extensions")
-endif()
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -Wwritable-strings")
+ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 set(RAKNET_ENABLE_STATIC 0)
 # set(DISABLE_STATIC TRUE)
@@ -68,7 +65,7 @@ include_directories(
 add_executable(server
     server/main.cpp
     server/Core.cpp
-    server/network/Manager.cpp
+    server/Network/Manager.cpp
 )
 
 add_executable(client-test
