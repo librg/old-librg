@@ -6,9 +6,14 @@
 #include <string>
 #include <map>
 
+// raknet
 #include <MessageIdentifiers.h>
 #include <RakPeerInterface.h>
 #include <BitStream.h>
+
+// squirrel
+#define _SQ64
+#include "squirrel.h"
 
 #include <Utils.h>
 

@@ -1,7 +1,7 @@
 ###
 # CMake entry point
 ###
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required (VERSION 2.8)
 project (Server)
 
 
@@ -29,12 +29,15 @@ else()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wc++1z-extensions")
 endif()
 
+set(RAKNET_ENABLE_STATIC FALSE)
+set(DISABLE_STATIC TRUE)
 
 ###
 # Compile vendor dependencies
 ###
 add_subdirectory (vendor/RakNet)
 add_subdirectory (vendor/libuv)
+add_subdirectory (vendor/squirrel)
 
 ###
 # Hacks
@@ -52,6 +55,9 @@ set(CMAKE_MACOSX_RPATH 1)
 ###
 include_directories(
     vendor/RakNet/
+    vendor/squirrel/include
+    vendor/squirrel/squirrel
+    vendor/squirrel/sqstdlib
     vendor/libuv/libuv/include
     shared/
     .
@@ -67,9 +73,9 @@ add_executable(server
     server/network/Manager.cpp
 )
 
-add_executable(client-test
-    client-test/main.cpp
-)
+# add_executable(client-test
+#     client-test/main.cpp
+# )
 
 ###
 # Linking libraries
@@ -77,19 +83,22 @@ add_executable(client-test
 target_link_libraries(server
     RakNetDLL
     uv
+    squirrel
+    sqstdlib
 )
 
 target_include_directories(server PUBLIC
     vendor/RakNet/Source
+    vendor/squirrel/include
 )
 
-target_link_libraries(client-test
-    RakNetDLL
-)
+# target_link_libraries(client-test
+#     RakNetDLL
+# )
 
-target_include_directories(client-test PUBLIC
-    vendor/RakNet/Source
-)
+# target_include_directories(client-test PUBLIC
+#     vendor/RakNet/Source
+# )
 
 # Xcode and Visual working directories
 set_target_properties(server PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/server/")

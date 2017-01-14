@@ -4,3 +4,6 @@
 [submodule "vendor/RakNet"]
 	path = vendor/RakNet
 	url = https://github.com/OculusVR/RakNet.git
+[submodule "vendor/squirrel"]
+	path = vendor/squirrel
+	url = https://github.com/albertodemichelis/squirrel.git

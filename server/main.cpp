@@ -58,6 +58,13 @@ int main(int argc, char * argv[]) {
     uv_timer_t timer_req;
     uv_fs_t stdin_watcher;
 
+    HSQUIRRELVM v;
+    v = sq_open(1024); //creates a VM with initial stack size 1024
+
+    //do some stuff with squirrel here
+
+    sq_close(v);
+
     // create and initialize
     MOServer::Core* core = new MOServer::Core();
 

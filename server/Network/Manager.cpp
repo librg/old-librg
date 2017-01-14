@@ -26,7 +26,9 @@ namespace MOServer
             std::string password = "";
 
             if (mPeer->Startup(maxplayers, &mSocketDescriptor, 1) != RakNet::RAKNET_STARTED) {
-                Core::Instance()->Log("Unable to startup server !\n Port might be already being used by another process !");
+                Core::Instance()->Log("Unable to startup server!");
+                Core::Instance()->Log("Port might be already being used by another process!");
+                return;
             }
 
             if (password.size() > 0) {
