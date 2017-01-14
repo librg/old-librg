@@ -19,7 +19,7 @@ namespace MOServer
         private:
             // std::map<RakNet::RakNetGUID, Client*> mClients;
             RakNet::RakPeerInterface* mPeer;
-            // RakNet::SocketDescriptor mSocketDescriptor;
+            RakNet::SocketDescriptor mSocketDescriptor;
         };
     }
 }

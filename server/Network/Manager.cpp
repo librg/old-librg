@@ -1,7 +1,5 @@
 #include "../stdinc.h"
 
-// using namespace MOServer;
-
 namespace MOServer
 {
     namespace Network
@@ -9,33 +7,34 @@ namespace MOServer
 
         Manager::Manager()
         {
-
+            mPeer = RakNet::RakPeerInterface::GetInstance();
         }
 
         Manager::~Manager()
         {
-
+            mPeer->Shutdown( 500 );
+            RakNet::RakPeerInterface::DestroyInstance( mPeer );
         }
 
         void Manager::Init()
         {
             Core::Instance()->Log("initializing network...");
-        //     ServerProperties serverProperies = Core::GetCore()->GetServerProperties();
-        //     mSocketDescriptor = RakNet::SocketDescriptor(serverProperies.mServerPort, 0);
-        //     mPeer = RakNet::RakPeerInterface::GetInstance();
 
-        //     if (mPeer->Startup(serverProperies.mMaxPlayers, &mSocketDescriptor, 1) != RakNet::RAKNET_STARTED)
-        //     {
-        //         Core::GetCore()->Log("Unable to startup server !\n Port might be already being used by another process !");
-        //     }
+            mSocketDescriptor = RakNet::SocketDescriptor(27015, 0);
 
-        //     if (serverProperies.mPassword.size() > 0)
-        //     {
-        //         mPeer->SetIncomingPassword(serverProperies.mPassword.c_str(), serverProperies.mPassword.size());
-        //     }
+            int maxplayers = 16;
+            std::string password = "";
 
-        //     mPeer->SetMaximumIncomingConnections(serverProperies.mMaxPlayers);
-        //     mPeer->SetTimeoutTime(2000, RakNet::UNASSIGNED_SYSTEM_ADDRESS);
+            if (mPeer->Startup(maxplayers, &mSocketDescriptor, 1) != RakNet::RAKNET_STARTED) {
+                Core::Instance()->Log("Unable to startup server !\n Port might be already being used by another process !");
+            }
+
+            if (password.size() > 0) {
+                mPeer->SetIncomingPassword(password.c_str(), password.size());
+            }
+
+            mPeer->SetMaximumIncomingConnections(maxplayers);
+            mPeer->SetTimeoutTime(2000, RakNet::UNASSIGNED_SYSTEM_ADDRESS);
         }
 
         void Manager::Update()
@@ -45,29 +44,13 @@ namespace MOServer
 
         void Manager::Receive()
         {
-            for (RakNet::Packet* packet = mPeer->Receive(); packet; mPeer->DeallocatePacket(packet), packet = mPeer->Receive())
-            {
+            RakNet::Packet* packet = nullptr;
 
-                // switch (packet->data[0])
-                // {
-                //     case MessageIDs::LHMPID_CONNECTION:
-                //     {
-                //         ServerConnectionHandler Handler(&mClients);
-                //         Handler.ProcessMessage(this, packet);
-                //     }
-                //     break;
-                //     case MessageIDs::LHMPID_SYNC:
-                //     {
-                //         ServerSyncHandler Handler(&mClients);
-                //         Handler.ProcessMessage(this, packet);
-                //     }
-                //     default:
-                //     {
-                //         ServerRakNetHandler Handler(&mClients);
-                //         Handler.ProcessMessage(this, packet);
-                //     }
-                //     break;
-                // }
+            while ((packet = mPeer->Receive())) {
+
+                // add packet handling
+
+                mPeer->DeallocatePacket(packet);
             }
         }
     }
