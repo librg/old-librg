@@ -1,10 +1,11 @@
 #include "../stdinc.h"
 
+const short DEFAULT_SERVER_PORT = 27010;
+
 namespace MOServer
 {
     namespace Network
     {
-
         Manager::Manager()
         {
             mPeer = RakNet::RakPeerInterface::GetInstance();
@@ -20,7 +21,8 @@ namespace MOServer
         {
             Core::Instance()->Log("initializing network...");
 
-            mSocketDescriptor = RakNet::SocketDescriptor(27015, 0);
+            // TODO(inlife): move to settings.json
+            mSocketDescriptor = RakNet::SocketDescriptor(DEFAULT_SERVER_PORT, 0);
 
             int maxplayers = 16;
             std::string password = "";
@@ -41,7 +43,12 @@ namespace MOServer
 
         void Manager::Update()
         {
-
+            // // Use a BitStream to write a custom user message
+            // // Bitstreams are easier to use than sending casted structures, and handle endian swapping automatically
+            // RakNet::BitStream bsOut;
+            // bsOut.Write((RakNet::MessageID)ID_GAME_MESSAGE_1);
+            // bsOut.Write("Hello world");
+            // mPeer->Send(&bsOut, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
         }
 
         void Manager::Receive()
@@ -50,7 +57,9 @@ namespace MOServer
 
             while ((packet = mPeer->Receive())) {
 
-                // add packet handling
+                switch (packet->data[0]) {
+                    // case :
+                }
 
                 mPeer->DeallocatePacket(packet);
             }

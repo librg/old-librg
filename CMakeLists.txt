@@ -26,8 +26,13 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -Wwritable-strings")
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
-set(RAKNET_ENABLE_STATIC 0)
-# set(DISABLE_STATIC TRUE)
+
+## trying to disable
+## raknet static lib, still no success
+add_definitions(
+    -DRAKNET_ENABLE_STATIC=OFF
+    -DDISABLE_STATIC=ON
+)
 
 ###
 # Compile vendor dependencies
@@ -66,6 +71,7 @@ add_executable(server
     server/main.cpp
     server/Core.cpp
     server/Network/Manager.cpp
+    server/Network/Client.cpp
 )
 
 add_executable(client-test

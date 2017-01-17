@@ -17,13 +17,15 @@
 
 #include <Utils.h>
 
-// #include <MessageIDs.h>
+#include <MessageIDs.h>
+#include <LinearMath.h>
 #include <BuildVersion.h>
 
 // #include "Network/Handlers/ServerConnectionHandler.h"
 // #include "Network/Handlers/ServerSyncHandler.h"
 // #include "Network/Handlers/ServerRakNetHandler.h"
 
+#include "Network/Client.h"
 #include "Network/Manager.h"
 
 #include "Core.h"

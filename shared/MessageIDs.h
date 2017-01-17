@@ -4,54 +4,28 @@
 
 namespace MessageIDs
 {
-	/*enum MessageIDs
-	{
-		ID_CONNECTION_INIT_LHMP = ID_USER_PACKET_ENUM + 1,
-		ID_CONNECTION_REFUSED_LHMP,
-		ID_CONNECTION_ACCEPTED_LHMP,
-		
-		ID_PACKET_LHMP,
-		ID_SYNC_LHMP,
-		ID_CREATE_PLAYER
-	};
+    enum MainCategoryIDs
+    {
+        MOID_CONNECTION = ID_USER_PACKET_ENUM + 1,
+        MOID_SYNC,
+        MOID_EVENT,
+    };
 
-	enum LHMPSyncIDs
-	{
-		LHMP_PLAYER_ONFOOTSYNC
-	};
+    enum ConnectionCategoryIDs
+    {
+        MOID_CONNECTION_INIT,
+        MOID_CONNECTION_REFUSED,
+        MOID_CONNECTION_ACCEPTED,
+        MOID_CONNECTION_DISCONNECTED,
+    };
 
-	enum LHMPMessageIDs
-	{
-		LHMP_PLAYER_SPAWN,
-	};
+    enum SyncCategoryIDs
+    {
+        MOID_SYNC_ONFOOT,
+    };
 
-	enum RefusedMessageIDs
-	{
-		REFUSED_CLIENT_VERSION
-	};*/
-
-	enum MainCategoryIDs
-	{
-		LHMPID_CONNECTION = ID_USER_PACKET_ENUM + 1,
-		LHMPID_SYNC,
-		LHMPID_PLAYER,
-	};
-
-	enum ConnectionCategoryIDs
-	{
-		LHMPID_CONNECTION_INIT,
-		LHMPID_CONNECTION_REFUSED,
-		LHMPID_CONNECTION_ACCEPTED,
-		LHMPID_CONNECTION_DISCONNECTED,
-	};
-
-	enum SyncCategoryIDs
-	{
-		LHMPID_SYNC_ONFOOT,
-	};
-
-	enum PlayerCategoryIDs
-	{
-		LHMPID_PLAYER_CREATE,
-	};
+    enum EventCategoryIDs
+    {
+        MOID_PLAYER_CREATE,
+    };
 };

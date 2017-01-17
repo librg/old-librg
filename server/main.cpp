@@ -66,7 +66,7 @@ int main(int argc, char * argv[]) {
     // sq_close(v);
 
     // create and initialize
-    MOServer::Core* core = new MOServer::Core();
+    MOServer::Core core = MOServer::Core();
 
     // define main timed loop (network send)
     // start after 1 sec, each 15 ms
@@ -92,6 +92,5 @@ int main(int argc, char * argv[]) {
     // after work is done, closing loop
     uv_loop_close(uv_default_loop());
 
-    delete core;
     return 0;
 }

@@ -6,7 +6,7 @@
 #include <RakNetTypes.h>  // MessageID
 
 #define MAX_CLIENTS 10
-#define SERVER_PORT 60000
+#define SERVER_PORT 27010
 
 enum GameMessages
 {
