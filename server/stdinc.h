@@ -17,7 +17,7 @@
 
 #include <Utils.h>
 
-#include <MessageIDs.h>
+#include <MessageID.h>
 #include <LinearMath.h>
 #include <BuildVersion.h>
 
@@ -27,5 +27,6 @@
 
 #include "Network/Client.h"
 #include "Network/Manager.h"
+#include "Network/Handler.h"
 
 #include "Core.h"

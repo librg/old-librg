@@ -43,6 +43,8 @@ int main(void)
             case ID_REMOTE_NEW_INCOMING_CONNECTION:
                 printf("Another client has connected.\n");
                 break;
+
+
             case ID_CONNECTION_REQUEST_ACCEPTED:
                 {
                     printf("Our connection request has been accepted.\n");
@@ -55,6 +57,7 @@ int main(void)
                     peer->Send(&bsOut,HIGH_PRIORITY,RELIABLE_ORDERED,0,packet->systemAddress,false);
                 }
                 break;
+
             case ID_NEW_INCOMING_CONNECTION:
                 printf("A connection is incoming.\n");
                 break;

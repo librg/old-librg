@@ -2,67 +2,84 @@
 
 const short DEFAULT_SERVER_PORT = 27010;
 
-namespace MOServer
+using namespace MOServer;
+
+Network::Manager::Manager()
+    : mPeer   (nullptr)
+    , mHandler(nullptr)
 {
-    namespace Network
-    {
-        Manager::Manager()
-        {
-            mPeer = RakNet::RakPeerInterface::GetInstance();
+    mPeer       = RakNet::RakPeerInterface::GetInstance();
+    mHandler    = new Network::Handler(mPeer, &mClients);
+
+    Core::Instance()->Log("packet id: %d", ID_USER_PACKET_ENUM);
+}
+
+Network::Manager::~Manager()
+{
+    mPeer->Shutdown( 500 );
+    RakNet::RakPeerInterface::DestroyInstance( mPeer );
+
+    delete mHandler;
+}
+
+/**
+ * Server intializer code
+ * sets up RakNet and starts
+ * all network activty
+ */
+void Network::Manager::Init()
+{
+    Core::Instance()->Log("initializing network...");
+
+    // TODO(inlife): move to settings.json
+    mSocketDescriptor = RakNet::SocketDescriptor(DEFAULT_SERVER_PORT, 0);
+
+    int maxplayers = 16;
+    std::string password = "";
+
+    if (mPeer->Startup(maxplayers, &mSocketDescriptor, 1) != RakNet::RAKNET_STARTED) {
+        Core::Instance()->Log("Unable to startup server!");
+        Core::Instance()->Log("Port might be already being used by another process!");
+        return;
+    }
+
+    if (password.size() > 0) {
+        mPeer->SetIncomingPassword(password.c_str(), password.size());
+    }
+
+    mPeer->SetMaximumIncomingConnections(maxplayers);
+    mPeer->SetTimeoutTime(2000, RakNet::UNASSIGNED_SYSTEM_ADDRESS);
+}
+
+/**
+ * Regulated ticker, should be used
+ * to send regular messages to all connected clients
+ */
+void Network::Manager::Update()
+{
+    // // Use a BitStream to write a custom user message
+    // // Bitstreams are easier to use than sending casted structures, and handle endian swapping automatically
+    // RakNet::BitStream bsOut;
+    // bsOut.Write((RakNet::MessageID)ID_GAME_MESSAGE_1);
+    // bsOut.Write("Hello world");
+    // mPeer->Send(&bsOut, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
+}
+
+/**
+ * Idle-ticker
+ * Called with very high rate, should be used
+ * only to handle some light, none-blocking ops
+ */
+void Network::Manager::Receive()
+{
+    RakNet::Packet* packet = nullptr;
+
+    while ((packet = mPeer->Receive())) {
+
+        if (mHandler) {
+            mHandler->Process(packet);
         }
 
-        Manager::~Manager()
-        {
-            mPeer->Shutdown( 500 );
-            RakNet::RakPeerInterface::DestroyInstance( mPeer );
-        }
-
-        void Manager::Init()
-        {
-            Core::Instance()->Log("initializing network...");
-
-            // TODO(inlife): move to settings.json
-            mSocketDescriptor = RakNet::SocketDescriptor(DEFAULT_SERVER_PORT, 0);
-
-            int maxplayers = 16;
-            std::string password = "";
-
-            if (mPeer->Startup(maxplayers, &mSocketDescriptor, 1) != RakNet::RAKNET_STARTED) {
-                Core::Instance()->Log("Unable to startup server!");
-                Core::Instance()->Log("Port might be already being used by another process!");
-                return;
-            }
-
-            if (password.size() > 0) {
-                mPeer->SetIncomingPassword(password.c_str(), password.size());
-            }
-
-            mPeer->SetMaximumIncomingConnections(maxplayers);
-            mPeer->SetTimeoutTime(2000, RakNet::UNASSIGNED_SYSTEM_ADDRESS);
-        }
-
-        void Manager::Update()
-        {
-            // // Use a BitStream to write a custom user message
-            // // Bitstreams are easier to use than sending casted structures, and handle endian swapping automatically
-            // RakNet::BitStream bsOut;
-            // bsOut.Write((RakNet::MessageID)ID_GAME_MESSAGE_1);
-            // bsOut.Write("Hello world");
-            // mPeer->Send(&bsOut, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
-        }
-
-        void Manager::Receive()
-        {
-            RakNet::Packet* packet = nullptr;
-
-            while ((packet = mPeer->Receive())) {
-
-                switch (packet->data[0]) {
-                    // case :
-                }
-
-                mPeer->DeallocatePacket(packet);
-            }
-        }
+        mPeer->DeallocatePacket(packet);
     }
 }

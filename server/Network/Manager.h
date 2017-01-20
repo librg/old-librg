@@ -1,4 +1,7 @@
 #pragma once
+#pragma once
+
+#include "Handler.h"
 
 namespace MOServer
 {
@@ -16,10 +19,12 @@ namespace MOServer
             void Receive();
 
             RakNet::RakPeerInterface* GetPeer() { return mPeer; }
+
         private:
-            // std::map<RakNet::RakNetGUID, Client*> mClients;
             RakNet::RakPeerInterface* mPeer;
             RakNet::SocketDescriptor mSocketDescriptor;
+            std::map<RakNet::RakNetGUID, Client*> mClients;
+            Network::Handler* mHandler;
         };
     }
 }

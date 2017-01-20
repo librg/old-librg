@@ -72,6 +72,10 @@ add_executable(server
     server/Core.cpp
     server/Network/Manager.cpp
     server/Network/Client.cpp
+    server/Network/Handler/Base.cpp
+    server/Network/Handler/RakNetNative.cpp
+    server/Network/Handler/Connection.cpp
+    # server/Network/Handler/Pla.cpp
 )
 
 add_executable(client-test

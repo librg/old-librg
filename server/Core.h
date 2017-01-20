@@ -17,7 +17,7 @@ namespace MOServer
             void Init();
             void Idle();
             void Tick(int64_t tick);
-            void Log(const char* format, ...);
+            static void Log(const char* format, ...);
 
             /**
              * Return current isntance of the core
