@@ -4,14 +4,10 @@
 #include <MessageIdentifiers.h>
 #include <BitStream.h>
 #include <RakNetTypes.h>  // MessageID
+#include <BuildVersion.h>
+#include <MessageID.h>
 
-#define MAX_CLIENTS 10
 #define SERVER_PORT 27010
-
-enum GameMessages
-{
-    ID_GAME_MESSAGE_1=ID_USER_PACKET_ENUM+1
-};
 
 int main(void)
 {
@@ -19,6 +15,9 @@ int main(void)
 
     RakNet::RakPeerInterface *peer = RakNet::RakPeerInterface::GetInstance();
     RakNet::Packet *packet;
+
+    RakNet::SocketDescriptor sd;
+    peer->Startup(1,&sd, 1);
 
     printf("Enter server IP or hit enter for 127.0.0.1\n");
     gets(str);
@@ -52,9 +51,9 @@ int main(void)
                     // Use a BitStream to write a custom user message
                     // Bitstreams are easier to use than sending casted structures, and handle endian swapping automatically
                     RakNet::BitStream bsOut;
-                    bsOut.Write((RakNet::MessageID)ID_GAME_MESSAGE_1);
-                    bsOut.Write("Hello world");
-                    peer->Send(&bsOut,HIGH_PRIORITY,RELIABLE_ORDERED,0,packet->systemAddress,false);
+                    bsOut.Write((RakNet::MessageID)MessageID::CONNECTION_INIT);
+                    bsOut.Write("Player name");
+                    peer->Send(&bsOut, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
                 }
                 break;
 
@@ -69,16 +68,6 @@ int main(void)
                 break;
             case ID_CONNECTION_LOST:
                 printf("Connection lost.\n");
-                break;
-
-            case ID_GAME_MESSAGE_1:
-                {
-                    RakNet::RakString rs;
-                    RakNet::BitStream bsIn(packet->data,packet->length,false);
-                    bsIn.IgnoreBytes(sizeof(RakNet::MessageID));
-                    bsIn.Read(rs);
-                    printf("%s\n", rs.C_String());
-                }
                 break;
 
             default:

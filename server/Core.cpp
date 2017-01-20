@@ -48,7 +48,7 @@ void Core::Init()
     mNetworkManager = new Network::Manager();
     mNetworkManager->Init();
 
-    mRunning = true;
+    mRunning  = true;
     mInstance = this;
 }
 

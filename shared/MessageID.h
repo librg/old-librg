@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _mo_message_id
+#define _mo_message_id
 
 #include "MessageIdentifiers.h"
 
@@ -13,3 +14,5 @@ namespace MessageID
         PLAYER_EVENT_CREATE,
     };
 };
+
+#endif // _mo_message_id

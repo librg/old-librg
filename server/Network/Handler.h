@@ -24,6 +24,7 @@ public:
     void Dispatch(RakNet::Packet* packet);
 
 private:
+    void OnClientConnectAttempt(RakNet::Packet* packet);
     void OnClientInit(RakNet::Packet* packet);
     void OnClientConnect(RakNet::Packet* packet);
     void OnClientDisconnect(RakNet::Packet* packet);

@@ -11,13 +11,11 @@ Network::Manager::Manager()
 {
     mPeer       = RakNet::RakPeerInterface::GetInstance();
     mHandler    = new Network::Handler(mPeer, &mClients);
-
-    Core::Instance()->Log("packet id: %d", ID_USER_PACKET_ENUM);
 }
 
 Network::Manager::~Manager()
 {
-    mPeer->Shutdown( 500 );
+    mPeer->Shutdown(300);
     RakNet::RakPeerInterface::DestroyInstance( mPeer );
 
     delete mHandler;

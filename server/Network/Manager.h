@@ -9,8 +9,6 @@
 namespace MOServer {
 namespace Network  {
 
-// forward declaration
-// class Handler;
 
 class Manager
 {

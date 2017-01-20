@@ -10,10 +10,16 @@ Network::Handler::Handler(RakNet::RakPeerInterface *peer, std::map<RakNet::RakNe
     : mPeer(peer)
     , mClients(Clients)
 {
+    // reset all registry to nulls
+    for (int i = 0; i < MOSERVER_PACKET_LIMIT; ++i) {
+        mRegistry[i] = nullptr;
+    }
+
     // connection stuff
-    mRegistry[MessageID::CONNECTION_INIT]       =   &Handler::OnClientConnect;
+    mRegistry[ID_NEW_INCOMING_CONNECTION]       =   &Handler::OnClientConnectAttempt;
     mRegistry[ID_CONNECTION_LOST]               =   &Handler::OnClientDisconnect;
     mRegistry[ID_DISCONNECTION_NOTIFICATION]    =   &Handler::OnClientDisconnect;
+    mRegistry[MessageID::CONNECTION_INIT]       =   &Handler::OnClientConnect;
 
     // player stuff
     // mRegistry[MessageID::PLAYER_SYNC_ONFOOT]    =   &Handler::OnPlayerFootSync;

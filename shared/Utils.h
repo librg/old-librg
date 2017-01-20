@@ -1,4 +1,5 @@
-#pragma once 
+#ifndef _mo_utils
+#define _mo_utils
 
 #include <iostream>
 #include <string>
@@ -59,3 +60,5 @@ namespace Utils
 		return (1 - t) * v0 + t * v1;
 	}
 }
+
+#endif // _mo_utils
