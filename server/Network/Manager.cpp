@@ -1,4 +1,5 @@
-#include "../stdinc.h"
+#include "Manager.h"
+#include "../Core.h"
 
 const short DEFAULT_SERVER_PORT = 27010;
 
@@ -77,7 +78,7 @@ void Network::Manager::Receive()
     while ((packet = mPeer->Receive())) {
 
         if (mHandler) {
-            mHandler->Process(packet);
+            mHandler->Dispatch(packet);
         }
 
         mPeer->DeallocatePacket(packet);

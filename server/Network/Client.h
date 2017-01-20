@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _mo_network_client
+#define _mo_network_client
 
 #include <RakPeerInterface.h>
 #include <string>
@@ -16,3 +17,5 @@ private:
     std::string mNickName;
     // Player* mPlayer;
 };
+
+#endif // _mo_network_client

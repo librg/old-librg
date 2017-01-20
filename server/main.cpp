@@ -1,4 +1,13 @@
+#include <uv.h>
 #include "stdinc.h"
+#include "Core.h"
+
+// squirrel
+// #define _SQ64
+// #include <squirrel.h>
+
+// #include <LinearMath.h>
+
 
 int64_t counter = 0;
 char buffer[1024];

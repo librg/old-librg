@@ -1,4 +1,8 @@
-#include "../../stdinc.h"
+#include "../Handler.h"
+
+#ifdef DEBUG
+#include "../../Core.h"
+#endif
 
 using namespace MOServer;
 
@@ -19,7 +23,7 @@ Network::Handler::Handler(RakNet::RakPeerInterface *peer, std::map<RakNet::RakNe
 
 Network::Handler::~Handler() {};
 
-void Network::Handler::Process(RakNet::Packet* packet)
+void Network::Handler::Dispatch(RakNet::Packet* packet)
 {
     RakNet::MessageID id = packet->data[0];
 
@@ -30,5 +34,7 @@ void Network::Handler::Process(RakNet::Packet* packet)
 
 void Network::Handler::OnTest(RakNet::Packet* packet)
 {
+#ifdef DEBUG
     Core::Instance()->Log("called OnTest");
+#endif
 }

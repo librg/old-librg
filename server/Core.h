@@ -1,40 +1,49 @@
-#pragma once
+#ifndef _mo_core
+#define _mo_core
 
-namespace MOServer
+#include <Utils.h>
+#include "Network/Manager.h"
+
+namespace MOServer {
+
+class Core
 {
-    class Core
+private:
+    static Core* mInstance;
+    bool mRunning;
+
+    Network::Manager* mNetworkManager;
+
+public:
+    Core();
+    ~Core();
+
+    void Init();
+    void Idle();
+    void Tick(int64_t tick);
+    static void Log(const char* format, ...);
+
+    /**
+     * Return current isntance of the core
+     * @return Core*
+     */
+    static Core* Instance()
     {
-        private:
-            static Core* mInstance;
-            bool mRunning;
+        return mInstance;
+    }
 
-            Network::Manager* mNetworkManager;
+    /**
+     * Return if core is currently running
+     * @return bool
+     */
+    bool IsRunning()
+    {
+        return mRunning;
+    }
+};
 
-        public:
-            Core();
-            ~Core();
 
-            void Init();
-            void Idle();
-            void Tick(int64_t tick);
-            static void Log(const char* format, ...);
+} // namespace MOServer
 
-            /**
-             * Return current isntance of the core
-             * @return Core*
-             */
-            static Core* Instance()
-            {
-                return mInstance;
-            }
 
-            /**
-             * Return if core is currently running
-             * @return bool
-             */
-            bool IsRunning()
-            {
-                return mRunning;
-            }
-    };
-}
+#endif // _mo_core
