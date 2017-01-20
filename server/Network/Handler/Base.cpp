@@ -28,7 +28,7 @@ void Network::Handler::Dispatch(RakNet::Packet* packet)
     RakNet::MessageID id = packet->data[0];
 
     if (mRegistry[id]) {
-        (*this.*mRegistry[id])(packet);
+        (this->*mRegistry[id])(packet);
     }
 };
 
