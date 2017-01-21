@@ -30,7 +30,7 @@ private:
     void OnClientDisconnect(RakNet::Packet* packet);
     void OnTest(RakNet::Packet* packet);
 
-    void (Handler::*mRegistry[MOSERVER_PACKET_LIMIT])(RakNet::Packet* packet);
+    void (Handler::*mRegistry[MO_PACKET_LIMIT])(RakNet::Packet* packet);
 
     std::map<RakNet::RakNetGUID, Client*> *mClients;
     RakNet::RakPeerInterface *mPeer;

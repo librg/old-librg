@@ -19,11 +19,30 @@ void Network::Handler::OnClientConnectAttempt(RakNet::Packet* packet)
 /**
  * Fires when user sends his username and serial
  * after he successfuly connected to raknet
+ *
+ * Packet structure
+ * @param int MOSERVER_PROTOCOL_VERSION
+ * @param int MOSERVER_BUILD_VERSION
+ * @param string Client Name
  */
 void Network::Handler::OnClientConnect(RakNet::Packet* packet)
 {
     RakNet::BitStream bsInput(packet->data, packet->length, false);
     bsInput.IgnoreBytes(sizeof(RakNet::MessageID));
+
+    int protocolVersion = -1, buildVersion = -1;
+    bsInput.Read(protocolVersion);
+    bsInput.Read(buildVersion);
+
+    if (protocolVersion != MO_PROTOCOL_VERSION) {
+        // TODO(inlife): force immidiate connection refuse
+        return;
+    }
+
+    if (buildVersion != MO_BUILD_VERSION) {
+        // TODO(inlife): add check for server parameters to decide, should be connection refused or allowed
+        return;
+    }
 
     RakNet::RakString nickName;
     bsInput.Read(nickName);
@@ -37,5 +56,5 @@ void Network::Handler::OnClientConnect(RakNet::Packet* packet)
 
 void Network::Handler::OnClientDisconnect(RakNet::Packet* packet)
 {
-    Core::Log("OnClientDisconnect");
+    Core::Log("OnClientDisconnect: id: %d", packet->systemAddress.systemIndex);
 }

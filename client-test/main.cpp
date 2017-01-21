@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <iostream>
 #include <RakPeerInterface.h>
 #include <MessageIdentifiers.h>
 #include <BitStream.h>
@@ -11,7 +12,7 @@
 
 int main(void)
 {
-    char str[512];
+    std::string ipAddress;
 
     RakNet::RakPeerInterface *peer = RakNet::RakPeerInterface::GetInstance();
     RakNet::Packet *packet;
@@ -19,13 +20,17 @@ int main(void)
     RakNet::SocketDescriptor sd;
     peer->Startup(1,&sd, 1);
 
-    printf("Enter server IP or hit enter for 127.0.0.1\n");
-    gets(str);
-    if (str[0]==0){
-        strcpy(str, "127.0.0.1");
+    printf("Enter server IP or any letter and enter for 127.0.0.1\n");
+    std::cin >> ipAddress;
+
+    if (ipAddress.size() == 1) {
+        // strcpy(ipAddress, "127.0.0.1");
+        ipAddress = "127.0.0.1";
     }
-    printf("Starting the client.\n");
-    peer->Connect(str, SERVER_PORT, 0,0);
+
+    printf("Connecting to %s:%d...\n", ipAddress.c_str(), SERVER_PORT);
+    peer->Connect(ipAddress.c_str(), SERVER_PORT, 0,0);
+
 
     while (1)
     {
@@ -47,13 +52,24 @@ int main(void)
             case ID_CONNECTION_REQUEST_ACCEPTED:
                 {
                     printf("Our connection request has been accepted.\n");
+                    printf("Sending OnClientConnect packet\n");
 
-                    // Use a BitStream to write a custom user message
-                    // Bitstreams are easier to use than sending casted structures, and handle endian swapping automatically
-                    RakNet::BitStream bsOut;
-                    bsOut.Write((RakNet::MessageID)MessageID::CONNECTION_INIT);
-                    bsOut.Write("Test Player");
-                    peer->Send(&bsOut, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
+                    /**
+                     * This data-packet is used to validate
+                     * game mod compability, and add client to server list
+                     *
+                     * Data template
+                     * @param int MOSERVER_PROTOCOL_VERSION
+                     * @param int MOSERVER_BUILD_VERSION
+                     * @param string Client Name
+                     */
+                    RakNet::BitStream data;
+                    data.Write((RakNet::MessageID)MessageID::CONNECTION_INIT);
+                    data.Write(MO_PROTOCOL_VERSION);
+                    data.Write(MO_BUILD_VERSION);
+                    data.Write("Test Player");
+
+                    peer->Send(&data, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
                 }
                 break;
 
