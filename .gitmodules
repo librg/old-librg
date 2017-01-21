@@ -1,9 +1,9 @@
 [submodule "vendor/libuv"]
 	path = vendor/libuv
-	url = https://github.com/jen20/libuv-cmake
+	url = https://github.com/Inlife/libuv-cmake
 [submodule "vendor/RakNet"]
 	path = vendor/RakNet
-	url = https://github.com/OculusVR/RakNet.git
+	url = https://github.com/Inlife/RakNet.git
 [submodule "vendor/squirrel"]
 	path = vendor/squirrel
 	url = https://github.com/albertodemichelis/squirrel.git
