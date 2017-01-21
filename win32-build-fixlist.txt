@@ -1,0 +1,14 @@
+shared:
+raknet
+ - replace include math.h on cmath.h in CCRakNetSlidingWindow.cpp
+
+libuv:
+ - add -DWIN32_LEAN_AND_MEAN in libuv/CMakeLists.txt
+
+
+mingw:
+raknet:
+ - replace in RakNet/CMakeLists.txt
+    SET( CMAKE_CXX_FLAGS "/D WIN32 /D _RAKNET_DLL /D _CRT_NONSTDC_NO_DEPRECATE /D _CRT_SECURE_NO_DEPRECATE /GS- /GR- ")
+    to
+    SET( CMAKE_CXX_FLAGS "-D WIN32 -D _RAKNET_DLL -D _CRT_NONSTDC_NO_DEPRECATE -D _CRT_SECURE_NO_DEPRECATE")

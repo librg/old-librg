@@ -29,10 +29,9 @@ ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 ## trying to disable
 ## raknet static lib, still no success
-add_definitions(
-    -DRAKNET_ENABLE_STATIC=OFF
-    -DDISABLE_STATIC=ON
-)
+option(RAKNET_ENABLE_DLL "Generate the DLL project if true." OFF)
+option(RAKNET_ENABLE_SAMPLES "" OFF)
+SET(RAKNET_ENABLE_DLL OFF CACHE BOOL "Generate the DLL project if true.")
 
 ###
 # Compile vendor dependencies

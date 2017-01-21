@@ -52,7 +52,7 @@ int main(void)
                     // Bitstreams are easier to use than sending casted structures, and handle endian swapping automatically
                     RakNet::BitStream bsOut;
                     bsOut.Write((RakNet::MessageID)MessageID::CONNECTION_INIT);
-                    bsOut.Write("Player name");
+                    bsOut.Write("Test Player");
                     peer->Send(&bsOut, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
                 }
                 break;
