@@ -36,9 +36,9 @@ SET(RAKNET_ENABLE_DLL OFF CACHE BOOL "Generate the DLL project if true.")
 ###
 # Compile vendor dependencies
 ###
-add_subdirectory (vendor/RakNet)
-add_subdirectory (vendor/libuv)
-add_subdirectory (vendor/squirrel-lang)
+add_subdirectory(vendor/RakNet)
+add_subdirectory(vendor/libuv)
+add_subdirectory(vendor/squirrel-lang)
 
 ###
 # Hacks
@@ -62,19 +62,15 @@ include_directories(
     .
 )
 
+file(GLOB_RECURSE SERVER_FILES
+  "${PROJECT_SOURCE_DIR}/server/*.cpp"
+)
 
 ###
 # Includes for current source executable
 ###
 add_executable(server
-    server/main.cpp
-    server/Core.cpp
-    server/Network/Manager.cpp
-    server/Network/Client.cpp
-    server/Network/Handler/Base.cpp
-    server/Network/Handler/RakNetNative.cpp
-    server/Network/Handler/Connection.cpp
-    # server/Network/Handler/Pla.cpp
+    ${SERVER_FILES}
 )
 
 add_executable(client-test
