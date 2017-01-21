@@ -1,11 +1,3 @@
-shared:
-raknet
- - replace include math.h on cmath.h in CCRakNetSlidingWindow.cpp
-
-libuv:
- - add -DWIN32_LEAN_AND_MEAN in libuv/CMakeLists.txt
-
-
 mingw:
 raknet:
  - replace in RakNet/CMakeLists.txt
