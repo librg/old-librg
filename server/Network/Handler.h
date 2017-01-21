@@ -2,18 +2,15 @@
 #define _mo_network_handler_h
 
 #include <map>
-
-#include <MessageID.h>
-#include <MessageIdentifiers.h>
 #include <RakPeerInterface.h>
 #include <BitStream.h>
-#include <BuildVersion.h>
 
 #include "Client.h"
 
 namespace MOServer {
 namespace Network  {
 
+const short MO_PACKET_LIMIT = 256; // current limit for amount of packets introduced by the mod on top of (134) raknet packets
 
 class Handler
 {

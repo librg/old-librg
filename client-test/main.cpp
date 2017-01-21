@@ -77,6 +77,7 @@ int main(void)
                      */
                     RakNet::BitStream data;
                     data.Write((RakNet::MessageID)MessageID::CONNECTION_INIT);
+                    data.Write(MO_PLATFORM_ID);
                     data.Write(MO_PROTOCOL_VERSION);
                     data.Write(MO_BUILD_VERSION);
                     data.Write("Test Player");

@@ -1,3 +1,5 @@
+#include <MessageID.h>
+#include <MessageIdentifiers.h>
 #include "../Handler.h"
 
 #ifdef DEBUG

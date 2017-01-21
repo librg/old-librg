@@ -1,3 +1,5 @@
+#include <BuildVersion.h>
+#include <MessageID.h>
 #include "../Handler.h"
 #include "../../Core.h"
 
@@ -32,12 +34,13 @@ void Network::Handler::OnClientConnect(RakNet::Packet* packet)
     RakNet::BitStream bsInput(packet->data, packet->length, false);
     bsInput.IgnoreBytes(sizeof(RakNet::MessageID));
 
-    int protocolVersion = -1, buildVersion = -1;
+    int protocolVersion = -1, buildVersion = -1, platformId = -1;
+    bsInput.Read(platformId);
     bsInput.Read(protocolVersion);
     bsInput.Read(buildVersion);
 
     // incompatible protocol version - force immidiate disconnect
-    if (protocolVersion != MO_PROTOCOL_VERSION) {
+    if (protocolVersion != MO_PROTOCOL_VERSION || platformId != MO_PLATFORM_ID) {
         bsOutput.Write(static_cast<RakNet::MessageID>(MessageID::CONNECTION_REFUSED));
         bsOutput.Write("Incompatible game version.");
 
