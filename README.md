@@ -14,8 +14,21 @@ $ mkdir -p build && cd build
 $ cmake ..
 ```
 
+## Building
+
 Then go inside build folder, there you can find either Makefile which should be used to `make` it.
+
+Unix:
+
+```sh
+cd build
+make
+./server
+```
+
+Windows:
 If you are using Visual Studio, proper project/solution files should be generated for your visual studio.
+Run build, and enjoy.
 
 ## Used dependencies
 * [libuv/libuv](https://github.com/libuv/libuv) 1.9.0 via cmake interface [Inlife/libuv-cmake](https://github.com/Inlife/libuv-cmake)
@@ -24,7 +37,7 @@ If you are using Visual Studio, proper project/solution files should be generate
 
 ## Compilation tested on
 * macos 10.12.2 with g++ 4.2.1
-* ubuntu 16.04
+* ubuntu 16.04 with g++
 * windows 10 with msvc 14.0
 
 ## Bugs
