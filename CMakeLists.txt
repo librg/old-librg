@@ -23,7 +23,7 @@ endif()
 # Custom building flags
 ###
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -Wwritable-strings")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 
