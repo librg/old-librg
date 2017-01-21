@@ -23,10 +23,12 @@ void Network::Handler::OnClientConnectAttempt(RakNet::Packet* packet)
  * Packet structure
  * @param int MOSERVER_PROTOCOL_VERSION
  * @param int MOSERVER_BUILD_VERSION
- * @param string Client Name
+ * @param string Client name
+ * @param string Client serial
  */
 void Network::Handler::OnClientConnect(RakNet::Packet* packet)
 {
+    RakNet::BitStream bsOutput;
     RakNet::BitStream bsInput(packet->data, packet->length, false);
     bsInput.IgnoreBytes(sizeof(RakNet::MessageID));
 
@@ -34,24 +36,42 @@ void Network::Handler::OnClientConnect(RakNet::Packet* packet)
     bsInput.Read(protocolVersion);
     bsInput.Read(buildVersion);
 
+    // incompatible protocol version - force immidiate disconnect
     if (protocolVersion != MO_PROTOCOL_VERSION) {
-        // TODO(inlife): force immidiate connection refuse
+        bsOutput.Write(static_cast<RakNet::MessageID>(MessageID::CONNECTION_REFUSED));
+        bsOutput.Write("Incompatible game version.");
+
+        mPeer->Send(&bsOutput, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
+
+        Core::Log("OnClientConnect: refsued ip: %s, reason: incompatible game version.", packet->systemAddress.ToString(true, ':'));
         return;
     }
 
+    // let server owner to decide, to kick or not to kick
     if (buildVersion != MO_BUILD_VERSION) {
         // TODO(inlife): add check for server parameters to decide, should be connection refused or allowed
+        // bsOutput.Write(static_cast<RakNet::MessageID>(MessageID::CONNECTION_REFUSED));
+        // bsOutput.Write()
+        Core::Log("OnClientConnect: refsued ip: %s, reason: incompatible build version.", packet->systemAddress.ToString(true, ':'));
         return;
     }
 
     RakNet::RakString nickName;
     bsInput.Read(nickName);
 
+    RakNet::RakString serial;
+    bsInput.Read(serial);
+
     mClients->insert(std::make_pair(
-        packet->guid, new Client(nickName.C_String(), packet->systemAddress)
+        packet->guid, new Client(nickName.C_String(), packet->systemAddress, serial.C_String())
     ));
 
-    Core::Log("OnClientConnect: id: %d name: %s", packet->systemAddress.systemIndex, nickName.C_String());
+    // send success
+    bsOutput.Write(static_cast<RakNet::MessageID>(MessageID::CONNECTION_ACCEPTED));
+    mPeer->Send(&bsOutput, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
+
+    Core::Log("OnClientConnect: id: %d name: %s serial: %s", packet->systemAddress.systemIndex, nickName.C_String(), serial.C_String());
+    return;
 }
 
 void Network::Handler::OnClientDisconnect(RakNet::Packet* packet)

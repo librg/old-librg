@@ -47,6 +47,18 @@ int main(void)
             case ID_REMOTE_NEW_INCOMING_CONNECTION:
                 printf("Another client has connected.\n");
                 break;
+            case ID_NEW_INCOMING_CONNECTION:
+                printf("A connection is incoming.\n");
+                break;
+            case ID_NO_FREE_INCOMING_CONNECTIONS:
+                printf("The server is full.\n");
+                break;
+            case ID_DISCONNECTION_NOTIFICATION:
+                printf("We have been disconnected.\n");
+                break;
+            case ID_CONNECTION_LOST:
+                printf("Connection lost.\n");
+                break;
 
 
             case ID_CONNECTION_REQUEST_ACCEPTED:
@@ -68,22 +80,16 @@ int main(void)
                     data.Write(MO_PROTOCOL_VERSION);
                     data.Write(MO_BUILD_VERSION);
                     data.Write("Test Player");
+                    data.Write("4555ASDASD4555ASDASD4555");
 
                     peer->Send(&data, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
                 }
                 break;
 
-            case ID_NEW_INCOMING_CONNECTION:
-                printf("A connection is incoming.\n");
-                break;
-            case ID_NO_FREE_INCOMING_CONNECTIONS:
-                printf("The server is full.\n");
-                break;
-            case ID_DISCONNECTION_NOTIFICATION:
-                printf("We have been disconnected.\n");
-                break;
-            case ID_CONNECTION_LOST:
-                printf("Connection lost.\n");
+            case MessageID::CONNECTION_ACCEPTED:
+                {
+                    printf("Successfuly connected to server.\n");
+                }
                 break;
 
             default:

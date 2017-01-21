@@ -7,7 +7,7 @@
 class Client
 {
 public:
-    Client(std::string nickName, RakNet::SystemAddress systemAddress);
+    Client(std::string nickName, RakNet::SystemAddress systemAddress, std::string serial);
     ~Client();
 
     // Player* GetPlayer() { return mPlayer; }
@@ -15,6 +15,7 @@ public:
 private:
     RakNet::SystemAddress mSystemAddress;
     std::string mNickName;
+    std::string mSerial;
     // Player* mPlayer;
 };
 
