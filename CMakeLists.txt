@@ -85,7 +85,7 @@ add_executable(client-test
 # Linking libraries
 ###
 target_link_libraries(server
-    RakNetDLL
+    RakNetLibStatic
     uv
     squirrel
     # sqstdlib
@@ -99,7 +99,7 @@ target_include_directories(server PUBLIC
 )
 
 target_link_libraries(client-test
-    RakNetDLL
+    RakNetLibStatic
 )
 
 target_include_directories(client-test PUBLIC
