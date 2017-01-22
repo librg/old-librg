@@ -53,8 +53,11 @@ void Network::Handler::OnClientConnect(RakNet::Packet* packet)
     // let server owner to decide, to kick or not to kick
     if (buildVersion != MO_BUILD_VERSION) {
         // TODO(inlife): add check for server parameters to decide, should be connection refused or allowed
-        // bsOutput.Write(static_cast<RakNet::MessageID>(MessageID::CONNECTION_REFUSED));
-        // bsOutput.Write()
+        bsOutput.Write(static_cast<RakNet::MessageID>(MessageID::CONNECTION_REFUSED));
+        bsOutput.Write("Incompatible build version.");
+
+        mPeer->Send(&bsOutput, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
+
         Core::Log("OnClientConnect: refsued ip: %s, reason: incompatible build version.", packet->systemAddress.ToString(true, ':'));
         return;
     }
