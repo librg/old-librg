@@ -3,6 +3,7 @@
 
 #include <Utils.h>
 #include "Network/Manager.h"
+#include "Game/Manager.h"
 
 namespace MOServer {
 
@@ -13,6 +14,7 @@ private:
     bool mRunning;
 
     Network::Manager* mNetworkManager;
+    Game::Manager* mGameManager;
 
 public:
     Core();
@@ -30,6 +32,11 @@ public:
     static Core* Instance()
     {
         return mInstance;
+    }
+
+    static Game::Manager* Game()
+    {
+        return mInstance->mGameManager;
     }
 
     /**

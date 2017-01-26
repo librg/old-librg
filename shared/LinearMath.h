@@ -8,4 +8,9 @@ struct Vector3D
 };
 //TODO(zaklaus): Add proper Math library.
 
+struct Vector3
+{
+    float x, y, z;
+};
+
 #endif

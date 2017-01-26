@@ -4,17 +4,14 @@
 namespace MOServer {
 namespace Game     {
 
-
 typedef unsigned short world_t;
 typedef unsigned short entityId_t;
-
 
 class Entity {
 public:
     Entity();
     ~Entity();
 
-    
 
 private:
     Vector3 mPosition;

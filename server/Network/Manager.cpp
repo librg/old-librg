@@ -73,12 +73,11 @@ void Network::Manager::Receive()
 {
     RakNet::Packet* packet = nullptr;
 
-    while ((packet = mPeer->Receive())) {
+    if (!(packet = mPeer->Receive())) return;
 
-        if (mHandler) {
-            mHandler->Dispatch(packet);
-        }
-
-        mPeer->DeallocatePacket(packet);
+    if (mHandler) {
+        mHandler->Dispatch(packet);
     }
+
+    mPeer->DeallocatePacket(packet);
 }

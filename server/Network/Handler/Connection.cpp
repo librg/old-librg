@@ -76,7 +76,8 @@ void Network::Handler::OnClientConnect(RakNet::Packet* packet)
     bsOutput.Write(static_cast<RakNet::MessageID>(MessageID::CONNECTION_ACCEPTED));
     mPeer->Send(&bsOutput, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
 
-    Core::Log("OnClientConnect: id: %d name: %s serial: %s", packet->systemAddress.systemIndex, nickName.C_String(), serial.C_String());
+    Core::Game()->Trigger(1, packet);
+    // Core::Log("OnClientConnect: id: %d name: %s serial: %s", packet->systemAddress.systemIndex, nickName.C_String(), serial.C_String());
     return;
 }
 

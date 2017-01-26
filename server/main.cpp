@@ -21,6 +21,7 @@
 
 int64_t counter = 0;
 char buffer[1024];
+uv_async_t async;
 
 /**
  * Main loop ticker
@@ -29,6 +30,10 @@ char buffer[1024];
 void timed_loop(uv_timer_t* handle)
 {
     MOServer::Core::Instance()->Tick(counter++);
+
+    if (counter == 15) {
+
+    }
 }
 
 /**
@@ -66,6 +71,16 @@ void on_type(uv_fs_t *req) {
     buffer[0] = 0;
 }
 
+void async_cb(uv_async_t* async) {
+    printf("async_cb %d\n", *((int*) async->data));
+    // uv_close((uv_handle_t*) async, NULL);
+}
+
+void async_cb2(uv_async_t* async) {
+    printf("async_cb2\n");
+    // uv_close((uv_handle_t*) async, NULL);
+}
+
 /**
  * Main program enter point
  * @param  argc
@@ -83,6 +98,15 @@ int main(int argc, char * argv[]) {
     // //do some stuff with squirrel here
 
     // sq_close(v);
+
+
+    // async test
+    uv_async_init(uv_default_loop(), &async, async_cb);
+    int a = 5;
+    async.data = &a;
+    // uv_async_init(uv_default_loop(), &async, async_cb2);
+
+    uv_async_send(&async);
 
     // create and initialize
     MOServer::Core core = MOServer::Core();
