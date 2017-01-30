@@ -1,9 +1,9 @@
 [submodule "vendor/libuv"]
-	path = vendor/libuv
-	url = git@gitlab.com:Mafia2Online/libuv-cmake.git
+    path = vendor/libuv
+    url = git@gitlab.com:Mafia2Online/libuv-cmake.git
 [submodule "vendor/RakNet"]
-	path = vendor/RakNet
-	url = git@gitlab.com:Mafia2Online/RakNet.git
+    path = vendor/RakNet
+    url = git@gitlab.com:Mafia2Online/RakNet.git
 [submodule "vendor/squirrel-lang"]
-	path = vendor/squirrel-lang
-	url = git@gitlab.com:Mafia2Online/squirrel-lang.git
+    path = vendor/squirrel-lang
+    url = git@gitlab.com:Mafia2Online/squirrel-lang.git
