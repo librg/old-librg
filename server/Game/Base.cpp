@@ -1,4 +1,5 @@
 #include "Handler.h"
+#include "../Core.h"
 
 using namespace M2OServer;
 

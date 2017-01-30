@@ -2,8 +2,6 @@
 
 using namespace M2OServer;
 
-Core* Core::mInstance;
-
 Core::Core()
     : mRunning(false)
     , mNetworkManager(nullptr)
@@ -14,8 +12,8 @@ Core::Core()
 
 Core::~Core()
 {
-    delete mNetworkManager; mNetworkManager = nullptr;
-    delete mGameManager; mGameManager = nullptr;
+    // Network::Manager::Instance()::Deinitialize();
+    // Game::Manager::Instance()::Deinitialize();
 
     this->Log("exiting...");
 }
@@ -47,14 +45,10 @@ void Core::Init()
 
     printf("%s\n\n", test.c_str());
 
-    mNetworkManager = new Network::Manager();
-    mNetworkManager->Init();
-
-    mGameManager = new Game::Manager();
-    mGameManager->Init();
+    Network::Manager::Instance();
+    Game::Manager::Instance();
 
     mRunning  = true;
-    mInstance = this;
 }
 
 /**
@@ -63,9 +57,9 @@ void Core::Init()
 void Core::Tick(int64_t tick)
 {
     // this->Log("tick tock: %d", tick);
-    if (mNetworkManager) {
-        mNetworkManager->Update();
-    }
+    // if (mNetworkManager) {
+    //     mNetworkManager->Update();
+    // }
 }
 
 /**
@@ -73,8 +67,8 @@ void Core::Tick(int64_t tick)
  */
 void Core::Idle()
 {
-    if (mNetworkManager) {
-        mNetworkManager->Receive();
-    }
+    // if (mNetworkManager) {
+    //     mNetworkManager->Receive();
+    // }
     // this->Log("idle...");
 }

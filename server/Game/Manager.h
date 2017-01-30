@@ -1,6 +1,7 @@
 #ifndef _m2o_game_manager
 #define _m2o_game_manager
 
+#include <Singleton.h>
 #include "Handler.h"
 #include "Entity.h"
 #include "Player.h"
@@ -11,11 +12,13 @@ namespace Game  {
 
 const entityId_t MAX_ENTITIES = 1000;
 
-class Manager
+class Manager : public Singleton<Manager>
 {
+    friend class Singleton<Manager>;
+
 public:
-    Manager();
-    ~Manager();
+    Manager() = default;
+    ~Manager() = default;
 
     void Init();
     inline void Trigger(short eventId, void* data)

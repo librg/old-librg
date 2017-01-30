@@ -1,3 +1,4 @@
+#include <Singleton.h>
 #include "Manager.h"
 #include "../Core.h"
 
@@ -28,7 +29,7 @@ Network::Manager::~Manager()
  */
 void Network::Manager::Init()
 {
-    Core::Instance()->Log("initializing network...");
+    Core::Instance().Log("initializing network...");
 
     // TODO(inlife): move to settings.json
     mSocketDescriptor = RakNet::SocketDescriptor(DEFAULT_SERVER_PORT, 0);
@@ -37,8 +38,8 @@ void Network::Manager::Init()
     std::string password = "";
 
     if (mPeer->Startup(maxplayers, &mSocketDescriptor, 1) != RakNet::RAKNET_STARTED) {
-        Core::Instance()->Log("Unable to startup server!");
-        Core::Instance()->Log("Port might be already being used by another process!");
+        Core::Instance().Log("Unable to startup server!");
+        Core::Instance().Log("Port might be already being used by another process!");
         return;
     }
 

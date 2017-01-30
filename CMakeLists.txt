@@ -40,6 +40,8 @@ add_subdirectory(vendor/RakNet)
 add_subdirectory(vendor/libuv)
 add_subdirectory(vendor/squirrel-lang)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+
 ###
 # Hacks
 # On Visual 2005 and above, this module can set the debug working directory

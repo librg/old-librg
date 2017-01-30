@@ -10,8 +10,10 @@ namespace M2OServer {
 namespace Network  {
 
 
-class Manager
+class Manager : public Singleton<Manager>
 {
+    friend class Singleton<Manager>;
+
 public:
     Manager();
     ~Manager();

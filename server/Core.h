@@ -1,16 +1,18 @@
 #ifndef _m2o_core
 #define _m2o_core
 
+#include <Singleton.h>
 #include <Utils.h>
 #include "Network/Manager.h"
 #include "Game/Manager.h"
 
 namespace M2OServer {
 
-class Core
+class Core : public Singleton<Core>
 {
+    friend class Singleton<Core>;
+
 private:
-    static Core* mInstance;
     bool mRunning;
 
     Network::Manager* mNetworkManager;
@@ -24,20 +26,6 @@ public:
     void Idle();
     void Tick(int64_t tick);
     static void Log(const char* format, ...);
-
-    /**
-     * Return current isntance of the core
-     * @return Core*
-     */
-    static Core* Instance()
-    {
-        return mInstance;
-    }
-
-    static Game::Manager* Game()
-    {
-        return mInstance->mGameManager;
-    }
 
     /**
      * Return if core is currently running
