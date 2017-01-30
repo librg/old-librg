@@ -6,7 +6,7 @@
 #include "../../Core.h"
 #endif
 
-using namespace MOServer;
+using namespace M2OServer;
 
 Network::Handler::Handler(RakNet::RakPeerInterface *peer, std::map<RakNet::RakNetGUID, Client*> *Clients)
     : mPeer(peer)

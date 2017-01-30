@@ -1,6 +1,6 @@
 #include "Handler.h"
 
-using namespace MOServer;
+using namespace M2OServer;
 
 void Game::Handler::Dispatch(short eventId, void* data)
 {

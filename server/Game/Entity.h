@@ -1,7 +1,7 @@
 #ifndef _mo_game_entity
 #define _mo_game_entity
 
-namespace MOServer {
+namespace M2OServer {
 namespace Game     {
 
 typedef unsigned short world_t;
@@ -21,6 +21,6 @@ private:
 
 
 } // namespace Game
-} // namespace MOServer
+} // namespace M2OServer
 
 #endif // _mo_game_entity

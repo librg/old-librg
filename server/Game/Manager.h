@@ -6,7 +6,7 @@
 #include "Player.h"
 #include "Vehicle.h"
 
-namespace MOServer {
+namespace M2OServer {
 namespace Game  {
 
 const entityId_t MAX_ENTITIES = 1000;
@@ -31,6 +31,6 @@ private:
 
 
 } // Game
-} // MOServer
+} // M2OServer
 
 #endif // _mo_game_manager

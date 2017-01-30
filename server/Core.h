@@ -5,7 +5,7 @@
 #include "Network/Manager.h"
 #include "Game/Manager.h"
 
-namespace MOServer {
+namespace M2OServer {
 
 class Core
 {
@@ -50,7 +50,7 @@ public:
 };
 
 
-} // namespace MOServer
+} // namespace M2OServer
 
 
 #endif // _mo_core

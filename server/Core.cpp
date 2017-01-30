@@ -1,6 +1,6 @@
 #include "Core.h"
 
-using namespace MOServer;
+using namespace M2OServer;
 
 Core* Core::mInstance;
 

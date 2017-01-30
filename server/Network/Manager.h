@@ -6,7 +6,7 @@
 #include "Client.h"
 #include "Handler.h"
 
-namespace MOServer {
+namespace M2OServer {
 namespace Network  {
 
 
@@ -32,6 +32,6 @@ private:
 
 
 } // Netwrok
-} // MOServer
+} // M2OServer
 
 #endif // _mo_network_manager
