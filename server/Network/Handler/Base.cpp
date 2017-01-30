@@ -13,7 +13,7 @@ Network::Handler::Handler(RakNet::RakPeerInterface *peer, std::map<RakNet::RakNe
     , mClients(Clients)
 {
     // reset all registry to nulls
-    for (int i = 0; i < MO_PACKET_LIMIT; ++i) {
+    for (int i = 0; i < M2O_PACKET_LIMIT; ++i) {
         mRegistry[i] = nullptr;
     }
 

@@ -1,5 +1,5 @@
-#ifndef _mo_network_manager
-#define _mo_network_manager
+#ifndef _m2o_network_manager
+#define _m2o_network_manager
 
 #include <map>
 #include <RakPeerInterface.h>
@@ -34,4 +34,4 @@ private:
 } // Netwrok
 } // M2OServer
 
-#endif // _mo_network_manager
+#endif // _m2o_network_manager

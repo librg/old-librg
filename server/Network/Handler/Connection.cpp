@@ -40,7 +40,7 @@ void Network::Handler::OnClientConnect(RakNet::Packet* packet)
     bsInput.Read(buildVersion);
 
     // incompatible protocol version - force immidiate disconnect
-    if (protocolVersion != MO_PROTOCOL_VERSION || platformId != MO_PLATFORM_ID) {
+    if (protocolVersion != M2O_PROTOCOL_VERSION || platformId != M2O_PLATFORM_ID) {
         bsOutput.Write(static_cast<RakNet::MessageID>(MessageID::CONNECTION_REFUSED));
         bsOutput.Write("Incompatible game version.");
 
@@ -51,7 +51,7 @@ void Network::Handler::OnClientConnect(RakNet::Packet* packet)
     }
 
     // let server owner to decide, to kick or not to kick
-    if (buildVersion != MO_BUILD_VERSION) {
+    if (buildVersion != M2O_BUILD_VERSION) {
         // TODO(inlife): add check for server parameters to decide, should be connection refused or allowed
         bsOutput.Write(static_cast<RakNet::MessageID>(MessageID::CONNECTION_REFUSED));
         bsOutput.Write("Incompatible build version.");

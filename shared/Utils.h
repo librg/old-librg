@@ -1,5 +1,5 @@
-#ifndef _mo_utils
-#define _mo_utils
+#ifndef _m2o_utils
+#define _m2o_utils
 
 #include <iostream>
 #include <string>
@@ -61,4 +61,4 @@ namespace Utils
 	}
 }
 
-#endif // _mo_utils
+#endif // _m2o_utils

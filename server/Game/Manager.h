@@ -1,5 +1,5 @@
-#ifndef _mo_game_manager
-#define _mo_game_manager
+#ifndef _m2o_game_manager
+#define _m2o_game_manager
 
 #include "Handler.h"
 #include "Entity.h"
@@ -33,4 +33,4 @@ private:
 } // Game
 } // M2OServer
 
-#endif // _mo_game_manager
+#endif // _m2o_game_manager

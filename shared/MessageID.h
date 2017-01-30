@@ -1,5 +1,5 @@
-#ifndef _mo_message_id
-#define _mo_message_id
+#ifndef _m2o_message_id
+#define _m2o_message_id
 
 #include "MessageIdentifiers.h"
 
@@ -15,4 +15,4 @@ namespace MessageID
     };
 };
 
-#endif // _mo_message_id
+#endif // _m2o_message_id

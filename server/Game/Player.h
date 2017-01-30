@@ -1,5 +1,5 @@
-#ifndef _mo_game_player
-#define _mo_game_player
+#ifndef _m2o_game_player
+#define _m2o_game_player
 
 namespace M2OServer {
 namespace Game     {
@@ -18,4 +18,4 @@ private:
 } // namespace Game
 } // namespace M2OServer
 
-#endif // _mo_game_player
+#endif // _m2o_game_player

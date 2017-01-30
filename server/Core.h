@@ -1,5 +1,5 @@
-#ifndef _mo_core
-#define _mo_core
+#ifndef _m2o_core
+#define _m2o_core
 
 #include <Utils.h>
 #include "Network/Manager.h"
@@ -53,4 +53,4 @@ public:
 } // namespace M2OServer
 
 
-#endif // _mo_core
+#endif // _m2o_core

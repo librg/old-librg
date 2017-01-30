@@ -1,5 +1,5 @@
-#ifndef _mo_game_handler_h
-#define _mo_game_handler_h
+#ifndef _m2o_game_handler_h
+#define _m2o_game_handler_h
 
 namespace M2OServer {
 namespace Game     {
@@ -23,4 +23,4 @@ private:
 } // namespace Game
 } // namespace M2OServer
 
-#endif // _mo_game_handler_h
+#endif // _m2o_game_handler_h
