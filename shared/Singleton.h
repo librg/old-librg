@@ -14,7 +14,7 @@ public:
     Singleton(const Singleton&) = delete;
     Singleton &operator=(const Singleton&) = delete;
 
-    static T &Instance()
+    static T *Instance()
     {
         /**
          * static declaration guarantees:
@@ -23,7 +23,7 @@ public:
          * - instance is destroyed at program termination (after main() returns)
          */
         static T mInstance;
-        return mInstance;
+        return &mInstance;
     }
 };
 

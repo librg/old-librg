@@ -56,10 +56,7 @@ void Core::Init()
  */
 void Core::Tick(int64_t tick)
 {
-    // this->Log("tick tock: %d", tick);
-    // if (mNetworkManager) {
-    //     mNetworkManager->Update();
-    // }
+    Network::Manager::Instance()->Update();
 }
 
 /**
@@ -67,8 +64,5 @@ void Core::Tick(int64_t tick)
  */
 void Core::Idle()
 {
-    // if (mNetworkManager) {
-    //     mNetworkManager->Receive();
-    // }
-    // this->Log("idle...");
+    Network::Manager::Instance()->Receive();
 }

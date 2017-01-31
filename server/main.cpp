@@ -29,7 +29,7 @@ uv_async_t async;
  */
 void timed_loop(uv_timer_t* handle)
 {
-    M2OServer::Core::Instance().Tick(counter++);
+    M2OServer::Core::Instance()->Tick(counter++);
 
     if (counter == 15) {
 
@@ -42,7 +42,7 @@ void timed_loop(uv_timer_t* handle)
  */
 void idle_loop(uv_idle_t* handle)
 {
-    M2OServer::Core::Instance().Idle();
+    M2OServer::Core::Instance()->Idle();
 }
 
 

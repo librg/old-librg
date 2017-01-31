@@ -76,11 +76,14 @@ void Network::Handler::OnClientConnect(RakNet::Packet* packet)
     bsOutput.Write(static_cast<RakNet::MessageID>(MessageID::CONNECTION_ACCEPTED));
     mPeer->Send(&bsOutput, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
 
-    Game::Manager::Instance().Trigger(1, packet);
+    Game::Manager::Instance()->Trigger(1, packet);
     // Core::Log("OnClientConnect: id: %d name: %s serial: %s", packet->systemAddress.systemIndex, nickName.C_String(), serial.C_String());
     return;
 }
 
+/**
+ * On client disconnect
+ */
 void Network::Handler::OnClientDisconnect(RakNet::Packet* packet)
 {
     Core::Log("OnClientDisconnect: id: %d", packet->systemAddress.systemIndex);
