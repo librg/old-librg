@@ -44,6 +44,6 @@ void Network::Handler::Dispatch(RakNet::Packet* packet)
 void Network::Handler::OnTest(RakNet::Packet* packet)
 {
 #ifdef DEBUG
-    Core::Instance()->Log("called OnTest");
+    Core::Log("called OnTest");
 #endif
 }

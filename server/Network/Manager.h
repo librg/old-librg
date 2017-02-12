@@ -23,7 +23,7 @@ public:
     void Init();
     void Tick();
 
-    void Update();
+    void Update(uint64_t tick);
     void Receive();
 
     RakNet::RakPeerInterface* GetPeer() { return mPeer; }

@@ -1,8 +1,11 @@
 #ifndef __core
 #define __core
 
+#define SERVER
+
 #include <Network/Manager.h>
 #include <Game/Manager.h>
+#include <Scripting/Resource/Manager.h>
 
 #include <Utils/Singleton.h>
 #include <Utils/Utils.h>
@@ -25,7 +28,9 @@ public:
 
     void Init();
     void Idle();
-    void Tick(int64_t tick);
+    void Tick(uint64_t tick);
+    void OnInput(const char* message);
+
     static void Log(const char* format, ...);
 
     /**

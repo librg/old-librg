@@ -4,6 +4,7 @@
 
 # directories
 build/*
+build-win/*
 !build/.keep
 bin-*/*
 distrib/build_*/*

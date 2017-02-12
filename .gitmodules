@@ -10,3 +10,6 @@
 [submodule "client"]
 	path = client
 	url = git@gitlab.com:Mafia2Online/M2OClient-MyU.git
+[submodule "vendor/sqrat"]
+	path = vendor/sqrat
+	url = git@gitlab.com:Mafia2Online/sqrat.git

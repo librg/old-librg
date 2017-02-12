@@ -56,7 +56,7 @@ void Network::Manager::Init()
  * Regulated ticker, should be used
  * to send regular messages to all connected clients
  */
-void Network::Manager::Update()
+void Network::Manager::Update(uint64_t tick)
 {
     // // Use a BitStream to write a custom user message
     // // Bitstreams are easier to use than sending casted structures, and handle endian swapping automatically

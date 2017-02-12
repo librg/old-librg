@@ -39,8 +39,13 @@ SET(RAKNET_ENABLE_DLL OFF CACHE BOOL "Generate the DLL project if true.")
 add_subdirectory(vendor/RakNet)
 add_subdirectory(vendor/libuv)
 add_subdirectory(vendor/squirrel-lang)
+add_subdirectory(vendor/sqrat)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+if (NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z")
+else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++latest")
+endif()
 
 ###
 # Hacks
@@ -60,6 +65,7 @@ include_directories(
     # vendor/squirrel/include
     # vendor/squirrel/squirrel
     vendor/libuv/libuv/include
+    vendor/sqrat/include
     server/
     client/
 )
@@ -86,7 +92,7 @@ target_link_libraries(server
     RakNetLibStatic
     uv
     squirrel
-    # sqstdlib
+    sqstdlib
 )
 
 target_include_directories(server PUBLIC

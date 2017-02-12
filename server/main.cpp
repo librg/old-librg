@@ -10,19 +10,17 @@
 
 #include <uv.h>
 #include <stdinc.h>
+#include <string.h>
+#include <clocale>
 
 #include <Core.h>
-
+#include <sqrat.h>
 // squirrel
 // #define _SQ64
-// #include <squirrel.h>
-
-// #include <LinearMath.h>
+#include <squirrel.h>
 
 
-int64_t counter = 0;
-char buffer[1024];
-uv_async_t async;
+uint64_t counter = 0;
 
 /**
  * Main loop ticker
@@ -31,10 +29,6 @@ uv_async_t async;
 void timed_loop(uv_timer_t* handle)
 {
     Server::Core::Instance()->Tick(counter++);
-
-    if (counter == 15) {
-
-    }
 }
 
 /**
@@ -56,7 +50,7 @@ void signal_handler(uv_signal_t *req, int signum)
 {
     // stop for ctrl+C
     if (signum == 2) {
-        printf("Exiting!\n");
+        Server::Core::Log("Exiting!");
         uv_stop(uv_default_loop());
     }
 
@@ -64,23 +58,65 @@ void signal_handler(uv_signal_t *req, int signum)
 }
 
 /**
- * TODO(inlife): make input handling
- * @param req
+ * Alloc callback for allocating input memory
+ * @param handle         tty handle
+ * @param suggested_size suggensted size by uv (65536 in most cases)
+ * @param buf            buffer, where data will be written to, and read from by us
  */
-void on_type(uv_fs_t *req) {
-    printf("onconsole %s\n", buffer);
-    buffer[0] = 0;
+static void tty_alloc(uv_handle_t* handle, size_t suggested_size, uv_buf_t* buf)
+{
+    buf->base = new char[1024];
+    buf->len = 1024;
 }
 
-void async_cb(uv_async_t* async) {
-    printf("async_cb %d\n", *((int*) async->data));
-    // uv_close((uv_handle_t*) async, NULL);
+/**
+ * On user console message
+ * @param stream tty handle
+ * @param nread  size of string
+ * @param buf    buffer with data
+ */
+void on_console_message(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf)
+{
+    buf->base[nread] = '\0';
+    Server::Core::Instance()->OnInput(buf->base);
 }
 
-void async_cb2(uv_async_t* async) {
-    printf("async_cb2\n");
-    // uv_close((uv_handle_t*) async, NULL);
+void myPrint(const char* message) {
+    Server::Core::Log(message);
 }
+
+// SQInteger mySqFunc(HSQUIRRELVM vm) {
+//     Server::Core::Log("wtf");
+//     return 0;
+// }
+
+void BindSquirrel(HSQUIRRELVM vm) {
+    using namespace Sqrat;
+
+    DefaultVM::Set(vm);
+    // RootTable().SquirrelFunc("print", &mySqFunc);
+    RootTable().Func("print", &myPrint);
+
+    try {
+        Script script1, script2;
+
+        script1.CompileString("::print(\"Hello World\");");
+        // script2.CompileFile("/Path/to/Script.nut");
+
+        script1.Run();
+        // script2.Run();
+    } catch( Exception ) {
+        // Handle exceptions here
+    }
+
+    // );
+
+    // RootTable().Bind("MyClass", Class<MyClass>()
+    //     .Func("Foo", &MyClass::Foo)
+    //     .Var("bar", &MyClass::Bar)
+    // );
+}
+
 
 /**
  * Main program enter point
@@ -91,23 +127,17 @@ void async_cb2(uv_async_t* async) {
 int main(int argc, char * argv[]) {
     uv_idle_t idler;
     uv_timer_t timer_req;
-    uv_fs_t stdin_watcher;
+    uv_tty_t tty;
 
-    // HSQUIRRELVM v;
-    // v = sq_open(1024); //creates a VM with initial stack size 1024
+#ifdef WIN32
+    // Set our locale to the C locale, as Unicode output only functions in this locale
+    std::setlocale(LC_ALL,"C");
+    SetConsoleOutputCP(CP_UTF8);
+#endif
 
-    // //do some stuff with squirrel here
-
-    // sq_close(v);
-
-
-    // async test
-    uv_async_init(uv_default_loop(), &async, async_cb);
-    int a = 5;
-    async.data = &a;
-    // uv_async_init(uv_default_loop(), &async, async_cb2);
-
-    uv_async_send(&async);
+    // HSQUIRRELVM vm = sq_open(1024);
+    // BindSquirrel(vm);
+    // sq_close(vm);
 
     // create and initialize
     Server::Core::Instance();
@@ -126,9 +156,22 @@ int main(int argc, char * argv[]) {
     uv_signal_init(uv_default_loop(), &sig);
     uv_signal_start(&sig, signal_handler, SIGINT);
 
-    // input handling
-    // uv_buf_t buf = uv_buf_init(buffer, 1024);
-    // uv_fs_read(uv_default_loop(), &stdin_watcher, 0, &buf, 1, -1, on_type);
+    // terminal window
+    uv_tty_init(uv_default_loop(), &tty, 0, 1);
+    uv_tty_set_mode(&tty, UV_TTY_MODE_NORMAL);
+
+    // setup reading callback
+    uv_read_start((uv_stream_t*)&tty, tty_alloc, on_console_message);
+
+    // if (uv_tty_get_winsize(&tty, &width, &height)) {
+    //     fprintf(stderr, "Could not get TTY information\n");
+    //     uv_tty_reset_mode();
+    //     return 1;
+    // }
+
+    // fprintf(stderr, "Width %d, height %d\n", width, height);
+    // uv_timer_init(uv_default_loop(), &tick);
+    // uv_timer_start(&tick, update, 200, 200);
 
     // starting loop
     uv_run(uv_default_loop(), UV_RUN_DEFAULT);
@@ -138,3 +181,98 @@ int main(int argc, char * argv[]) {
 
     return 0;
 }
+
+
+
+/*
+Async stuff
+
+// void async_cb(uv_async_t* async) {
+//     printf("async_cb %d\n", *((int*) async->data));
+//     uv_close((uv_handle_t*) async, NULL);
+// }
+
+
+    // // async test
+    // int a = 5;
+
+    // uv_async_t async;
+    // uv_async_init(uv_default_loop(), &async, async_cb);
+    // async.data = &a;
+    // uv_async_send(&async);
+
+    // int b = 6;
+
+    // uv_async_t async2;
+    // uv_async_init(uv_default_loop(), &async2, async_cb);
+    // async2.data = &b;
+    // uv_async_send(&async2);
+
+*/
+
+
+/*
+Squirrel stuff
+
+
+    // HSQUIRRELVM v;
+    // v = sq_open(1024); //creates a VM with initial stack size 1024
+
+    // //do some stuff with squirrel here
+
+    // sq_close(v);
+
+
+*/
+
+
+/*
+BEAUTUFL TTY
+ */
+// uv_loop_t *loop;
+// uv_tty_t tty;
+// uv_timer_t tick;
+// uv_write_t write_req;
+// int width, height;
+// int pos = 0;
+// char *message = "  Hello TTY  ";
+
+
+// void update(uv_timer_t *req)
+// {
+//     char data[500];
+
+//     uv_buf_t buf;
+//     buf.base = data;
+//     buf.len = sprintf(data, "\033[2J\033[H\033[%dB\033[%luC\033[42;37m%s",
+//                             pos,
+//                             (unsigned long) (width-strlen(message))/2,
+//                             message);
+
+//     uv_write(&write_req, (uv_stream_t*) &tty, &buf, 1, NULL);
+
+//     pos++;
+//     if (pos > height) {
+//         uv_tty_reset_mode();
+//         uv_timer_stop(&tick);
+//     }
+// }
+
+
+// int main() {
+//     loop = uv_default_loop();
+
+//     uv_tty_init(loop, &tty, 1, 0);
+//     uv_tty_set_mode(&tty, 0);
+
+//     if (uv_tty_get_winsize(&tty, &width, &height)) {
+//         fprintf(stderr, "Could not get TTY information\n");
+//         uv_tty_reset_mode();
+//         return 1;
+//     }
+
+//     fprintf(stderr, "Width %d, height %d\n", width, height);
+//     uv_timer_init(loop, &tick);
+//     uv_timer_start(&tick, update, 200, 200);
+//     return uv_run(loop, UV_RUN_DEFAULT);
+// }

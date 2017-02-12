@@ -6,6 +6,7 @@ Core::Core()
     : mRunning(false)
     , mNetworkManager(nullptr)
     , mGameManager(nullptr)
+    // , mDebugLogger(true, true)
 {
     this->Init();
 }
@@ -28,6 +29,13 @@ void Core::Log(const char* format, ...)
 
     // TODO(inlife): move to async trigger -> callback
     printf("[SERVER] [%s] - %s\n", Utils::currentDateTime().c_str(), message);
+
+    // va_list args;
+    // va_start(args, format);
+
+    // Core::Instance()->GetLogger().WriteLn(format, args);
+
+    // va_end(args);
 }
 
 /**
@@ -51,12 +59,17 @@ void Core::Init()
     mRunning  = true;
 }
 
+void Core::OnInput(const char* message)
+{
+    Core::Log("console: %s", message);
+}
+
 /**
  * Main ticker function
  */
-void Core::Tick(int64_t tick)
+void Core::Tick(uint64_t tick)
 {
-    Network::Manager::Instance()->Update();
+    Network::Manager::Instance()->Update(tick);
 }
 
 /**
