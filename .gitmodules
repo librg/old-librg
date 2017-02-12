@@ -7,3 +7,6 @@
 [submodule "vendor/squirrel-lang"]
     path = vendor/squirrel-lang
     url = git@gitlab.com:Mafia2Online/squirrel-lang.git
+[submodule "client"]
+	path = client
+	url = git@gitlab.com:Mafia2Online/M2OClient-MyU.git
