@@ -10,6 +10,7 @@
 
 #include <uv.h>
 #include <stdinc.h>
+
 #include <Core.h>
 
 // squirrel
@@ -29,7 +30,7 @@ uv_async_t async;
  */
 void timed_loop(uv_timer_t* handle)
 {
-    M2OServer::Core::Instance()->Tick(counter++);
+    Server::Core::Instance()->Tick(counter++);
 
     if (counter == 15) {
 
@@ -42,7 +43,7 @@ void timed_loop(uv_timer_t* handle)
  */
 void idle_loop(uv_idle_t* handle)
 {
-    M2OServer::Core::Instance()->Idle();
+    Server::Core::Instance()->Idle();
 }
 
 
@@ -109,7 +110,7 @@ int main(int argc, char * argv[]) {
     uv_async_send(&async);
 
     // create and initialize
-    M2OServer::Core::Instance();
+    Server::Core::Instance();
 
     // define main timed loop (network send)
     // start after 1 sec, each 15 ms

@@ -1,5 +1,5 @@
-#ifndef _m2o_network_handler_h
-#define _m2o_network_handler_h
+#ifndef __network_handler_h
+#define __network_handler_h
 
 #include <map>
 #include <RakPeerInterface.h>
@@ -7,10 +7,10 @@
 
 #include "Client.h"
 
-namespace M2OServer {
+namespace Server {
 namespace Network  {
 
-const short M2O_PACKET_LIMIT = 256; // current limit for amount of packets introduced by the mod on top of (134) raknet packets
+const short NETWORK_PACKET_LIMIT = 256; // current limit for amount of packets introduced by the mod on top of (134) raknet packets
 
 class Handler
 {
@@ -27,7 +27,7 @@ private:
     void OnClientDisconnect(RakNet::Packet* packet);
     void OnTest(RakNet::Packet* packet);
 
-    void (Handler::*mRegistry[M2O_PACKET_LIMIT])(RakNet::Packet* packet);
+    void (Handler::*mRegistry[NETWORK_PACKET_LIMIT])(RakNet::Packet* packet);
 
     std::map<RakNet::RakNetGUID, Client*> *mClients;
     RakNet::RakPeerInterface *mPeer;
@@ -35,6 +35,6 @@ private:
 
 
 } // namespace Network
-} // namespace M2OServer
+} // namespace Server
 
-#endif // _m2o_network_handler_h
+#endif // __network_handler_h

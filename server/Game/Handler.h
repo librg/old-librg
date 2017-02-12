@@ -1,7 +1,7 @@
-#ifndef _m2o_game_handler_h
-#define _m2o_game_handler_h
+#ifndef __game_handler_h
+#define __game_handler_h
 
-namespace M2OServer {
+namespace Server {
 namespace Game     {
 
 const short EVENT_LIMIT = 255;
@@ -21,6 +21,6 @@ private:
 
 
 } // namespace Game
-} // namespace M2OServer
+} // namespace Server
 
-#endif // _m2o_game_handler_h
+#endif // __game_handler_h

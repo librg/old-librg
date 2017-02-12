@@ -1,19 +1,20 @@
-#include <MessageID.h>
 #include <MessageIdentifiers.h>
-#include "../Handler.h"
+
+#include <Shared/MessageID.h>
+#include <Network/Handler.h>
 
 #ifdef DEBUG
-#include "../../Core.h"
+#include <Core.h>
 #endif
 
-using namespace M2OServer;
+using namespace Server;
 
 Network::Handler::Handler(RakNet::RakPeerInterface *peer, std::map<RakNet::RakNetGUID, Client*> *Clients)
     : mPeer(peer)
     , mClients(Clients)
 {
     // reset all registry to nulls
-    for (int i = 0; i < M2O_PACKET_LIMIT; ++i) {
+    for (int i = 0; i < NETWORK_PACKET_LIMIT; ++i) {
         mRegistry[i] = nullptr;
     }
 

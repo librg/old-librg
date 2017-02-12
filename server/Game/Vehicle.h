@@ -1,7 +1,7 @@
-#ifndef _m2o_game_vehicle
-#define _m2o_game_vehicle
+#ifndef __game_vehicle
+#define __game_vehicle
 
-namespace M2OServer {
+namespace Server {
 namespace Game     {
 
 
@@ -16,6 +16,6 @@ private:
 
 
 } // namespace Game
-} // namespace M2OServer
+} // namespace Server
 
-#endif // _m2o_game_vehicle
+#endif // __game_vehicle

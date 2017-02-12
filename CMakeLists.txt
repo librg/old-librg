@@ -60,8 +60,8 @@ include_directories(
     # vendor/squirrel/include
     # vendor/squirrel/squirrel
     vendor/libuv/libuv/include
-    shared/
     server/
+    client/
 )
 
 file(GLOB_RECURSE SERVER_FILES

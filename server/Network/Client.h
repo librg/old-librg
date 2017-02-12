@@ -1,5 +1,5 @@
-#ifndef _m2o_network_client
-#define _m2o_network_client
+#ifndef __network_client
+#define __network_client
 
 #include <RakPeerInterface.h>
 #include <string>
@@ -19,4 +19,4 @@ private:
     // Player* mPlayer;
 };
 
-#endif // _m2o_network_client
+#endif // __network_client

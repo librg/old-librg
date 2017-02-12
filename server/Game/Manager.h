@@ -1,5 +1,5 @@
-#ifndef _m2o_game_manager
-#define _m2o_game_manager
+#ifndef __game_manager
+#define __game_manager
 
 #include <Singleton.h>
 #include "Handler.h"
@@ -7,7 +7,7 @@
 #include "Player.h"
 #include "Vehicle.h"
 
-namespace M2OServer {
+namespace Server {
 namespace Game  {
 
 const entityId_t MAX_ENTITIES = 1000;
@@ -34,6 +34,6 @@ private:
 
 
 } // Game
-} // M2OServer
+} // Server
 
-#endif // _m2o_game_manager
+#endif // __game_manager

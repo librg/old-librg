@@ -1,7 +1,9 @@
-#ifndef _m2o_game_entity
-#define _m2o_game_entity
+#ifndef __game_entity
+#define __game_entity
 
-namespace M2OServer {
+#include <Shared/Math/Math.hpp>
+
+namespace Server {
 namespace Game     {
 
 typedef unsigned short world_t;
@@ -21,6 +23,6 @@ private:
 
 
 } // namespace Game
-} // namespace M2OServer
+} // namespace Server
 
-#endif // _m2o_game_entity
+#endif // __game_entity

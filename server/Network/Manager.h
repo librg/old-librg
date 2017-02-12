@@ -1,12 +1,12 @@
-#ifndef _m2o_network_manager
-#define _m2o_network_manager
+#ifndef __network_manager
+#define __network_manager
 
 #include <map>
 #include <RakPeerInterface.h>
 #include "Client.h"
 #include "Handler.h"
 
-namespace M2OServer {
+namespace Server {
 namespace Network  {
 
 
@@ -34,6 +34,6 @@ private:
 
 
 } // Netwrok
-} // M2OServer
+} // Server
 
-#endif // _m2o_network_manager
+#endif // __network_manager

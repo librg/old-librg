@@ -1,12 +1,12 @@
-#ifndef _m2o_core
-#define _m2o_core
+#ifndef __core
+#define __core
 
 #include <Singleton.h>
 #include <Utils.h>
-#include "Network/Manager.h"
-#include "Game/Manager.h"
+#include <Network/Manager.h>
+#include <Game/Manager.h>
 
-namespace M2OServer {
+namespace Server {
 
 class Core : public Singleton<Core>
 {
@@ -38,7 +38,7 @@ public:
 };
 
 
-} // namespace M2OServer
+} // namespace Server
 
 
-#endif // _m2o_core
+#endif // __core

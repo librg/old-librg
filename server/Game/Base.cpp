@@ -1,7 +1,7 @@
+#include <Core.h>
 #include "Handler.h"
-#include "../Core.h"
 
-using namespace M2OServer;
+using namespace Server;
 
 void Game::Handler::Dispatch(short eventId, void* data)
 {

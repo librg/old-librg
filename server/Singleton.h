@@ -1,5 +1,5 @@
-#ifndef _m2o_singleton
-#define _m2o_singleton
+#ifndef __singleton
+#define __singleton
 
 
 template <class T>
@@ -28,4 +28,4 @@ public:
 };
 
 
-#endif // _m2o_singleton
+#endif // __singleton

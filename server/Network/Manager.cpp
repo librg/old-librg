@@ -4,7 +4,7 @@
 
 const short DEFAULT_SERVER_PORT = 27010;
 
-using namespace M2OServer;
+using namespace Server;
 
 Network::Manager::Manager()
     : mPeer   (nullptr)

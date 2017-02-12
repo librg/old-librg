@@ -1,6 +1,6 @@
-#include "Core.h"
+#include <Core.h>
 
-using namespace M2OServer;
+using namespace Server;
 
 Core::Core()
     : mRunning(false)

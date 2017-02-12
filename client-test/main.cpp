@@ -1,12 +1,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <iostream>
+
 #include <RakPeerInterface.h>
 #include <MessageIdentifiers.h>
 #include <BitStream.h>
 #include <RakNetTypes.h>  // MessageID
-#include <BuildVersion.h>
-#include <MessageID.h>
+
+#include <Shared/BuildVersion.h>
+#include <Shared/MessageID.h>
 
 #define SERVER_PORT 27010
 
@@ -77,9 +79,9 @@ int main(void)
                      */
                     RakNet::BitStream data;
                     data.Write((RakNet::MessageID)MessageID::CONNECTION_INIT);
-                    data.Write(M2O_PLATFORM_ID);
-                    data.Write(M2O_PROTOCOL_VERSION);
-                    data.Write(M2O_BUILD_VERSION);
+                    data.Write(NETWORK_PLATFORM_ID);
+                    data.Write(NETWORK_PROTOCOL_VERSION);
+                    data.Write(NETWORK_BUILD_VERSION);
                     data.Write("Test Player");
                     data.Write("4555ASDASD4555ASDASD4555");
 
