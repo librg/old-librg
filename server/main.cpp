@@ -9,8 +9,8 @@
 
 
 #include <uv.h>
-#include "stdinc.h"
-#include "Core.h"
+#include <stdinc.h>
+#include <Core.h>
 
 // squirrel
 // #define _SQ64

@@ -12,6 +12,8 @@ Network::Manager::Manager()
 {
     mPeer       = RakNet::RakPeerInterface::GetInstance();
     mHandler    = new Network::Handler(mPeer, &mClients);
+
+    this->Init();
 }
 
 Network::Manager::~Manager()

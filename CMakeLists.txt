@@ -61,7 +61,7 @@ include_directories(
     # vendor/squirrel/squirrel
     vendor/libuv/libuv/include
     shared/
-    .
+    server/
 )
 
 file(GLOB_RECURSE SERVER_FILES
