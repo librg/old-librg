@@ -2,7 +2,10 @@
 #define __network_manager
 
 #include <map>
+
 #include <RakPeerInterface.h>
+#include <Utils/Singleton.h>
+
 #include "Client.h"
 #include "Handler.h"
 

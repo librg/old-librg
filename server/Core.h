@@ -1,10 +1,11 @@
 #ifndef __core
 #define __core
 
-#include <Singleton.h>
-#include <Utils.h>
 #include <Network/Manager.h>
 #include <Game/Manager.h>
+
+#include <Utils/Singleton.h>
+#include <Utils/Utils.h>
 
 namespace Server {
 

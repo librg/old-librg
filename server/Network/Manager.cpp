@@ -1,6 +1,5 @@
-#include <Singleton.h>
 #include "Manager.h"
-#include "../Core.h"
+#include <Core.h>
 
 const short DEFAULT_SERVER_PORT = 27010;
 

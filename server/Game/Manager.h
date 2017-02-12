@@ -1,7 +1,7 @@
 #ifndef __game_manager
 #define __game_manager
 
-#include <Singleton.h>
+#include <Utils/Singleton.h>
 #include "Handler.h"
 #include "Entity.h"
 #include "Player.h"
