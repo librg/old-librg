@@ -1,8 +1,11 @@
 #ifndef __game_vehicle
 #define __game_vehicle
 
-namespace Server {
-namespace Game     {
+#include "Entity.h"
+
+namespace Server  {
+namespace Game    {
+namespace Objects {
 
 
 class Vehicle : Entity {
@@ -15,6 +18,7 @@ private:
 };
 
 
+} // namespace Objects
 } // namespace Game
 } // namespace Server
 

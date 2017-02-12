@@ -3,9 +3,10 @@
 
 #include <Utils/Singleton.h>
 #include "Handler.h"
-#include "Entity.h"
-#include "Player.h"
-#include "Vehicle.h"
+
+#include "Objects/Entity.h"
+#include "Objects/Player.h"
+#include "Objects/Vehicle.h"
 
 namespace Server {
 namespace Game  {
@@ -27,8 +28,9 @@ public:
     }
 
 private:
-    Game::Player* mPlayers[MAX_ENTITIES];
-    Game::Vehicle* mVehicles[MAX_ENTITIES];
+    // todo(inlife): change to std::array
+    Game::Objects::Player* mPlayers[MAX_ENTITIES];
+    Game::Objects::Vehicle* mVehicles[MAX_ENTITIES];
     Game::Handler* mHandler;
 };
 

@@ -1,8 +1,11 @@
 #ifndef __game_player
 #define __game_player
 
-namespace Server {
-namespace Game     {
+#include "Entity.h"
+
+namespace Server  {
+namespace Game    {
+namespace Objects {
 
 
 class Player : Entity {
@@ -15,6 +18,7 @@ private:
 };
 
 
+} // namespace Objects
 } // namespace Game
 } // namespace Server
 

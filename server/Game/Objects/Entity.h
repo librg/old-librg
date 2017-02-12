@@ -2,12 +2,14 @@
 #define __game_entity
 
 #include <Shared/Math/Math.hpp>
+#include <Game/World.h>
 
-namespace Server {
-namespace Game     {
+namespace Server  {
+namespace Game    {
 
-typedef unsigned short world_t;
 typedef unsigned short entityId_t;
+
+namespace Objects {
 
 class Entity {
 public:
@@ -18,10 +20,11 @@ public:
 private:
     Vector3 mPosition;
     Vector3 mRotation;
-    world_t mWorld;
+    Game::world_t mWorld;
 };
 
 
+} // namespace Objects
 } // namespace Game
 } // namespace Server
 
