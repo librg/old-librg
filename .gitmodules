@@ -15,4 +15,4 @@
 	url = git@gitlab.com:Mafia2Online/sqrat.git
 [submodule "vendor/tinyxml2"]
 	path = vendor/tinyxml2
-	url = https://github.com/leethomason/tinyxml2.git
+	url = git@gitlab.com:Mafia2Online/lib-tinyxml2.git

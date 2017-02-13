@@ -72,6 +72,7 @@ include_directories(
     # vendor/squirrel/squirrel
     vendor/libuv/libuv/include
     vendor/sqrat/include
+    vendor/tinyxml2
     server/
     client/
 )
