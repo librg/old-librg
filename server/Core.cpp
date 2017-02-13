@@ -28,7 +28,7 @@ void Core::Log(const char* format, ...)
     va_end(ap);
 
     // TODO(inlife): move to async trigger -> callback
-    printf("[SERVER] [%s] - %s\n", Utils::currentDateTime().c_str(), message);
+    printf("[SERVER][%s] - %s\n", Utils::currentDateTime().c_str(), message);
 
     // va_list args;
     // va_start(args, format);
@@ -47,7 +47,7 @@ void Core::Error(const char* format, ...)
     va_end(ap);
 
     // TODO(inlife): move to async trigger -> callback
-    printf("[ERROR] [%s] - %s\n", Utils::currentDateTime().c_str(), message);
+    printf("[SERVER][%s][ERROR] - %s\n", Utils::currentDateTime().c_str(), message);
 }
 
 

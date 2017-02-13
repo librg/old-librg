@@ -32,6 +32,8 @@ ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 option(RAKNET_ENABLE_DLL "Generate the DLL project if true." OFF)
 option(RAKNET_ENABLE_SAMPLES "" OFF)
 SET(RAKNET_ENABLE_DLL OFF CACHE BOOL "Generate the DLL project if true.")
+option(BUILD_SHARED_LIBS "build tinyxml2 as shared library" OFF)
+option(BUILD_STATIC_LIBS "build tinyxml2 as static library" ON)
 
 ###
 # Compile vendor dependencies
@@ -40,6 +42,7 @@ add_subdirectory(vendor/RakNet)
 add_subdirectory(vendor/libuv)
 add_subdirectory(vendor/squirrel-lang)
 add_subdirectory(vendor/sqrat)
+add_subdirectory(vendor/tinyxml2)
 
 ## TODO: fix later for beautiful c++17 code
 # if (NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
@@ -96,6 +99,7 @@ target_link_libraries(server
     uv
     squirrel
     sqstdlib
+    tinyxml2
 )
 
 target_include_directories(server PUBLIC

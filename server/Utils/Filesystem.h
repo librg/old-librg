@@ -9,7 +9,9 @@ namespace FS
     struct fs_result_t {
         int handle;
         uint64_t length;
+        uint64_t fplength;
         char* content;
+        char* filepath;
         void (*callback)(fs_result_t* result);
     };
 
