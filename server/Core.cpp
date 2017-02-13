@@ -38,6 +38,19 @@ void Core::Log(const char* format, ...)
     // va_end(args);
 }
 
+void Core::Error(const char* format, ...)
+{
+    va_list ap;
+    char message[1024] = { 0 };
+    va_start(ap, format);
+    vsprintf(message, format, ap);
+    va_end(ap);
+
+    // TODO(inlife): move to async trigger -> callback
+    printf("[ERROR] [%s] - %s\n", Utils::currentDateTime().c_str(), message);
+}
+
+
 /**
  * Main initialzing function
  */
@@ -53,8 +66,9 @@ void Core::Init()
 
     printf("%s\n\n", test.c_str());
 
-    Network::Manager::Instance();
     Game::Manager::Instance();
+    Network::Manager::Instance();
+    Resource::Manager::Instance();
 
     mRunning  = true;
 }

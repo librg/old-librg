@@ -3,9 +3,15 @@
 
 #define SERVER
 
-#include <Network/Manager.h>
+#ifdef WIN32
+#define DS "\\"
+#else
+#define DS "/"
+#endif
+
 #include <Game/Manager.h>
-#include <Scripting/Resource/Manager.h>
+#include <Network/Manager.h>
+#include <Resource/Manager.h>
 
 #include <Utils/Singleton.h>
 #include <Utils/Utils.h>
@@ -32,6 +38,7 @@ public:
     void OnInput(const char* message);
 
     static void Log(const char* format, ...);
+    static void Error(const char* format, ...);
 
     /**
      * Return if core is currently running

@@ -7,7 +7,6 @@
 #pragma comment(lib, "userenv.lib")
 #endif
 
-
 #include <uv.h>
 #include <stdinc.h>
 #include <string.h>
@@ -81,41 +80,41 @@ void on_console_message(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf)
     Server::Core::Instance()->OnInput(buf->base);
 }
 
-void myPrint(const char* message) {
-    Server::Core::Log(message);
-}
-
-// SQInteger mySqFunc(HSQUIRRELVM vm) {
-//     Server::Core::Log("wtf");
-//     return 0;
+// void myPrint(const char* message) {
+//     Server::Core::Log(message);
 // }
 
-void BindSquirrel(HSQUIRRELVM vm) {
-    using namespace Sqrat;
+// // SQInteger mySqFunc(HSQUIRRELVM vm) {
+// //     Server::Core::Log("wtf");
+// //     return 0;
+// // }
 
-    DefaultVM::Set(vm);
-    // RootTable().SquirrelFunc("print", &mySqFunc);
-    RootTable().Func("print", &myPrint);
+// void BindSquirrel(HSQUIRRELVM vm) {
+//     using namespace Sqrat;
 
-    try {
-        Script script1, script2;
+//     DefaultVM::Set(vm);
+//     // RootTable().SquirrelFunc("print", &mySqFunc);
+//     RootTable().Func("print", &myPrint);
 
-        script1.CompileString("::print(\"Hello World\");");
-        // script2.CompileFile("/Path/to/Script.nut");
+//     try {
+//         Script script1, script2;
 
-        script1.Run();
-        // script2.Run();
-    } catch( Exception ) {
-        // Handle exceptions here
-    }
+//         script1.CompileString("::print(\"Hello World\");");
+//         // script2.CompileFile("/Path/to/Script.nut");
 
-    // );
+//         script1.Run();
+//         // script2.Run();
+//     } catch( Exception ) {
+//         // Handle exceptions here
+//     }
 
-    // RootTable().Bind("MyClass", Class<MyClass>()
-    //     .Func("Foo", &MyClass::Foo)
-    //     .Var("bar", &MyClass::Bar)
-    // );
-}
+//     // );
+
+//     // RootTable().Bind("MyClass", Class<MyClass>()
+//     //     .Func("Foo", &MyClass::Foo)
+//     //     .Var("bar", &MyClass::Bar)
+//     // );
+// }
 
 
 /**
@@ -145,7 +144,7 @@ int main(int argc, char * argv[]) {
     // define main timed loop (network send)
     // start after 1 sec, each 15 ms
     uv_timer_init(uv_default_loop(), &timer_req);
-    uv_timer_start(&timer_req, timed_loop, 1000, 15);
+    uv_timer_start(&timer_req, timed_loop, 5000, 15);
 
     // define main idle loop (network receieve)
     uv_idle_init(uv_default_loop(), &idler);

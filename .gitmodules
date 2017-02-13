@@ -13,3 +13,6 @@
 [submodule "vendor/sqrat"]
 	path = vendor/sqrat
 	url = git@gitlab.com:Mafia2Online/sqrat.git
+[submodule "vendor/tinyxml2"]
+	path = vendor/tinyxml2
+	url = https://github.com/leethomason/tinyxml2.git

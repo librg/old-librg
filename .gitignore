@@ -5,6 +5,7 @@
 # directories
 build/*
 build-win/*
+build-lin/*
 !build/.keep
 bin-*/*
 distrib/build_*/*
