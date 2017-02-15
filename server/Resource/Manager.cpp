@@ -3,15 +3,12 @@
 
 #include <Utils/Filesystem.h>
 #include <tinyxml2.h>
+#include <vector>
 
 using namespace Server;
+using namespace tinyxml2;
 
-const char* FILE_STRUCTURE[] = {
-    "resources",
-    "meta.xml",
-};
-
-// TODO(inlife): move to config.xml?
+// TODO(inlife): move to config.xml!
 std::vector<std::string> resources = {
     "default2",
     "default",
@@ -20,38 +17,52 @@ std::vector<std::string> resources = {
 Resource::Manager::Manager()
 {
     // try to create resources folder
-    uv_fs_mkdir(uv_default_loop(), new uv_fs_t, FILE_STRUCTURE[0], 0755, [] (uv_fs_t* req) -> void {
-        if (req->result && req->result != UV_EEXIST) {
-            Core::Error(uv_strerror((int)req->result));
-            delete req;
-            return;
-        }
+    int result = fs::mkdir("resources");
 
-        // iterate and try to load all provided resources
-        for (auto resource : resources) {
-            FS::Read(std::string(FILE_STRUCTURE[0]) + DS + resource + DS + FILE_STRUCTURE[1], [] (FS::result_t* result) -> void {
-                tinyxml2::XMLDocument doc;
-                doc.Parse(result->content, result->length);
+    if (result != 0 && result != UV_EEXIST) {
+        Core::Error(uv_strerror((int)result));
+        return;
+    }
 
-                tinyxml2::XMLElement* meta = doc.FirstChildElement("meta");
+    // iterate and try to load all provided resources
+    for (auto resource : resources) {
+        fs::read(fs::path("resources", resource, "meta.xml"), [resource] (fs::result_t* result) -> void {
+            XMLDocument doc;
 
-                if (!meta) {
-                    Core::Error("There is no <meta> tag inside your %.*s file.", result->fplength, result->filepath);
-                    return;
-                }
+            doc.Parse(result->content, result->length);
+            XMLElement* meta = doc.FirstChildElement("meta");
 
-                if (!meta->FirstChildElement("somestuff")) {
-                    Core::Error("no stufs");
-                    return;
-                }
+            if (!meta) {
+                Core::Error("There is no <meta> tag inside your %.*s file.", result->fplength, result->filepath);
+                return;
+            }
 
-                const char* title = meta->FirstChildElement("somestuff")->GetText();
-                printf( "Name of play (1): %s\n", title );
-            });
-        }
+            XMLElement * element = meta->FirstChildElement("script");
+            std::vector<script_t*> scripts;
 
-        delete req;
-    });
+            // iterate over each script and add to the array
+            while (element != nullptr)
+            {
+                // read up script type, and skip if nothing is loaded
+                const char * szScriptType = nullptr;
+                szScriptType = element->Attribute("type");
+                if (szScriptType == nullptr) continue;
+
+                script_t* script = new script_t;
+
+                // fill up data
+                script->filename = new std::string(element->GetText());
+                script->type = strncmp(szScriptType, "client", sizeof(char) * 6) ? tClient : tServer;
+
+                scripts.push_back(script);
+
+                // goto next item in list
+                element = element->NextSiblingElement("script");
+            }
+
+            Manager::Instance()->AddResource(resource, new Resource(resource, scripts));
+        });
+    }
 }
 
 Resource::Manager::~Manager()
@@ -59,6 +70,7 @@ Resource::Manager::~Manager()
 
 }
 
-void Resource::Manager::Init()
+void Resource::Manager::AddResource(std::string name, Resource* resource)
 {
+    mResources.insert(std::pair<std::string, Resource*>(name, resource));
 }

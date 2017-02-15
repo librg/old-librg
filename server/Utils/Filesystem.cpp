@@ -5,7 +5,7 @@
  * Inner method
  * @param req [description]
  */
-void FS::onRead(uv_fs_t *req)
+void fs::private_onread(uv_fs_t *req)
 {
     uv_fs_req_cleanup(req);
 
@@ -32,18 +32,29 @@ void FS::onRead(uv_fs_t *req)
 }
 
 /**
+ * Makedir function
+ * @param  filename
+ * @return result code (uv/system status codes)
+ */
+int fs::mkdir(std::string filename)
+{
+    uv_fs_t req;
+    return uv_fs_mkdir(uv_default_loop(), &req, filename.c_str(), 0755, NULL);
+}
+
+/**
  * Read file contents and pass result
- * of type FS:result_t to the callback
+ * of type fs:result_t to the callback
  * @param  filename
  * @param  callback
  * @return result of operation
  */
-bool FS::Read(std::string filename, fs_callback callback)
+bool fs::read(std::string filename, fs::callback callback)
 {
-    uv_fs_t* openReq = new uv_fs_t;
+    uv_fs_t* req = new uv_fs_t;
 
     // trying to open file
-    int handle = uv_fs_open(uv_default_loop(), openReq, filename.c_str(), 0, 0, NULL);
+    int handle = uv_fs_open(uv_default_loop(), req, filename.c_str(), 0, 0, NULL);
 
     if (handle < 0) {
         Server::Core::Error("file reading: \"%s\" %s\n", filename.c_str(), uv_strerror(handle));
@@ -51,10 +62,10 @@ bool FS::Read(std::string filename, fs_callback callback)
     }
 
     // getting file size
-    uv_fs_fstat(uv_default_loop(), openReq, handle, NULL);
+    uv_fs_fstat(uv_default_loop(), req, handle, NULL);
 
     // create string
-    char* str = new char[openReq->statbuf.st_size];
+    char* str = new char[req->statbuf.st_size];
 
     // get the filename stuff
     char* filepath = new char[filename.size()];
@@ -63,15 +74,17 @@ bool FS::Read(std::string filename, fs_callback callback)
     // creating content buffer
     fs_result_t* data = new fs_result_t;
     data->handle      = handle;
-    data->length      = openReq->statbuf.st_size;
+    data->length      = req->statbuf.st_size;
     data->content     = str;
     data->filepath    = filepath;
     data->fplength    = filename.size();
     data->callback    = callback;
 
-    openReq->data = data;
-    uv_buf_t uvBuf = uv_buf_init(str, openReq->statbuf.st_size);
+    req->data = data;
+    uv_buf_t uvBuf = uv_buf_init(str, req->statbuf.st_size);
 
-    uv_fs_read(uv_default_loop(), openReq, handle, &uvBuf, 1, -1, onRead);
+    uv_fs_read(uv_default_loop(), req, handle, &uvBuf, 1, -1, private_onread);
     return true;
 }
+
+// bool fs:read(std::string filename, (void*)(entity*), fs_callback callback)

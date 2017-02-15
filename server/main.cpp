@@ -144,7 +144,7 @@ int main(int argc, char * argv[]) {
     // define main timed loop (network send)
     // start after 1 sec, each 15 ms
     uv_timer_init(uv_default_loop(), &timer_req);
-    uv_timer_start(&timer_req, timed_loop, 5000, 15);
+    uv_timer_start(&timer_req, timed_loop, 5000, 16);
 
     // define main idle loop (network receieve)
     uv_idle_init(uv_default_loop(), &idler);

@@ -1,10 +1,12 @@
 #ifndef __resource_manager
 #define __resource_manager
 
-#include <uv.h>
+#include <map>
 #include <vector>
-
+#include <uv.h>
 #include <Utils/Singleton.h>
+
+#include "Resource.h"
 
 namespace Server    {
 namespace Resource  {
@@ -17,11 +19,11 @@ class Manager : public Singleton<Manager>
 public:
     Manager();
     ~Manager();
-    void Init();
+    void AddResource(std::string name, Resource* resource);
     void Tick();
 
 private:
-
+    std::map<std::string, Resource*> mResources;
 };
 
 

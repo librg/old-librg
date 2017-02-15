@@ -3,12 +3,6 @@
 
 #define SERVER
 
-#ifdef WIN32
-#define DS "\\"
-#else
-#define DS "/"
-#endif
-
 #include <Game/Manager.h>
 #include <Network/Manager.h>
 #include <Resource/Manager.h>
