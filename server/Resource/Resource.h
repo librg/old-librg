@@ -23,6 +23,13 @@ public:
     Resource(std::string, std::vector<script_t*>);
     ~Resource();
 
+    void Start();
+    void Stop();
+    void Unload();
+    inline bool IsRunning() {
+        return false;
+    };
+
 private:
     HSQUIRRELVM mVM;
     std::vector<script_t*> mScripts;

@@ -80,14 +80,16 @@ void on_console_message(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf)
     Server::Core::Instance()->OnInput(buf->base);
 }
 
-// void myPrint(const char* message) {
-//     Server::Core::Log(message);
-// }
 
 // // SQInteger mySqFunc(HSQUIRRELVM vm) {
 // //     Server::Core::Log("wtf");
 // //     return 0;
 // // }
+
+// void myPrint(const char* message) {
+//     Server::Core::Log(message);
+// }
+
 
 // void BindSquirrel(HSQUIRRELVM vm) {
 //     using namespace Sqrat;

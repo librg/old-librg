@@ -5,8 +5,8 @@
 #include <tinyxml2.h>
 #include <vector>
 
-using namespace Server;
 using namespace tinyxml2;
+using namespace Server::Resource;
 
 // TODO(inlife): move to config.xml!
 std::vector<std::string> resources = {
@@ -14,7 +14,7 @@ std::vector<std::string> resources = {
     "default",
 };
 
-Resource::Manager::Manager()
+Manager::Manager()
 {
     // try to create resources folder
     int result = fs::mkdir("resources");
@@ -27,7 +27,7 @@ Resource::Manager::Manager()
     // iterate and try to load all provided resources
     for (auto resource : resources) {
         fs::read(fs::path("resources", resource, "meta.xml"), [resource] (fs::result_t* result) -> void {
-            XMLDocument doc;
+			tinyxml2::XMLDocument doc;
 
             doc.Parse(result->content, result->length);
             XMLElement* meta = doc.FirstChildElement("meta");
@@ -60,17 +60,14 @@ Resource::Manager::Manager()
                 element = element->NextSiblingElement("script");
             }
 
-            Manager::Instance()->AddResource(resource, new Resource(resource, scripts));
+            Manager::Instance()->Add(resource, new Resource(resource, scripts));
         });
     }
 }
 
-Resource::Manager::~Manager()
+Manager::~Manager()
 {
-
-}
-
-void Resource::Manager::AddResource(std::string name, Resource* resource)
-{
-    mResources.insert(std::pair<std::string, Resource*>(name, resource));
+    for (auto resource : mResources) {
+        resource.second->Unload();
+    }
 }

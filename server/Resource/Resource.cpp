@@ -15,3 +15,8 @@ Resource::~Resource()
 {
 
 }
+
+void Resource::Unload()
+{
+
+}
