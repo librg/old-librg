@@ -9,7 +9,7 @@ Also make sure you have installed any working compiler for your system.
 ## Installation
 
 ```sh
-$ git clone --recursive git@github.com:Inlife/m2o-server.git
+$ git clone --recursive git@gitlab.com:Mafia2Online/m2o-server.git
 $ mkdir -p build && cd build
 $ cmake ..
 ```
