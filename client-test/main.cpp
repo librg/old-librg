@@ -23,7 +23,7 @@ int main(void)
     peer->Startup(1,&sd, 1);
 
     printf("Enter server IP or any letter and enter for 127.0.0.1\n");
-    std::cin >> ipAddress;
+//    std::cin >> ipAddress;
 
     if (ipAddress.size() == 1) {
         // strcpy(ipAddress, "127.0.0.1");
