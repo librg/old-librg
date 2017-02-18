@@ -41,6 +41,57 @@ namespace Index
         Core::Log(szBuffer);
     }
 
+    inline static void errorHandler(HSQUIRRELVM /*v*/, const SQChar *szFormat, ...)
+    {
+        va_list args;
+        char szBuffer[512];
+        va_start( args, szFormat );
+        vsnprintf( szBuffer, sizeof(szBuffer), szFormat, args );
+        va_end( args );
+
+        char * tmp = (char *)szBuffer;
+        size_t offstart = 0, offend = 0;
+
+        size_t len = strlen( tmp );
+        for( size_t i = 0; i < len; ++i )
+        {
+            switch (tmp[i])
+            {
+            case ' ':
+            case '\r':
+            case '\n':
+            case '\t':
+                ++offstart;
+                break;
+            default:
+                i = len - 1;
+                break;
+            }
+        }
+
+        tmp += offstart;
+        len -= offstart;
+
+        for (size_t i = len - 1; i > 0; --i)
+        {
+            switch (tmp[i])
+            {
+            case ' ':
+            case '\r':
+            case '\n':
+            case '\t':
+                ++offend;
+                break;
+            default:
+                i = 1;
+                break;
+            }
+        }
+
+        tmp[ len - offend ] = '\0';
+        Core::Log(tmp);
+    }
+
     inline static void compilerErrorHandler(HSQUIRRELVM v, const SQChar* desc, const SQChar* source, SQInteger line, SQInteger column)
     {
         Core::Error("Squirrel compile error: %s on file %s (line %d, column %d)", (const char *)desc, (const char *)source, line, column);
@@ -63,7 +114,7 @@ namespace Index
 
         sqstd_seterrorhandlers(vm);
 
-        sq_setprintfunc(vm, printHandler, printHandler);
+        sq_setprintfunc(vm, printHandler, errorHandler);
         sq_setcompilererrorhandler(vm, compilerErrorHandler);
 
         System::Install(vm);

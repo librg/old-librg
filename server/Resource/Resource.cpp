@@ -18,8 +18,6 @@ Resource::Resource(std::string name, std::vector<script_t*> scripts)
 
         try {
             Sqrat::Script vscript = Sqrat::Script(mVM);
-        // Core::Log("loading script: %s", script->filename->c_str());
-            // vscript.CompileString("::print(\"Hello world\");");
             vscript.CompileFile(script->filename->c_str());
             vscript.Run();
         } catch( Exception e ) {
