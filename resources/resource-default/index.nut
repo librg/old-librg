@@ -89,10 +89,9 @@ class QTree {
             return false;
         }
 
-        nodes.push(point);
-        pushed++;
-
         if(pushed <= QT_MAX_NODES) {
+            nodes.push(point);
+            pushed++;
             return true;
         }
 
