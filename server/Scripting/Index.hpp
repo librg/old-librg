@@ -1,0 +1,86 @@
+#ifndef __scripting_index
+#define __scripting_index
+
+#include <squirrel.h>
+#include <sqrat.h>
+#include <sqstdio.h>
+#include <sqstdblob.h>
+#include <sqstdmath.h>
+#include <sqstdsystem.h>
+#include <sqstdstring.h>
+#include <Core.h>
+
+#include "System.hpp"
+
+namespace Server    {
+namespace Scripting {
+
+#ifdef SQUNICODE
+#define scvprintf vwprintf
+#else
+#define scvprintf vprintf
+#endif
+
+static const unsigned char LIB_IO   = 0x01;                                              ///< Input/Output library
+static const unsigned char LIB_BLOB = 0x02;                                              ///< Blob library
+static const unsigned char LIB_MATH = 0x04;                                              ///< Math library
+static const unsigned char LIB_SYST = 0x08;                                              ///< System library
+static const unsigned char LIB_STR  = 0x10;                                              ///< String library
+static const unsigned char LIB_ALL  = LIB_IO | LIB_BLOB | LIB_MATH | LIB_SYST | LIB_STR; ///< All libraries
+
+namespace Index
+{
+    inline static void printHandler(HSQUIRRELVM /*v*/, const SQChar *s, ...)
+    {
+        va_list args;
+        char szBuffer[512];
+        va_start(args, s);
+        vsnprintf(szBuffer, sizeof(szBuffer), s, args);
+        va_end(args);
+
+        Core::Log(szBuffer);
+    }
+
+    inline static void compilerErrorHandler(HSQUIRRELVM v, const SQChar* desc, const SQChar* source, SQInteger line, SQInteger column)
+    {
+        Core::Error("Squirrel compile error: %s on file %s (line %d, column %d)", (const char *)desc, (const char *)source, line, column);
+    }
+
+    inline static void Install(HSQUIRRELVM vm, unsigned char libsToLoad = LIB_ALL)
+    {
+        sq_pushroottable(vm);
+        if (libsToLoad & LIB_IO)
+            sqstd_register_iolib(vm);
+        if (libsToLoad & LIB_BLOB)
+            sqstd_register_bloblib(vm);
+        if (libsToLoad & LIB_MATH)
+            sqstd_register_mathlib(vm);
+        if (libsToLoad & LIB_SYST)
+            sqstd_register_systemlib(vm);
+        if (libsToLoad & LIB_STR)
+            sqstd_register_stringlib(vm);
+        sq_pop(vm, 1);
+
+        sqstd_seterrorhandlers(vm);
+
+        sq_setprintfunc(vm, printHandler, printHandler);
+        sq_setcompilererrorhandler(vm, compilerErrorHandler);
+
+        System::Install(vm);
+        // System::Install(vm);
+        // System::Install(vm);
+        // System::Install(vm);
+        // System::Install(vm);
+        // System::Install(vm);
+        // System::Install(vm);
+        // System::Install(vm);
+        // System::Install(vm);
+    }
+}
+
+
+
+}
+}
+
+#endif // __scripting_index
