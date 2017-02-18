@@ -35,7 +35,12 @@ public:
      * @return state
      */
     inline bool Exist(std::string name) {
-        return (mResources[name]);
+        try {
+            return !!(mResources[name]);
+        }
+        catch (std::exception) {
+            return false;
+        }
     };
 
     /**

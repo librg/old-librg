@@ -42,7 +42,7 @@ void signal_handler(uv_signal_t *req, int signum)
 {
     // stop for ctrl+C
     if (signum == 2) {
-        Server::Core::Log("Exiting!");
+        // Server::Core::Log("\nExiting!");
         uv_stop(uv_default_loop());
     }
 

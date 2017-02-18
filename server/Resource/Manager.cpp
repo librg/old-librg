@@ -68,6 +68,8 @@ Manager::Manager()
 Manager::~Manager()
 {
     for (auto resource : mResources) {
-        resource.second->Unload();
+        delete resource.second;
     }
+
+    mResources.clear();
 }

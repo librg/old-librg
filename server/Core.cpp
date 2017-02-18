@@ -13,10 +13,11 @@ Core::Core()
 
 Core::~Core()
 {
-    // Network::Manager::Instance()::Deinitialize();
-    // Game::Manager::Instance()::Deinitialize();
+    // delete Network::Manager::Instance();
+    // delete Game::Manager::Instance();
+    // delete Resource::Manager::Instance();
 
-    this->Log("exiting...");
+    this->Log("stopping server...");
 }
 
 void Core::Log(const char* format, ...)
@@ -49,7 +50,6 @@ void Core::Error(const char* format, ...)
     // TODO(inlife): move to async trigger -> callback
     printf("[SERVER][%s][ERROR] - %s\n", Utils::currentDateTime().c_str(), message);
 }
-
 
 /**
  * Main initialzing function

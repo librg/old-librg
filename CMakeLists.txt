@@ -32,8 +32,6 @@ ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 option(RAKNET_ENABLE_DLL "Generate the DLL project if true." OFF)
 option(RAKNET_ENABLE_SAMPLES "" OFF)
 SET(RAKNET_ENABLE_DLL OFF CACHE BOOL "Generate the DLL project if true.")
-option(BUILD_SHARED_LIBS "build tinyxml2 as shared library" OFF)
-option(BUILD_STATIC_LIBS "build tinyxml2 as static library" ON)
 
 ###
 # Compile vendor dependencies
