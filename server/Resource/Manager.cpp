@@ -10,7 +10,7 @@ using namespace Server::Resource;
 
 // TODO(inlife): move to config.xml!
 std::vector<std::string> resources = {
-    "default2",
+    "resource-default",
     // "default",
 };
 

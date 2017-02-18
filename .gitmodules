@@ -8,11 +8,11 @@
     path = vendor/squirrel-lang
     url = git@gitlab.com:Mafia2Online/squirrel-lang.git
 [submodule "client"]
-	path = client
-	url = git@gitlab.com:Mafia2Online/M2OClient-MyU.git
+    path = client
+    url = git@gitlab.com:Mafia2Online/M2OClient-MyU.git
 [submodule "vendor/sqrat"]
-	path = vendor/sqrat
-	url = git@gitlab.com:Mafia2Online/sqrat.git
+    path = vendor/sqrat
+    url = git@gitlab.com:Mafia2Online/sqrat.git
 [submodule "vendor/tinyxml2"]
-	path = vendor/tinyxml2
-	url = git@gitlab.com:Mafia2Online/lib-tinyxml2.git
+    path = vendor/tinyxml2
+    url = git@gitlab.com:Mafia2Online/lib-tinyxml2.git
