@@ -3,10 +3,6 @@
 **/*.exe
 
 # directories
-build/*
-build-win/*
-build-lin/*
-!build/.keep
 bin-*/*
 distrib/build_*/*
 external/*
@@ -14,13 +10,17 @@ external/*
 !external/CMakeLists.txt
 !external/depedencies.txt
 
-# other stuff
-**.bak
-**.orig
-screenshot.bmp
-*.pyc
-OpenGL-tutorial_v*
-**.mtl
+# building stuff
+build-mac/*
+build-lin/*
+build-win/*
+
+!build-mac/.keep
+!build-lin/.keep
+!build-win/.keep
+!build-mac/resources
+!build-lin/resources
+!build-win/Debug/resources
 
 # os stuff
 .DS_Store

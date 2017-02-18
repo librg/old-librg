@@ -9,15 +9,8 @@
 
 #include <uv.h>
 #include <stdinc.h>
-#include <string.h>
 #include <clocale>
-
 #include <Core.h>
-#include <sqrat.h>
-// squirrel
-// #define _SQ64
-#include <squirrel.h>
-
 
 uint64_t counter = 0;
 
@@ -49,7 +42,7 @@ void signal_handler(uv_signal_t *req, int signum)
 {
     // stop for ctrl+C
     if (signum == 2) {
-        Server::Core::Log("Exiting!");
+        // Server::Core::Log("\nExiting!");
         uv_stop(uv_default_loop());
     }
 
@@ -79,45 +72,6 @@ void on_console_message(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf)
     buf->base[nread] = '\0';
     Server::Core::Instance()->OnInput(buf->base);
 }
-
-
-// // SQInteger mySqFunc(HSQUIRRELVM vm) {
-// //     Server::Core::Log("wtf");
-// //     return 0;
-// // }
-
-// void myPrint(const char* message) {
-//     Server::Core::Log(message);
-// }
-
-
-// void BindSquirrel(HSQUIRRELVM vm) {
-//     using namespace Sqrat;
-
-//     DefaultVM::Set(vm);
-//     // RootTable().SquirrelFunc("print", &mySqFunc);
-//     RootTable().Func("print", &myPrint);
-
-//     try {
-//         Script script1, script2;
-
-//         script1.CompileString("::print(\"Hello World\");");
-//         // script2.CompileFile("/Path/to/Script.nut");
-
-//         script1.Run();
-//         // script2.Run();
-//     } catch( Exception ) {
-//         // Handle exceptions here
-//     }
-
-//     // );
-
-//     // RootTable().Bind("MyClass", Class<MyClass>()
-//     //     .Func("Foo", &MyClass::Foo)
-//     //     .Var("bar", &MyClass::Bar)
-//     // );
-// }
-
 
 /**
  * Main program enter point

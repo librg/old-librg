@@ -1,0 +1,5 @@
+<meta>
+    <script type="server">other/another/index.nut</script>
+    <script type="server">other/index.nut</script>
+    <script type="server">index.nut</script>
+</meta>

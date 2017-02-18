@@ -10,8 +10,8 @@ using namespace Server::Resource;
 
 // TODO(inlife): move to config.xml!
 std::vector<std::string> resources = {
-    "default2",
-    "default",
+    "resource-default",
+    // "default",
 };
 
 Manager::Manager()
@@ -51,8 +51,8 @@ Manager::Manager()
                 script_t* script = new script_t;
 
                 // fill up data
-                script->filename = new std::string(element->GetText());
-                script->type = strncmp(szScriptType, "client", sizeof(char) * 6) ? tClient : tServer;
+                script->filename = new std::string(fs::path("resources", resource, std::string(element->GetText())));
+                script->type = strncmp(szScriptType, "client", sizeof(char) * 6) ? tServer : tClient;
 
                 scripts.push_back(script);
 
@@ -68,6 +68,8 @@ Manager::Manager()
 Manager::~Manager()
 {
     for (auto resource : mResources) {
-        resource.second->Unload();
+        delete resource.second;
     }
+
+    mResources.clear();
 }
