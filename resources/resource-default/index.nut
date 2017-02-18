@@ -84,7 +84,7 @@ class QTree {
         this.isroot = isroot;
     }
 
-    function insert(point, nodivide = false) {
+    function insert(point) {
         if(!boundary.contains(point)) {
             return false;
         }
@@ -93,10 +93,6 @@ class QTree {
         pushed++;
 
         if(pushed <= QT_MAX_NODES) {
-            return true;
-        }
-
-        if(nodivide) {
             return true;
         }
 
@@ -115,13 +111,13 @@ class QTree {
 
     function createChild(boundary) {
         local t = QTree(boundary, false);
-        local a = 0;
-        foreach (n in nodes) {
+
+        // NOTE(ZaKlaus): This isn't needed in case of stream querying!
+        /*foreach (n in nodes) {
             if(t.boundary.contains(n)) {
                 t.nodes.push(n);
             }
-        }
-        dbg(t);
+        }*/
         trees.push(t);
     }
 
