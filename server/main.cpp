@@ -27,7 +27,7 @@ void timed_loop(uv_timer_t* handle)
  * Main loop ticker
  * @param handle [description]
  */
-void idle_loop(uv_idle_t* handle)
+void idle_loop(uv_timer_t* handle)
 {
     Server::Core::Instance()->Idle();
 }
@@ -80,7 +80,7 @@ void on_console_message(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf)
  * @return exit code
  */
 int main(int argc, char * argv[]) {
-    uv_idle_t idler;
+    uv_timer_t idler;
     uv_timer_t timer_req;
     uv_tty_t tty;
 
@@ -98,9 +98,12 @@ int main(int argc, char * argv[]) {
     uv_timer_init(uv_default_loop(), &timer_req);
     uv_timer_start(&timer_req, timed_loop, 1000, 16);
 
+    uv_timer_init(uv_default_loop(), &idler);
+    uv_timer_start(&idler, idle_loop, 0, 1);
+
     // define main idle loop (network receieve)
-    uv_idle_init(uv_default_loop(), &idler);
-    uv_idle_start(&idler, idle_loop);
+    // uv_idle_init(uv_default_loop(), &idler);
+    // uv_idle_start(&idler, idle_loop);
 
     // singal handling
     uv_signal_t sig;

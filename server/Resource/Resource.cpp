@@ -43,7 +43,7 @@ bool Resource::Start()
             vscript.CompileFile(script->filename->c_str());
             vscript.Run();
         } catch( Exception e ) {
-            Core::Error("Script loading exception: ");
+            Core::Error("Script loading exception: %s", e.Message().c_str());
         }
 
         delete script->filename;

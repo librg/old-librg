@@ -14,7 +14,7 @@
 
 int main(void)
 {
-    std::string ipAddress;
+    std::string ipAddress = "127.0.0.1";
 
     RakNet::RakPeerInterface *peer = RakNet::RakPeerInterface::GetInstance();
     RakNet::Packet *packet;
@@ -22,13 +22,13 @@ int main(void)
     RakNet::SocketDescriptor sd;
     peer->Startup(1,&sd, 1);
 
-    printf("Enter server IP or any letter and enter for 127.0.0.1\n");
+    // printf("Enter server IP or any letter and enter for 127.0.0.1\n");
 //    std::cin >> ipAddress;
 
-    if (ipAddress.size() == 1) {
-        // strcpy(ipAddress, "127.0.0.1");
-        ipAddress = "127.0.0.1";
-    }
+    // if (ipAddress.size() == 1) {
+    //     // strcpy(ipAddress, "127.0.0.1");
+    //     ipAddress = "127.0.0.1";
+    // }
 
     printf("Connecting to %s:%d...\n", ipAddress.c_str(), SERVER_PORT);
     peer->Connect(ipAddress.c_str(), SERVER_PORT, 0,0);
