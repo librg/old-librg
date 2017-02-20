@@ -41,6 +41,7 @@ add_subdirectory(vendor/libuv)
 add_subdirectory(vendor/squirrel-lang)
 add_subdirectory(vendor/sqrat)
 add_subdirectory(vendor/tinyxml2)
+add_subdirectory(vendor/http-parser)
 
 ## TODO: fix later for beautiful c++17 code
 # if (NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
@@ -71,6 +72,7 @@ include_directories(
     vendor/libuv/libuv/include
     vendor/sqrat/include
     vendor/tinyxml2
+    vendor/http-parser
     server/
     client/
 )
@@ -99,6 +101,7 @@ target_link_libraries(server
     squirrel
     sqstdlib
     tinyxml2
+    http_parser
 )
 
 target_include_directories(server PUBLIC
