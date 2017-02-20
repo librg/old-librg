@@ -10,6 +10,7 @@ Resource::Resource(std::string name, std::vector<script_t*> scripts)
     , mScripts(scripts)
     , mRunning(false)
 {
+    // TODO: move to later
     this->Start();
 }
 

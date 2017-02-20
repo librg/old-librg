@@ -87,12 +87,14 @@ int main(int argc, char * argv[]) {
 
 #ifdef WIN32
     // Set our locale to the C locale, as Unicode output only functions in this locale
-    std::setlocale(LC_ALL,"C");
+    std::setlocale(LC_ALL, "C");
     SetConsoleOutputCP(CP_UTF8);
 #endif
+    // Server::Core::Log("\033[2J\033[H\033[1B\033[1C\033[42;37m%s");
 
     // create and initialize
     Server::Core::Instance();
+
 
     // define main timed loop (network send)
     // start after 1 sec, each 15 ms
