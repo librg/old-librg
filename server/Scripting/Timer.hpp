@@ -43,11 +43,11 @@ namespace Timer
         uv_async_send(async);
     }
 
-    inline static void Install(HSQUIRRELVM vm)
+    inline static void Install(Table& table)
     {
         // RootTable(vm).Func("setTimeout",    &setTimeout);
-        RootTable(vm).Func("setInterval",   &setInterval);
-        RootTable(vm).Func("clearInterval", &clearInterval);
+        table.Func("setInterval",   &setInterval);
+        table.Func("clearInterval", &clearInterval);
     }
 }
 
