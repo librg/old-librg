@@ -11,6 +11,7 @@ namespace Resource  {
 enum scriptType {
     tServer,
     tClient,
+    tShared,
 };
 
 struct script_t {

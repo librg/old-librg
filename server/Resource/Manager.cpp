@@ -14,6 +14,12 @@ std::vector<std::string> resources = {
     // "default",
 };
 
+std::unordered_map<std::string, scriptType> scriptTypes = {
+    std::make_pair<std::string, scriptType>("server", tServer),
+    std::make_pair<std::string, scriptType>("client", tClient),
+    std::make_pair<std::string, scriptType>("shared", tShared),
+};
+
 Manager::Manager()
 {
     // try to create resources folder
