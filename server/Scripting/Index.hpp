@@ -64,39 +64,16 @@ namespace Index
         size_t len = strlen( tmp );
 
         // special hnalders for \n\r\t sequences
-        for( size_t i = 0; i < len; ++i )
-        {
-            switch (tmp[i])
-            {
-            case ' ':
-            case '\r':
-            case '\n':
-            case '\t':
-                ++offstart;
-                break;
-            default:
-                i = len - 1;
-                break;
-            }
+        for( size_t i = 0; i < len; ++i ) {
+            switch (tmp[i]) { case ' ': case '\r': case '\n': case '\t': ++offstart; break; default: i = len - 1; break; }
         }
 
         tmp += offstart;
         len -= offstart;
 
-        for (size_t i = len - 1; i > 0; --i)
-        {
-            switch (tmp[i])
-            {
-            case ' ':
-            case '\r':
-            case '\n':
-            case '\t':
-                ++offend;
-                break;
-            default:
-                i = 1;
-                break;
-            }
+        // same
+        for (size_t i = len - 1; i > 0; --i) {
+            switch (tmp[i]) { case ' ': case '\r': case '\n': case '\t': ++offend; break; default: i = 1; break; }
         }
 
         tmp[ len - offend ] = '\0';
