@@ -10,6 +10,7 @@
 #include <sqstdstring.h>
 #include <Core.h>
 
+#include "Event.hpp"
 #include "System.hpp"
 #include "Resource.hpp"
 #include "Timer.hpp"
@@ -138,16 +139,20 @@ namespace Index
         sq_setprintfunc(vm, printHandler, errorHandler);
         sq_setcompilererrorhandler(vm, compilerErrorHandler);
 
+        Table nativeTable(vm);
+
         // place to put all your sq bindins below
-        System::Install(vm);
-        Resource::Install(vm);
-        Timer::Install(vm);
+        System::Install(nativeTable);
+        Resource::Install(nativeTable);
+        Timer::Install(nativeTable);
+        Event::Install(nativeTable);
         // System::Install(vm);
         // System::Install(vm);
         // System::Install(vm);
         // System::Install(vm);
         // System::Install(vm);
-        // System::Install(vm);
+
+        RootTable(vm).Bind("native", nativeTable);
     }
 }
 

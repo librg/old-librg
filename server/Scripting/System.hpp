@@ -19,10 +19,10 @@ namespace System
         Core::Log("its a test message 2 with: %s, %d, %f", message, number, otherNumber);
     }
 
-    inline static void Install(HSQUIRRELVM vm)
+    inline static void Install(Table& table)
     {
-        RootTable(vm).Func("test", &test);
-        RootTable(vm).Func("test2", &test2);
+        table.Func("test",  &test);
+        table.Func("test2", &test2);
     }
 }
 

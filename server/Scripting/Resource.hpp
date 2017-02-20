@@ -16,9 +16,9 @@ namespace Resource
         return Server::Resource::Manager::Instance()->Exist(resourceName);
     }
 
-    inline static void Install(HSQUIRRELVM vm)
+    inline static void Install(Table& table)
     {
-        RootTable(vm).Func("resourceLoaded", &resourceLoaded);
+        table.Func("resourceLoaded", &resourceLoaded);
     }
 }
 

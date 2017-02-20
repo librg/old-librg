@@ -1,7 +1,7 @@
-print("index.nut at root");
-print(foo() + abc());
+::print("index.nut at root");
+::print(foo() + abc());
 
-test2("hello", 15, 242.24);
+native.test2("hello", 15, 242.24);
 
 // a <- setInterval(function() {
 //     print("?: " + resourceLoaded("resource-default"));
@@ -12,15 +12,15 @@ test2("hello", 15, 242.24);
 
 function setTimeout(callback, timeout) {
     local a;
-    a = setInterval(function() {
-        clearInterval(a);
+    a = native.setInterval(function() {
+        native.clearInterval(a);
         callback();
     }, timeout);
     return false;
 }
 
 setTimeout(function() {
-    print("only once");
+    ::print("only once");
 }, 300);
 
 /**
@@ -37,7 +37,7 @@ function dbg(...) {
 
 // quadtree test
 
-class XY {
+/*class XY {
     x = 0;
     y = 0;
 
@@ -116,7 +116,7 @@ class QTree {
             if(t.boundary.contains(n)) {
                 t.nodes.push(n);
             }
-        }*/
+        }
         trees.push(t);
     }
 
@@ -157,4 +157,10 @@ foreach (p in playerpos) {
 }
 
 print("Total nodes: " + playerpos.len());
-root.dump();
+root.dump();*/
+
+native.eventAddHandler("onDeveloperDrinksVodka", function (_) {
+    ::print("*Gulp*");
+});
+
+native.eventServerTrigger("onDeveloperDrinksVodka", null);
