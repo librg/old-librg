@@ -37,24 +37,34 @@ namespace Event
         uv_async_send(async);
     }
 
-    inline static void eventAddHandler(const char* handlerName, Function callback)
+    /**
+     * Public API method for adding event handler. Multiple event handlers per event name are supported.
+     * @param eventName Event name under which the handler should be registered.
+     * @param callback    Squirrel wrapped function object.
+     */
+    inline static void eventAddHandler(const char* eventName, Function callback)
     {
-        if(eventHandlers.find(handlerName) != eventHandlers.end())
+        if(eventHandlers.find(eventName) != eventHandlers.end())
         {
-            eventHandlers[handlerName].push_back(callback);
+            eventHandlers[eventName].push_back(callback);
         }
         else
         {
             std::vector<Function> newList = { callback };
-            eventHandlers.insert(std::make_pair(std::string(handlerName), newList));
+            eventHandlers.insert(std::make_pair(std::string(eventName), newList));
         }
     }
 
-    inline static void eventServerTrigger(const char* handlerName, const char* params)
+    /**
+     * Public API method for triggering server event. This method passes handler arguments via JSON blob. This method calls all registered handlers under specified event name.
+     * @param eventName   Name of the event to call.
+     * @param params      JSON serialized data blob.
+     */
+    inline static void eventServerTrigger(const char* eventName, const char* params)
     {
-        if(eventHandlers.find(handlerName) != eventHandlers.end())
+        if(eventHandlers.find(eventName) != eventHandlers.end())
         {
-            for(auto handler : eventHandlers[handlerName])
+            for(auto handler : eventHandlers[eventName])
             {
                 uv_async_t* async = new uv_async_t;
                 auto callback = new Function(handler);
@@ -67,6 +77,10 @@ namespace Event
         }
     }
 
+    /**
+     * Registry method
+     * @param table
+     */
     inline static void Install(Table& table)
     {
         table.Func("eventAddHandler",    &eventAddHandler);
