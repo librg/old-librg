@@ -13,10 +13,6 @@ Core::Core()
 
 Core::~Core()
 {
-    // delete Network::Manager::Instance();
-    // delete Game::Manager::Instance();
-    // delete Resource::Manager::Instance();
-
     this->Log("stopping server...");
 }
 
@@ -30,13 +26,6 @@ void Core::Log(const char* format, ...)
 
     // TODO(inlife): move to async trigger -> callback
     printf("[SERVER][%s] - %s\n", Utils::currentDateTime().c_str(), message);
-
-    // va_list args;
-    // va_start(args, format);
-
-    // Core::Instance()->GetLogger().WriteLn(format, args);
-
-    // va_end(args);
 }
 
 void Core::Error(const char* format, ...)

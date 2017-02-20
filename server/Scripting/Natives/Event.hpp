@@ -33,7 +33,7 @@ namespace Event
 
 
 
-}
-}
+} // Scripting
+} // Server
 
 #endif // __event_system

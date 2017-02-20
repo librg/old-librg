@@ -1,31 +1,34 @@
-print("index.nut at root");
-print(foo() + abc());
+// print("index.nut at root");
+// print(foo() + abc());
 
-test2("hello", 15, 242.24);
+// // test2("hello", 15, 242.24);
 
-function setTimeout(callback, timeout) {
-    local pointer;
-    pointer = setInterval(function() { clearInterval(pointer); callback(); }, timeout);
-    return pointer;
-}
+// function setTimeout(callback, timeout) {
+//     local pointer;
+//     pointer = setInterval(function() { clearInterval(pointer); callback(); }, timeout);
+//     return pointer;
+// }
 
-function timer(callback, timeout) {
-    local pointer = setInterval(callback, timeout);
-    return { Kill = function() { return clearInterval(pointer); } };
-}
+// function timer(callback, timeout) {
+//     local pointer = setInterval(callback, timeout);
+//     return { Kill = function() { return clearInterval(pointer); } };
+// }
 
-// a <- setInterval(function() {
-//     print("?: " + resourceLoaded("resource-default"));
-//     print("?: " + resourceLoaded("resource-test"));
-//     clearInterval(a);
-// }, 100);
+// // a <- setInterval(function() {
+// //     print("?: " + resourceLoaded("resource-default"));
+// //     print("?: " + resourceLoaded("resource-test"));
+// //     clearInterval(a);
+// // }, 100);
 
-// local reschecker = setInterval(function() {
-//     print("is resource loaded: " + resourceLoaded("default"));
-// }, 5000);
+// // local reschecker = setInterval(function() {
+// //     print("is resource loaded: " + resourceLoaded("default"));
+// // }, 5000);
 
-setTimeout(function() {
-    print("only once");
-}, 300);
+// setTimeout(function() {
+//     print("only once");
+// }, 300);
 
-// clearInterval(reschecker);
+// // clearInterval(reschecker);
+
+
+native.test("hello");

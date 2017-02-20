@@ -3,28 +3,36 @@
 
 #include <Resource/Manager.h>
 
-using namespace Sqrat;
-
 namespace Server    {
 namespace Scripting {
 
 
 namespace Resource
 {
+    /**
+     * Public api
+     * check wether or not particular resource has been loaded
+     * @param  resourceName
+     * @return
+     */
     inline static bool resourceLoaded(const char* resourceName)
     {
         return Server::Resource::Manager::Instance()->Exist(resourceName);
     }
 
-    inline static void Install(Table& table)
+    /**
+     * Registry method
+     * @param native
+     */
+    inline static void Install(Sqrat::Table& native)
     {
-        table.Func("resourceLoaded", &resourceLoaded);
+        native.Func("resourceLoaded", &resourceLoaded);
     }
 }
 
 
 
-}
-}
+} // Scripting
+} // Server
 
 #endif // __scripting_resource
