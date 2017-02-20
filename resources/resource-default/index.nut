@@ -163,4 +163,8 @@ native.eventAddHandler("onDeveloperDrinksVodka", function (_) {
     ::print("*Gulp*");
 });
 
+native.eventAddHandler("onDeveloperDrinksVodka", function (_) {
+    ::print("I have enough already!");
+});
+
 native.eventServerTrigger("onDeveloperDrinksVodka", null);

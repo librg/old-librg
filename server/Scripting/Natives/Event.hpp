@@ -9,18 +9,29 @@ namespace Scripting {
 
 namespace Event
 {
-    static std::unordered_map<std::string, Function> eventHandlers;
+    static std::unordered_map<std::string, std::vector<Function>> eventHandlers;
 
     inline static void eventAddHandler(const char* handlerName, Function callback)
     {
-        eventHandlers.insert(std::make_pair(std::string(handlerName), callback));
+        if(eventHandlers.find(handlerName) != eventHandlers.end())
+        {
+            eventHandlers[handlerName].push_back(callback);
+        }
+        else
+        {
+            std::vector<Function> newList = { callback };
+            eventHandlers.insert(std::make_pair(std::string(handlerName), newList));
+        }
     }
 
     inline static void eventServerTrigger(const char* handlerName, const char* params)
     {
         if(eventHandlers.find(handlerName) != eventHandlers.end())
         {
-            eventHandlers[handlerName].Execute(params);
+            for(auto handler : eventHandlers[handlerName])
+            {
+                handler.Execute(params);
+            }
         }
     }
 
