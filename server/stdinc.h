@@ -26,11 +26,11 @@ typedef unsigned char byte;
  * PI, etc.  --  mathematical constants.
  */
 
-// #define PI         3.14159265358979323846
-// #define TWO_PI     6.28318530717958647693
-// #define FOUR_PI   12.56637061435917295385
-// #define HALF_PI    1.57079632679489661923
-// #define FRTHRD_PI  4.18879020478639098462
+#define PI         3.14159265358979323846
+#define TWO_PI     6.28318530717958647693
+#define FOUR_PI   12.56637061435917295385
+#define HALF_PI    1.57079632679489661923
+#define FRTHRD_PI  4.18879020478639098462
 
 /**
  * STREQ: string-equality macro. STRNULL: test for empty string.

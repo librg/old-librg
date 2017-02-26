@@ -74,6 +74,11 @@ void on_console_message(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf)
     Server::Core::Instance()->OnInput(buf->base);
 }
 
+struct VodkaEvent
+{
+    std::string amount;
+};
+
 /**
  * Main program enter point
  * @param  argc
@@ -129,6 +134,16 @@ int main(int argc, char * argv[]) {
     // fprintf(stderr, "Width %d, height %d\n", width, height);
     // uv_timer_init(uv_default_loop(), &tick);
     // uv_timer_start(&tick, update, 200, 200);
+
+
+    Server::Event::Manager::Instance()->AddListener("onVodkaTooWeak", [](void* event, void* /* blob */){
+        VodkaEvent* vodka = (VodkaEvent*)event;
+        Server::Core::Log("We need %s of vodka!", vodka->amount.c_str());
+    }, 0);
+
+    Server::Event::Manager::Instance()->Dispatch("onVodkaTooWeak",
+        new VodkaEvent{ "fuckton" }
+    );
 
     // starting loop
     uv_run(uv_default_loop(), UV_RUN_DEFAULT);

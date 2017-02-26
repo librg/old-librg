@@ -44,15 +44,15 @@ Manager::Manager()
             while (element != nullptr)
             {
                 // read up script type, and skip if nothing is loaded
-                const char * szScriptType = nullptr;
-                szScriptType = element->Attribute("type");
-                if (szScriptType == nullptr) continue;
+                const char * scriptType = nullptr;
+                scriptType = element->Attribute("type");
+                if (scriptType == nullptr) continue;
 
                 script_t* script = new script_t;
 
                 // fill up data
                 script->filename = new std::string(fs::path("resources", resource, std::string(element->GetText())));
-                script->type = strncmp(szScriptType, "client", sizeof(char) * 6) ? tServer : tClient;
+                script->type = strncmp(scriptType, "client", sizeof(char) * 6) ? tServer : tClient;
 
                 scripts.push_back(script);
 
