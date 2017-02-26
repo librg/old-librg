@@ -112,7 +112,7 @@ class QTree {
         local t = QTree(boundary, false);
 
         // NOTE(ZaKlaus): This isn't needed in case of stream querying!
-        /*foreach (n in nodes) {
+        foreach (n in nodes) {
             if(t.boundary.contains(n)) {
                 t.nodes.push(n);
             }
@@ -167,4 +167,4 @@ native.eventAddHandler("onDeveloperDrinksVodka", function (_) {
     ::print("I have enough already!");
 });
 
-native.eventServerTrigger("onDeveloperDrinksVodka", null);
+native.eventServerTrigger("onDeveloperDrinksVodka", "dogmeat");

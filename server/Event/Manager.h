@@ -45,15 +45,16 @@ public:
 
     /**
      * Public API method for adding event handler. Multiple event handlers per event name are supported.
-     * @param name  Event name under which the handler should be registered.
-     * @param
+     * @param name      Event name under which the handler should be registered.
+     * @param callback  Callback that would be executed.
+     * @param blob      Internal data for the listener. (Optional)
      */
-    void AddListener(std::string name, callback_generic callback, void* blob);
+    void AddListener(std::string name, callback_generic callback, void* blob=0);
 
     /**
-     * Public API method for triggering server event. This method passes handler arguments via JSON blob. This method calls all registered handlers under specified event name.
+     * Public API method for triggering server event. This method passes custom event data to the callback. This method calls all registered handlers under specified event name.
      * @param eventName   Name of the event to call.
-     * @param params      JSON serialized data blob.
+     * @param event       Event data to be passed.
      */
     void Dispatch(std::string name, void* event);
 

@@ -58,11 +58,8 @@ Manager::Manager()
 
                 // fill up data
                 script->filename = new std::string(fs::path("resources", resource, std::string(element->GetText())));
-<<<<<<< HEAD
-                script->type = strncmp(scriptType, "client", sizeof(char) * 6) ? tServer : tClient;
-=======
-                script->type = (scriptTypes.find(szScriptType) == scriptTypes.end()) ? tServer : scriptTypes[szScriptType];
->>>>>>> 8faf65c0cb050313193cb6b4c3ddc558af7c0454
+
+                script->type = (scriptTypes.find(scriptType) == scriptTypes.end()) ? tServer : scriptTypes[scriptType];
 
                 scripts.push_back(script);
 

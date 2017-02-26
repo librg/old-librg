@@ -23,7 +23,6 @@ namespace Event
     {
         Server::Event::Manager::Instance()->AddListener(eventName, [](void *event, void* blob){
             auto script = (ScriptEvent*)event;
-            printf("Some message here: %s\n\n", script->params.c_str());
             auto cb = (Function*)blob;
             cb->Execute(script->params);
         }, new Function(callback));
