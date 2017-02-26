@@ -35,3 +35,6 @@ native.test(native.resourceLoaded("resource-default"));
 native.setInterval(function() {
     native.test(native.resourceLoaded("resource-default"));
 }, 1000);
+
+
+print("сука блеать")
