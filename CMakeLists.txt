@@ -96,11 +96,11 @@ add_executable(client-test
 ###
 target_link_libraries(server
     RakNetLibStatic
-    uv
     squirrel
     sqstdlib
     tinyxml2
     http_parser
+    uv
 )
 
 target_include_directories(server PUBLIC
@@ -115,7 +115,7 @@ target_link_libraries(client-test
 )
 
 target_include_directories(client-test PUBLIC
-    vendor/RakNet/Source
+    vendor/lib-raknet/Source
 )
 
 # Xcode and Visual working directories

@@ -10,32 +10,13 @@
           ['OS=="solaris"', {
             'cflags': [ '-pthreads' ],
           }],
-          ['OS not in "solaris android os390"', {
+          ['OS not in "solaris android"', {
             'cflags': [ '-pthread' ],
           }],
-          ['OS in "os390"', {
-            'defines': [
-              '_UNIX03_THREADS',
-              '_UNIX03_SOURCE',
-              '_UNIX03_WITHDRAWN',
-              '_OPEN_SYS_IF_EXT',
-              '_OPEN_SYS_SOCK_IPV6',
-              '_OPEN_MSGQ_EXT',
-              '_XOPEN_SOURCE_EXTENDED',
-              '_ALL_SOURCE',
-              '_LARGE_TIME_API',
-              '_OPEN_SYS_FILE_EXT',
-              '_AE_BIMODAL',
-              'PATH_MAX=255'
-            ],
-            'cflags': [ '-qxplink' ],
-            'ldflags': [ '-qxplink' ],
-          }]
         ],
       }],
     ],
     'xcode_settings': {
-      'GCC_SYMBOLS_PRIVATE_EXTERN': 'YES',  # -fvisibility=hidden
       'WARNING_CFLAGS': [ '-Wall', '-Wextra', '-Wno-unused-parameter' ],
       'OTHER_CFLAGS': [ '-g', '--std=gnu89', '-pedantic' ],
     }
@@ -93,7 +74,6 @@
             'src/win/async.c',
             'src/win/atomicops-inl.h',
             'src/win/core.c',
-            'src/win/detect-wakeup.c',
             'src/win/dl.c',
             'src/win/error.c',
             'src/win/fs.c',
@@ -131,12 +111,19 @@
               '-liphlpapi',
               '-lpsapi',
               '-lshell32',
-              '-luser32',
               '-luserenv',
               '-lws2_32'
             ],
           },
         }, { # Not Windows i.e. POSIX
+          'cflags': [
+            '-g',
+            '--std=gnu89',
+            '-pedantic',
+            '-Wall',
+            '-Wextra',
+            '-Wno-unused-parameter',
+          ],
           'sources': [
             'include/uv-unix.h',
             'include/uv-linux.h',
@@ -172,25 +159,16 @@
               ['OS=="solaris"', {
                 'ldflags': [ '-pthreads' ],
               }],
-              [ 'OS=="os390" and uv_library=="shared_library"', {
-                'ldflags': [ '-Wl,DLL' ],
-              }],
-              ['OS != "solaris" and OS != "android" and OS != "os390"', {
+              ['OS != "solaris" and OS != "android"', {
                 'ldflags': [ '-pthread' ],
               }],
             ],
           },
           'conditions': [
             ['uv_library=="shared_library"', {
-              'conditions': [
-                ['OS=="os390"', {
-                  'cflags': [ '-qexportall' ],
-                }, {
-                  'cflags': [ '-fPIC' ],
-                }],
-              ],
+              'cflags': [ '-fPIC' ],
             }],
-            ['uv_library=="shared_library" and OS!="mac" and OS!="os390"', {
+            ['uv_library=="shared_library" and OS!="mac"', {
               # This will cause gyp to set soname
               # Must correspond with UV_VERSION_MAJOR
               # in include/uv-version.h
@@ -198,33 +176,21 @@
             }],
           ],
         }],
-        [ 'OS in "linux mac ios android os390"', {
+        [ 'OS in "linux mac ios android"', {
           'sources': [ 'src/unix/proctitle.c' ],
-        }],
-        [ 'OS != "os390"', {
-          'cflags': [
-            '-fvisibility=hidden',
-            '-g',
-            '--std=gnu89',
-            '-pedantic',
-            '-Wall',
-            '-Wextra',
-            '-Wno-unused-parameter',
-          ],
         }],
         [ 'OS in "mac ios"', {
           'sources': [
             'src/unix/darwin.c',
             'src/unix/fsevents.c',
             'src/unix/darwin-proctitle.c',
-            'src/unix/pthread-barrier.c'
           ],
           'defines': [
             '_DARWIN_USE_64_BIT_INODE=1',
             '_DARWIN_UNLIMITED_SELECT=1',
           ]
         }],
-        [ 'OS!="mac" and OS!="os390"', {
+        [ 'OS!="mac"', {
           # Enable on all platforms except OS X. The antique gcc/clang that
           # ships with Xcode emits waaaay too many false positives.
           'cflags': [ '-Wstrict-aliasing' ],
@@ -248,8 +214,7 @@
             'src/unix/linux-syscalls.c',
             'src/unix/linux-syscalls.h',
             'src/unix/pthread-fixes.c',
-            'src/unix/android-ifaddrs.c',
-            'src/unix/pthread-barrier.c'
+            'src/unix/android-ifaddrs.c'
           ],
           'link_settings': {
             'libraries': [ '-ldl' ],
@@ -277,7 +242,6 @@
             '_XOPEN_SOURCE=500',
             '_LINUX_SOURCE_COMPAT',
             '_THREAD_SAFE',
-            'HAVE_SYS_AHAFS_EVPRODS_H',
           ],
           'link_settings': {
             'libraries': [
@@ -304,14 +268,6 @@
         }],
         ['uv_library=="shared_library"', {
           'defines': [ 'BUILDING_UV_SHARED=1' ]
-        }],
-        ['OS=="os390"', {
-          'sources': [
-            'src/unix/pthread-fixes.c',
-            'src/unix/pthread-barrier.c',
-            'src/unix/os390.c',
-            'src/unix/os390-syscalls.c'
-          ]
         }],
       ]
     },
@@ -402,7 +358,6 @@
         'test/test-spawn.c',
         'test/test-fs-poll.c',
         'test/test-stdio-over-pipes.c',
-        'test/test-tcp-alloc-cb-fail.c',
         'test/test-tcp-bind-error.c',
         'test/test-tcp-bind6-error.c',
         'test/test-tcp-close.c',
@@ -437,7 +392,6 @@
         'test/test-timer-from-check.c',
         'test/test-timer.c',
         'test/test-tty.c',
-        'test/test-udp-alloc-cb-fail.c',
         'test/test-udp-bind.c',
         'test/test-udp-create-socket-early.c',
         'test/test-udp-dgram-too-big.c',
@@ -466,20 +420,12 @@
           ],
           'libraries': [ '-lws2_32' ]
         }, { # POSIX
+          'defines': [ '_GNU_SOURCE' ],
           'sources': [
             'test/runner-unix.c',
             'test/runner-unix.h',
           ],
-          'conditions': [
-            [ 'OS != "os390"', {
-              'defines': [ '_GNU_SOURCE' ],
-              'cflags': [ '-Wno-long-long' ],
-              'xcode_settings': {
-                'WARNING_CFLAGS': [ '-Wno-long-long' ]
-              }
-            }],
-          ]},
-        ],
+        }],
         [ 'OS in "mac dragonflybsd freebsd linux netbsd openbsd".split()', {
           'link_settings': {
             'libraries': [ '-lutil' ],
@@ -498,12 +444,7 @@
           ],
         }],
         ['uv_library=="shared_library"', {
-          'defines': [ 'USING_UV_SHARED=1' ],
-          'conditions': [
-            [ 'OS == "os390"', {
-              'cflags': [ '-Wc,DLL' ],
-            }],
-          ],
+          'defines': [ 'USING_UV_SHARED=1' ]
         }],
       ],
       'msvs-settings': {
@@ -559,12 +500,7 @@
           ]
         }],
         ['uv_library=="shared_library"', {
-          'defines': [ 'USING_UV_SHARED=1' ],
-          'conditions': [
-            [ 'OS == "os390"', {
-              'cflags': [ '-Wc,DLL' ],
-            }],
-          ],
+          'defines': [ 'USING_UV_SHARED=1' ]
         }],
       ],
       'msvs-settings': {

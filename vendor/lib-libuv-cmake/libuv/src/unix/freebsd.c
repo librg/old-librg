@@ -196,23 +196,13 @@ int uv_set_process_title(const char* title) {
 
 
 int uv_get_process_title(char* buffer, size_t size) {
-  size_t len;
-
-  if (buffer == NULL || size == 0)
-    return -EINVAL;
-
   if (process_title) {
-    len = strlen(process_title) + 1;
-
-    if (size < len)
-      return -ENOBUFS;
-
-    memcpy(buffer, process_title, len);
+    strncpy(buffer, process_title, size);
   } else {
-    len = 0;
+    if (size > 0) {
+      buffer[0] = '\0';
+    }
   }
-
-  buffer[len] = '\0';
 
   return 0;
 }
@@ -302,7 +292,7 @@ int uv_cpu_info(uv_cpu_info_t** cpu_infos, int* count) {
 
   size = sizeof(cpuspeed);
   if (sysctlbyname("hw.clockrate", &cpuspeed, &size, NULL, 0)) {
-    uv__free(*cpu_infos);
+    SAVE_ERRNO(uv__free(*cpu_infos));
     return -errno;
   }
 
@@ -311,7 +301,7 @@ int uv_cpu_info(uv_cpu_info_t** cpu_infos, int* count) {
    */
   size = sizeof(maxcpus);
   if (sysctlbyname(maxcpus_key, &maxcpus, &size, NULL, 0)) {
-    uv__free(*cpu_infos);
+    SAVE_ERRNO(uv__free(*cpu_infos));
     return -errno;
   }
 
@@ -324,8 +314,8 @@ int uv_cpu_info(uv_cpu_info_t** cpu_infos, int* count) {
   }
 
   if (sysctlbyname(cptimes_key, cp_times, &size, NULL, 0)) {
-    uv__free(cp_times);
-    uv__free(*cpu_infos);
+    SAVE_ERRNO(uv__free(cp_times));
+    SAVE_ERRNO(uv__free(*cpu_infos));
     return -errno;
   }
 

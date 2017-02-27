@@ -43,7 +43,7 @@ bool Resource::Start()
             Sqrat::Script vscript = Sqrat::Script(mVM);
             vscript.CompileFile(script->filename->c_str());
             vscript.Run();
-        } catch( Exception e ) {
+        } catch( Sqrat::Exception e ) {
             Core::Error("Script loading exception: %s", e.Message().c_str());
         }
 
