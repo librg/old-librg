@@ -28,6 +28,12 @@ void Manager::Dispatch(std::string name, void* event) {
             uv_async_send(async);
         }
     }
+
+    // NOTE(zaklaus): Destroy the event data once we're done with the calls.
+    uv_async_t* async = new uv_async_t;
+    uv_async_init(uv_default_loop(), async, &Manager::CleanupEvent);
+    async->data = event;
+    uv_async_send(async);
 }
 
 void Manager::Callback(uv_async_t* req) {
@@ -39,12 +45,19 @@ void Manager::Callback(uv_async_t* req) {
     uv_async_init(uv_default_loop(), async, &Manager::Cleanup);
 
     async->data = req->data;
+    uv_close((uv_handle_t*)req, NULL);
+
     uv_async_send(async);
 }
 
 void Manager::Cleanup(uv_async_t* req) {
     auto data = (DispatchData*)req->data;
     delete data;
+    uv_close((uv_handle_t*)req, NULL);
+}
+
+void Manager::CleanupEvent(uv_async_t* req) {
+    delete req->data;
     uv_close((uv_handle_t*)req, NULL);
 }
 

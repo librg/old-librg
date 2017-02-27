@@ -61,6 +61,7 @@ public:
 private:
     static void Callback(uv_async_t* req);
     static void Cleanup(uv_async_t* req);
+    static void CleanupEvent(uv_async_t* req);
 
     void Add(std::string name, ListenerInfo info);
 
