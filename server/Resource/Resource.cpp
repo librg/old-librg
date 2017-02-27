@@ -61,10 +61,9 @@ bool Resource::Stop()
     }
 
     Core::Log("Stopping resource '%s'!", mName.c_str());
-
     sq_close(mVM);
 
-    return (mRunning = false);
+    return !(mRunning = false);
 }
 
 Resource::~Resource()

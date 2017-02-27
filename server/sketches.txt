@@ -1,0 +1,57 @@
+EventManager::Instance()->Dispatch(
+    new Event::PlayerConnect("inlife", 12412412)
+)
+
+EventManager::Instance()->DispatchLocal(
+    new Event::GameStarted()
+);
+
+EventManager::Instance()->AddListener("Event::PlayerConnect", [](void* event) {
+    Event::PlayerConnect * myevent = (Event::PlayerConnect *)event;
+    Core::Log("new user: %s", myevent->param1);
+});
+
+///
+/// framework
+///
+
+
+native.onevent("Event::PlayerConnect", function(event) {
+    triggerEventHandler("onPlayerConnect", event.param1, event.param2);
+});
+
+native.trigger("Event::PlayerConnect", param1, param2);
+
+///
+/// defining
+///
+namespace Event {
+
+class PlayerConnect : Generic
+{
+    std::string param1;
+    int param2;
+    float param3;
+
+    PlayerConnect(std::string param1, int param2)
+    {
+        this->param1 = param1;
+        this->param2 = param2;
+        this->param3 = 15.0f;
+    }
+
+    inline void call(Sqrat::Function callback)
+    {
+        callback->Execute(param1, param2, param3);
+    }
+
+    inline static void trigger(HSQUIRREL vm)
+    {
+        // extract
+        std::string param1 = vm.gimmestackplz();
+        std::string param2 = vm.gimmestackplz();
+        std::string param3 = vm.gimmestackplz();
+
+        Manager::Instance()->Trigger(new this(param1, param2))
+    }
+}

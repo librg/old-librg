@@ -74,7 +74,6 @@ include_directories(
     vendor/tinyxml2
     vendor/http-parser
     server/
-    client/
 )
 
 file(GLOB_RECURSE SERVER_FILES

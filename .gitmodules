@@ -1,21 +1,18 @@
 [submodule "vendor/libuv"]
     path = vendor/libuv
-    url = git@gitlab.com:Mafia2Online/libuv-cmake.git
+    url = git@gitlab.com:reguider/libuv-cmake.git
 [submodule "vendor/RakNet"]
     path = vendor/RakNet
-    url = git@gitlab.com:Mafia2Online/RakNet.git
+    url = git@gitlab.com:reguider/RakNet.git
 [submodule "vendor/squirrel-lang"]
     path = vendor/squirrel-lang
-    url = git@gitlab.com:Mafia2Online/squirrel-lang.git
-[submodule "client"]
-    path = client
-    url = git@gitlab.com:Mafia2Online/M2OClient-MyU.git
+    url = git@gitlab.com:reguider/squirrel-lang.git
 [submodule "vendor/sqrat"]
     path = vendor/sqrat
-    url = git@gitlab.com:Mafia2Online/sqrat.git
+    url = git@gitlab.com:reguider/sqrat.git
 [submodule "vendor/tinyxml2"]
     path = vendor/tinyxml2
-    url = git@gitlab.com:Mafia2Online/lib-tinyxml2.git
+    url = git@gitlab.com:reguider/lib-tinyxml2.git
 [submodule "vendor/http-parser"]
 	path = vendor/http-parser
-	url = git@gitlab.com:Mafia2Online/lib-http-parser.git
+	url = git@gitlab.com:reguider/lib-http-parser.git
