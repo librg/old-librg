@@ -1,7 +1,6 @@
 #ifndef __game_entity
 #define __game_entity
 
-#include <Shared/Math/Math.hpp>
 #include <Game/World.h>
 
 namespace Server  {
@@ -18,8 +17,8 @@ public:
 
 
 private:
-    Vector3 mPosition;
-    Vector3 mRotation;
+    // Vector3 mPosition;
+    // Vector3 mRotation;
     Game::world_t mWorld;
 };
 

@@ -1,18 +1,18 @@
-[submodule "vendor/libuv"]
-    path = vendor/libuv
-    url = git@gitlab.com:reguider/libuv-cmake.git
-[submodule "vendor/RakNet"]
-    path = vendor/RakNet
-    url = git@gitlab.com:reguider/RakNet.git
-[submodule "vendor/squirrel-lang"]
-    path = vendor/squirrel-lang
-    url = git@gitlab.com:reguider/squirrel-lang.git
-[submodule "vendor/sqrat"]
-    path = vendor/sqrat
-    url = git@gitlab.com:reguider/sqrat.git
-[submodule "vendor/tinyxml2"]
-    path = vendor/tinyxml2
+[submodule "vendor/lib-libuv-cmake"]
+    path = vendor/lib-libuv-cmake
+    url = git@gitlab.com:reguider/lib-libuv-cmake.git
+[submodule "vendor/lib-raknet"]
+    path = vendor/lib-raknet
+    url = git@gitlab.com:reguider/lib-raknet.git
+[submodule "vendor/lib-squirrel"]
+    path = vendor/lib-squirrel
+    url = git@gitlab.com:reguider/lib-squirrel.git
+[submodule "vendor/lib-sqrat"]
+    path = vendor/lib-sqrat
+    url = git@gitlab.com:reguider/lib-sqrat.git
+[submodule "vendor/lib-tinyxml2"]
+    path = vendor/lib-tinyxml2
     url = git@gitlab.com:reguider/lib-tinyxml2.git
-[submodule "vendor/http-parser"]
-	path = vendor/http-parser
+[submodule "vendor/lib-http-parser"]
+	path = vendor/lib-http-parser
 	url = git@gitlab.com:reguider/lib-http-parser.git
