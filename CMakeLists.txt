@@ -36,12 +36,12 @@ SET(RAKNET_ENABLE_DLL OFF CACHE BOOL "Generate the DLL project if true.")
 ###
 # Compile vendor dependencies
 ###
-add_subdirectory(vendor/RakNet)
-add_subdirectory(vendor/libuv)
-add_subdirectory(vendor/squirrel-lang)
-add_subdirectory(vendor/sqrat)
-add_subdirectory(vendor/tinyxml2)
-add_subdirectory(vendor/http-parser)
+add_subdirectory(vendor/lib-raknet)
+add_subdirectory(vendor/lib-libuv-cmake)
+add_subdirectory(vendor/lib-squirrel)
+add_subdirectory(vendor/lib-sqrat)
+add_subdirectory(vendor/lib-tinyxml2)
+add_subdirectory(vendor/lib-http-parser)
 
 ## TODO: fix later for beautiful c++17 code
 # if (NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
@@ -66,13 +66,13 @@ set(CMAKE_MACOSX_RPATH 1)
 # Includes for libs and remote sources
 ###
 include_directories(
-    vendor/RakNet/
+    vendor/lib-raknet/
     # vendor/squirrel/include
     # vendor/squirrel/squirrel
-    vendor/libuv/libuv/include
-    vendor/sqrat/include
-    vendor/tinyxml2
-    vendor/http-parser
+    vendor/lib-libuv-cmake/libuv/include
+    vendor/lib-sqrat/include
+    vendor/lib-tinyxml2
+    vendor/lib-http-parser
     server/
 )
 
@@ -104,7 +104,7 @@ target_link_libraries(server
 )
 
 target_include_directories(server PUBLIC
-    vendor/RakNet/Source
+    vendor/lib-raknet/Source
     # vendor/squirrel/include
     # vendor/squirrel/squirrel
     # vendor/squirrel/squirrel
