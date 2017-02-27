@@ -63,8 +63,6 @@ private:
     static void Cleanup(uv_async_t* req);
     static void CleanupEvent(uv_async_t* req);
 
-    void Add(std::string name, ListenerInfo info);
-
     std::unordered_map<std::string, std::vector<ListenerInfo>> mEventHandlers;
 };
 
