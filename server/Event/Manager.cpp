@@ -7,7 +7,7 @@ void Manager::Init() {
     // TODO(zaklaus): do something useful, if required..
 }
 
-void Manager::AddListener(std::string name, callback_generic callback, void* blob) {
+size_t Manager::AddListener(std::string name, callback_generic callback, void* blob) {
     ListenerInfo info{ callback, blob };
 
     if(mEventHandlers.find(name) != mEventHandlers.end()) {
@@ -15,6 +15,30 @@ void Manager::AddListener(std::string name, callback_generic callback, void* blo
     } else {
         std::vector<ListenerInfo> newList = { info };
         mEventHandlers.insert(std::make_pair(name, newList));
+    }
+
+    return mEventHandlers[name].size() - 1;
+}
+
+void Manager::RemoveListener(std::string name, size_t handlerId) {
+    if(mEventHandlers.find(name) != mEventHandlers.end()) {
+        try {
+            mEventHandlers[name].erase(mEventHandlers[name].begin()+handlerId);
+        } catch(std::exception ex) {
+            // TODO(zaklaus): Print error message here!
+        }
+    }
+}
+
+void Manager::UpdateListener(std::string name, size_t handlerId, callback_generic callback, void* blob) {
+    ListenerInfo info{ callback, blob };
+
+    if(mEventHandlers.find(name) != mEventHandlers.end()) {
+        try {
+            mEventHandlers[name][handlerId] = info;
+        } catch(std::exception ex) {
+            // TODO(zaklaus): Print error message here!
+        }
     }
 }
 

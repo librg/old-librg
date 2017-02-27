@@ -49,7 +49,11 @@ public:
      * @param callback  Callback that would be executed.
      * @param blob      Internal data for the listener. (Optional)
      */
-    void AddListener(std::string name, callback_generic callback, void* blob=0);
+    size_t AddListener(std::string name, callback_generic callback, void* blob=0);
+
+    void RemoveListener(std::string name, size_t handlerId);
+
+    void UpdateListener(std::string name, size_t handlerId, callback_generic callback, void* blob=0);
 
     /**
      * Public API method for triggering server event. This method passes custom event data to the callback. This method calls all registered handlers under specified event name.

@@ -82,13 +82,39 @@ struct VodkaEvent
 };
 
 void event_system_test() {
-    Server::Event::Manager::Instance()->AddListener("onVodkaTooWeak", [](const void* event, void* /* blob */){
+    size_t handlerId = Server::Event::Manager::Instance()->AddListener("onVodkaTooWeak", [](const void* event, void* /* blob */){
         const VodkaEvent* vodka = (VodkaEvent*)event;
         Server::Core::Log("We need %s of vodka!", vodka->amount.c_str());
     });
 
     Server::Event::Manager::Instance()->Dispatch("onVodkaTooWeak",
         new VodkaEvent{ "a lot" }
+    );
+
+    Server::Event::Manager::Instance()->RemoveListener("onVodkaTooWeak", handlerId);
+
+    // NOTE(zaklaus): This should not be called at all.
+    Server::Event::Manager::Instance()->Dispatch("onVodkaTooWeak",
+        new VodkaEvent{ "a bit" }
+    );
+
+    // NOTE(zaklaus): Let's try to assign and update the handler.
+    handlerId = Server::Event::Manager::Instance()->AddListener("onVodkaTooWeak", [](const void* event, void* /* blob */){
+        const VodkaEvent* vodka = (VodkaEvent*)event;
+        Server::Core::Log("We still need %s of vodka!", vodka->amount.c_str());
+    });
+
+    Server::Event::Manager::Instance()->Dispatch("onVodkaTooWeak",
+        new VodkaEvent{ "plenty" }
+    );
+
+    Server::Event::Manager::Instance()->UpdateListener("onVodkaTooWeak", handlerId, [](const void* event, void* /* blob */){
+        const VodkaEvent* vodka = (VodkaEvent*)event;
+        Server::Core::Log("We don't need %s of vodka anymore (lies)!", vodka->amount.c_str());
+    });
+
+    Server::Event::Manager::Instance()->Dispatch("onVodkaTooWeak",
+        new VodkaEvent{ "any" }
     );
 }
 
