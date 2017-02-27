@@ -82,8 +82,8 @@ struct VodkaEvent
 };
 
 void event_system_test() {
-    Server::Event::Manager::Instance()->AddListener("onVodkaTooWeak", [](void* event, void* /* blob */){
-        VodkaEvent* vodka = (VodkaEvent*)event;
+    Server::Event::Manager::Instance()->AddListener("onVodkaTooWeak", [](const void* event, void* /* blob */){
+        const VodkaEvent* vodka = (VodkaEvent*)event;
         Server::Core::Log("We need %s of vodka!", vodka->amount.c_str());
     });
 

@@ -21,7 +21,7 @@ namespace Event
      */
     inline static void eventAddHandler(const char* eventName, Function callback)
     {
-        Server::Event::Manager::Instance()->AddListener(eventName, [](void *event, void* blob){
+        Server::Event::Manager::Instance()->AddListener(eventName, [](const void *event, void* blob){
             auto script = (ScriptEvent*)event;
             auto cb = (Function*)blob;
             cb->Execute(script->params);

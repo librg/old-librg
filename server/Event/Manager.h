@@ -14,7 +14,7 @@
 namespace Server {
 namespace Event {
 
-typedef std::function<void(void*, void*)> callback_generic;
+typedef std::function<void(const void*, void*)> callback_generic;
 
 enum
 {
