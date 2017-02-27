@@ -120,6 +120,12 @@ void event_system_test() {
     }, VodkaEventResponse);
 
     Event::Manager::Instance()->Dispatch("onVodkaTooWeak", new VodkaEvent{ "a lot" });
+
+    Event::Manager::Instance()->AddListener("onTestMessageRequested", [](const void* /* event */, void* /* blob */){
+        Core::Log("This is a test message!");
+    }, [](const void* data, Sqrat::Array* array){
+        return nullptr;
+    });
 }
 
 /**

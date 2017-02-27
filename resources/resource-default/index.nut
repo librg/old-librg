@@ -159,12 +159,10 @@ foreach (p in playerpos) {
 print("Total nodes: " + playerpos.len());
 root.dump();*/
 
-native.eventAddHandler("onDeveloperDrinksVodka", function (_) {
-    ::print("*Gulp*");
+native.eventAddHandler("onDeveloperDrinksVodka", function (amount, name) {
+    ::print("*Gulp* " + amount + " " + name);
 });
 
-native.eventAddHandler("onDeveloperDrinksVodka", function (_) {
-    ::print("I have enough already!");
-});
-
-native.eventServerTrigger("onDeveloperDrinksVodka", "dogmeat");
+//native.eventServerTrigger("onDeveloperDrinksVodka", [12, "Vlad"]);
+native.eventServerTrigger("onVodkaTooWeak", ["plenty"]);
+native.eventServerTrigger("onTestMessageRequested", []);
