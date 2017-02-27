@@ -15,9 +15,23 @@
 typedef std::function<void(const void*, void*)> callback_generic;
 typedef std::function<void(const void*, Sqrat::Function*)> callback_script;
 typedef std::function<void*(const void*, Sqrat::Array*)> callback_response;
+typedef std::function<Sqrat::Array*(HSQUIRRELVM vm)> callback_array;
 
 #define EVENT_GENERIC(name) void name##(const void* data, void* blob)
 #define EVENT_RESPONSE(name) void* name##(const void* data, Sqrat::Array* array)
+#define EVENT_ARRAY(name) Sqrat::Array* name##(HSQUIRRELVM vm)
+
+inline static EVENT_RESPONSE(GenericNoResponse) {
+    return nullptr;
+}
+
+inline static EVENT_ARRAY(GenericNoArray) {
+    return nullptr;
+}
+
+#define EVENT_PARAM(data) { data, nullptr, GenericNoArray }
+#define EVENT_PARAM_SQ(cb) { nullptr, nullptr, cb }
+#define EVENT_PARAM_SQ_INTERNAL(array) { nullptr, array, GenericNoArray }
 
 struct ScriptEvent
 {
@@ -26,6 +40,13 @@ struct ScriptEvent
 };
 
 typedef ScriptEvent DispatchEvent;
+
+struct DispatchParams
+{
+    void* event;
+    Sqrat::Array* array;
+    callback_array arproc;
+};
 
 namespace Server {
 namespace Event {
@@ -49,10 +70,6 @@ struct DispatchCleanupStack
     void* event;
     Sqrat::Array* array;
 };
-
-inline static EVENT_RESPONSE(GenericNoResponse) {
-    return nullptr;
-}
 
 class Manager : public Singleton<Manager>
 {
@@ -78,7 +95,7 @@ public:
      * @param eventName   Name of the event to call.
      * @param event       Event data to be passed.
      */
-    void Dispatch(std::string name, void* event=0, Sqrat::Array* array=0);
+    void Dispatch(std::string name, DispatchParams params);
 
 private:
     static void Callback(uv_async_t* req);

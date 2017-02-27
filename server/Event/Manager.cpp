@@ -30,11 +30,16 @@ void Manager::RemoveListener(std::string name, size_t handlerId) {
     }
 }
 
-void Manager::Dispatch(std::string name, void* event, Sqrat::Array* array) {
+void Manager::Dispatch(std::string name, DispatchParams params) {
     if(mEventHandlers.find(name) != mEventHandlers.end()) {
         for(auto handler : mEventHandlers[name]) {
             uv_async_t* async = new uv_async_t;
-            auto data = new DispatchData{ handler, event, array };
+
+            if(!params.array && handler.blob) {
+                params.array = params.arproc(((Sqrat::Function*)handler.blob)->GetVM());
+            }
+
+            auto data = new DispatchData{ handler, params.event, params.array };
             uv_async_init(uv_default_loop(), async, &Manager::Callback);
             async->data = (void*)data;
             uv_async_send(async);
@@ -44,17 +49,13 @@ void Manager::Dispatch(std::string name, void* event, Sqrat::Array* array) {
     // NOTE(zaklaus): Destroy the event data once we're done with the calls.
     uv_async_t* async = new uv_async_t;
     uv_async_init(uv_default_loop(), async, &Manager::CleanupEvent);
-    async->data = (void*)new DispatchCleanupStack{ event, array };
+    async->data = (void*)new DispatchCleanupStack{ params.event, params.array };
     uv_async_send(async);
 }
 
 void Manager::Callback(uv_async_t* req) {
     auto data = (DispatchData*)req->data;
     void* params = data->info.responder(data->event, data->array);
-    if ((int)params == -1) {
-        // NOTE(zaklaus): Supress SQ->SQ call.
-        return;
-    }
 
     data->info.callback(params, data->info.blob);
 

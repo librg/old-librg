@@ -76,26 +76,17 @@ void on_console_message(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf)
 #include <sqrat.h>
 using namespace Server;
 
-struct SQVodkaDrink
-{
-    int amount;
-    std::string name;
-};
+void event_system_cpp_to_sq() {
+    int amount = 666;
+    std::string name = "Vlad";
 
-void SQVodkaDrinkCaller(const void* data, Sqrat::Function* callback) {
-    auto drink = (SQVodkaDrink*)data;
-    callback->Execute(drink->amount, drink->name);
+    Event::Manager::Instance()->Dispatch("onDeveloperDrinksVodka", EVENT_PARAM_SQ([=](HSQUIRRELVM vm){
+        auto array = new Sqrat::Array(vm);
+        array->Append(amount);
+        array->Append(name);
+        return array;
+    }));
 }
-
-void event_system_sq_test() {
-    Event::Manager::Instance()->Dispatch("onDeveloperDrinksVodka",
-        new ScriptEvent{
-            new SQVodkaDrink { 42, "Vlad" },
-            SQVodkaDrinkCaller
-        }
-    );
-}
-
 
 // TODO(zaklaus): Move these test blocks somewhere, main.cpp just gets bloated by this.
 struct VodkaEvent
@@ -119,11 +110,11 @@ void event_system_test() {
         Core::Log("We need %s of vodka!", vodka->amount.c_str());
     }, VodkaEventResponse);
 
-    Event::Manager::Instance()->Dispatch("onVodkaTooWeak", new VodkaEvent{ "a lot" });
+    Event::Manager::Instance()->Dispatch("onVodkaTooWeak", EVENT_PARAM(new VodkaEvent{ "a lot" }));
 
     Event::Manager::Instance()->AddListener("onTestMessageRequested", [](const void* /* event */, void* /* blob */){
         Core::Log("This is a test message!");
-    }, Event::GenericNoResponse);
+    }, GenericNoResponse);
 }
 
 /**

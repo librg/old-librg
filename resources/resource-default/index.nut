@@ -159,14 +159,12 @@ foreach (p in playerpos) {
 print("Total nodes: " + playerpos.len());
 root.dump();*/
 
-native.eventAddHandler("onDeveloperDrinksVodka", function (amount, name) {
-    ::print("*Gulp* " + amount + " " + name);
+native.eventAddHandler("onDeveloperDrinksVodka", function (array) {
+    ::print("*Gulp* " + array[0] + " " + array[1]);
 });
 
 //native.eventServerTrigger("onDeveloperDrinksVodka", [12, "Vlad"]);
 native.eventServerTrigger("onVodkaTooWeak", ["plenty"]);
 native.eventServerTrigger("onTestMessageRequested", []);
 
-// NOTE(zaklaus): This should not work, since it is SQ->SQ call.
-// This gets solved by using internal event system on the SQ side.
-native.eventServerTrigger("onDeveloperDrinksVodka", []);
+native.eventServerTrigger("onDeveloperDrinksVodka", [12, "Vlad"]);
