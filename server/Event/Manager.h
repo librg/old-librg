@@ -50,6 +50,10 @@ struct DispatchCleanupStack
     Sqrat::Array* array;
 };
 
+inline static EVENT_RESPONSE(GenericNoResponse) {
+    return nullptr;
+}
+
 class Manager : public Singleton<Manager>
 {
     friend class Singleton<Manager>;

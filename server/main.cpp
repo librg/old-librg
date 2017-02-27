@@ -123,9 +123,7 @@ void event_system_test() {
 
     Event::Manager::Instance()->AddListener("onTestMessageRequested", [](const void* /* event */, void* /* blob */){
         Core::Log("This is a test message!");
-    }, [](const void* data, Sqrat::Array* array){
-        return nullptr;
-    });
+    }, Event::GenericNoResponse);
 }
 
 /**
