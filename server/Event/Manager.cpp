@@ -51,6 +51,10 @@ void Manager::Dispatch(std::string name, void* event, Sqrat::Array* array) {
 void Manager::Callback(uv_async_t* req) {
     auto data = (DispatchData*)req->data;
     void* params = data->info.responder(data->event, data->array);
+    if ((int)params == -1) {
+        // NOTE(zaklaus): Supress SQ->SQ call.
+        return;
+    }
 
     data->info.callback(params, data->info.blob);
 

@@ -166,3 +166,7 @@ native.eventAddHandler("onDeveloperDrinksVodka", function (amount, name) {
 //native.eventServerTrigger("onDeveloperDrinksVodka", [12, "Vlad"]);
 native.eventServerTrigger("onVodkaTooWeak", ["plenty"]);
 native.eventServerTrigger("onTestMessageRequested", []);
+
+// NOTE(zaklaus): This should not work, since it is SQ->SQ call.
+// This gets solved by using internal event system on the SQ side.
+native.eventServerTrigger("onDeveloperDrinksVodka", []);

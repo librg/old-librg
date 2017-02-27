@@ -2,6 +2,7 @@
 #define __event_system
 
 using namespace Sqrat;
+#include "Core.h"
 
 
 namespace Server    {
@@ -21,7 +22,12 @@ namespace Event
             auto script = (ScriptEvent*)event;
             auto cb = (Function*)blob;
             script->caller(script->params, cb);
-        }, NULL, new Function(callback));
+        }, [](const void* data, Sqrat::Array* array){
+            if(array) {
+                return (void*)-1;
+            }
+            return (void*)data;
+        }, new Function(callback));
     }
 
     /**
