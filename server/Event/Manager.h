@@ -44,6 +44,12 @@ struct DispatchData
     Sqrat::Array* array;
 };
 
+struct DispatchCleanupStack
+{
+    void* event;
+    Sqrat::Array* array;
+};
+
 class Manager : public Singleton<Manager>
 {
     friend class Singleton<Manager>;

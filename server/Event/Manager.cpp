@@ -44,7 +44,7 @@ void Manager::Dispatch(std::string name, void* event, Sqrat::Array* array) {
     // NOTE(zaklaus): Destroy the event data once we're done with the calls.
     uv_async_t* async = new uv_async_t;
     uv_async_init(uv_default_loop(), async, &Manager::CleanupEvent);
-    async->data = event;
+    async->data = (void*)new DispatchCleanupStack{ event, array };
     uv_async_send(async);
 }
 
@@ -69,7 +69,10 @@ void Manager::Cleanup(uv_async_t* req) {
 }
 
 void Manager::CleanupEvent(uv_async_t* req) {
-    delete req->data;
+    auto data = (DispatchCleanupStack*)req->data;
+    delete data->array;
+    delete data->event;
+    delete data;
     uv_close((uv_handle_t*)req, NULL);
 }
 

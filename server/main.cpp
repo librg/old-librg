@@ -119,8 +119,7 @@ void event_system_test() {
         Core::Log("We need %s of vodka!", vodka->amount.c_str());
     }, VodkaEventResponse);
 
-    Event::Manager::Instance()->Dispatch("onVodkaTooWeak",
-    new VodkaEvent{ "a lot" });
+    Event::Manager::Instance()->Dispatch("onVodkaTooWeak", new VodkaEvent{ "a lot" });
 }
 
 /**
