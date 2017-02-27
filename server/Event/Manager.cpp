@@ -30,7 +30,7 @@ void Manager::RemoveListener(std::string name, size_t handlerId) {
     }
 }
 
-void Manager::UpdateListener(std::string name, size_t handlerId, callback_generic callback, void* blob) {
+void Manager::ReplaceListener(std::string name, size_t handlerId, callback_generic callback, void* blob) {
     ListenerInfo info{ callback, blob };
 
     if(mEventHandlers.find(name) != mEventHandlers.end()) {
@@ -40,6 +40,23 @@ void Manager::UpdateListener(std::string name, size_t handlerId, callback_generi
             // TODO(zaklaus): Print error message here!
         }
     }
+}
+
+size_t Manager::UpdateListener(std::string name, size_t handlerId, callback_generic callback, void* blob) {
+    ListenerInfo info{ callback, blob };
+
+    if(mEventHandlers.find(name) != mEventHandlers.end()) {
+        try {
+            mEventHandlers[name][handlerId] = info;
+        } catch(std::exception ex) {
+            mEventHandlers[name].push_back(info);
+        }
+    } else {
+        std::vector<ListenerInfo> newList = { info };
+        mEventHandlers.insert(std::make_pair(name, newList));
+    }
+
+    return mEventHandlers[name].size() - 1;
 }
 
 void Manager::Dispatch(std::string name, void* event) {

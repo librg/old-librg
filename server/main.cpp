@@ -108,9 +108,9 @@ void event_system_test() {
         new VodkaEvent{ "plenty" }
     );
 
-    Server::Event::Manager::Instance()->UpdateListener("onVodkaTooWeak", handlerId, [](const void* event, void* /* blob */){
+    Server::Event::Manager::Instance()->ReplaceListener("onVodkaTooWeak", handlerId, [](const void* event, void* /* blob */){
         const VodkaEvent* vodka = (VodkaEvent*)event;
-        Server::Core::Log("We don't need %s of vodka anymore (lies)!", vodka->amount.c_str());
+        Server::Core::Log("We don't need %s vodka anymore (lies)!", vodka->amount.c_str());
     });
 
     Server::Event::Manager::Instance()->Dispatch("onVodkaTooWeak",
