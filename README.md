@@ -1,29 +1,28 @@
-# m2o-server
+# ReGuider Framework
 
-New, in process-of-rewriting server code base.
+This framework offers a complete suite to host multiplayer games and applications.
 
 ## Pre-install
 Before starting, make sure you have installed [CMake](https://cmake.org/). It will be used to generate make files for your system.
-Also make sure you have installed any working compiler for your system.
+Also make sure you have installed a working compiler for your system.
 
 ## Installation
 
 ```sh
-$ git clone --recursive git@gitlab.com:Mafia2Online/m2o-server.git
+$ git clone --recursive git@gitlab.com:reguider/reguider.git
 $ mkdir -p build && cd build
 $ cmake ..
 ```
 
 ## Building
 
-Then go inside build folder, there you can find either Makefile which should be used to `make` it.
+Go inside the build folder, there you can find either your generated project files.
 
 Unix:
 
 ```sh
 cd build
-make
-./server
+make -j<numcores>
 ```
 
 Windows:
