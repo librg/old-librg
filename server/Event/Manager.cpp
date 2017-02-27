@@ -44,10 +44,12 @@ void Manager::ReplaceListener(std::string name, size_t handlerId, callback_gener
 
 size_t Manager::UpdateListener(std::string name, size_t handlerId, callback_generic callback, void* blob) {
     ListenerInfo info{ callback, blob };
+    bool isPushed = true;
 
     if(mEventHandlers.find(name) != mEventHandlers.end()) {
         try {
             mEventHandlers[name][handlerId] = info;
+            isPushed = false;
         } catch(std::exception ex) {
             mEventHandlers[name].push_back(info);
         }
@@ -56,7 +58,7 @@ size_t Manager::UpdateListener(std::string name, size_t handlerId, callback_gene
         mEventHandlers.insert(std::make_pair(name, newList));
     }
 
-    return mEventHandlers[name].size() - 1;
+    return isPushed ? mEventHandlers[name].size() - 1 : handlerId;
 }
 
 void Manager::Dispatch(std::string name, void* event) {
