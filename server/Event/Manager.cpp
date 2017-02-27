@@ -51,8 +51,7 @@ void Manager::Callback(uv_async_t* req) {
 }
 
 void Manager::Cleanup(uv_async_t* req) {
-    auto data = (DispatchData*)req->data;
-    delete data;
+    delete req->data;
     uv_close((uv_handle_t*)req, NULL);
 }
 
