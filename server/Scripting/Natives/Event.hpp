@@ -3,16 +3,12 @@
 
 using namespace Sqrat;
 
+
 namespace Server    {
 namespace Scripting {
 
-
 namespace Event
 {
-    struct ScriptEvent
-    {
-        std::string params;
-    };
 
     /**
      * Public API method for adding event handler. Multiple event handlers per event name are supported.
@@ -21,11 +17,11 @@ namespace Event
      */
     inline static void eventAddHandler(const char* eventName, Function callback)
     {
-        Server::Event::Manager::Instance()->AddListener(eventName, [](const void *event, void* blob){
+        size_t handlerId = Server::Event::Manager::Instance()->AddListener(eventName, [](const void *event, void* blob){
             auto script = (ScriptEvent*)event;
             auto cb = (Function*)blob;
-            cb->Execute(script->params);
-        }, new Function(callback));
+            script->caller(script->params, cb);
+        }, NULL, new Function(callback));
     }
 
     /**
@@ -33,11 +29,9 @@ namespace Event
      * @param eventName   Name of the event to call.
      * @param params      JSON serialized data blob.
      */
-    inline static void eventServerTrigger(const char* eventName, const char* params)
+    inline static void eventServerTrigger(const char* eventName, Array array)
     {
-        Server::Event::Manager::Instance()->Dispatch(eventName,
-            new ScriptEvent{ params }
-        );
+        Server::Event::Manager::Instance()->Dispatch(eventName, NULL, new Array(array));
     }
 
     /**

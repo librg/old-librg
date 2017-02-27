@@ -73,6 +73,28 @@ void on_console_message(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf)
     buf->base[nread] = '\0';
     Server::Core::Instance()->OnInput(buf->base);
 }
+#include <sqrat.h>
+using namespace Server;
+
+struct SQVodkaDrink
+{
+    int amount;
+    std::string name;
+};
+
+void SQVodkaDrinkCaller(const void* data, Sqrat::Function* callback) {
+    auto drink = (SQVodkaDrink*)data;
+    callback->Execute(drink->amount, drink->name);
+}
+
+void event_system_sq_test() {
+    Event::Manager::Instance()->Dispatch("onDeveloperDrinksVodka",
+        new ScriptEvent{
+            new SQVodkaDrink { 42, "Vlad" },
+            SQVodkaDrinkCaller
+        }
+    );
+}
 
 
 // TODO(zaklaus): Move these test blocks somewhere, main.cpp just gets bloated by this.
@@ -81,41 +103,24 @@ struct VodkaEvent
     std::string amount;
 };
 
+EVENT_RESPONSE(VodkaEventResponse) {
+    if(array!=0) {
+        auto vodka = new VodkaEvent;
+        std::string amount = array->Pop().Cast<char*>();
+        vodka->amount = amount;
+        return vodka;
+    }
+    return (void*)data;
+}
+
 void event_system_test() {
-    size_t handlerId = Server::Event::Manager::Instance()->AddListener("onVodkaTooWeak", [](const void* event, void* /* blob */){
+    size_t handlerId = Event::Manager::Instance()->AddListener("onVodkaTooWeak", [](const void* event, void* /* blob */){
         const VodkaEvent* vodka = (VodkaEvent*)event;
-        Server::Core::Log("We need %s of vodka!", vodka->amount.c_str());
-    });
+        Core::Log("We need %s of vodka!", vodka->amount.c_str());
+    }, VodkaEventResponse);
 
-    Server::Event::Manager::Instance()->Dispatch("onVodkaTooWeak",
-        new VodkaEvent{ "a lot" }
-    );
-
-    Server::Event::Manager::Instance()->RemoveListener("onVodkaTooWeak", handlerId);
-
-    // NOTE(zaklaus): This should not be called at all.
-    Server::Event::Manager::Instance()->Dispatch("onVodkaTooWeak",
-        new VodkaEvent{ "a bit" }
-    );
-
-    // NOTE(zaklaus): Let's try to assign and update the handler.
-    handlerId = Server::Event::Manager::Instance()->AddListener("onVodkaTooWeak", [](const void* event, void* /* blob */){
-        const VodkaEvent* vodka = (VodkaEvent*)event;
-        Server::Core::Log("We still need %s of vodka!", vodka->amount.c_str());
-    });
-
-    Server::Event::Manager::Instance()->Dispatch("onVodkaTooWeak",
-        new VodkaEvent{ "plenty" }
-    );
-
-    Server::Event::Manager::Instance()->ReplaceListener("onVodkaTooWeak", handlerId, [](const void* event, void* /* blob */){
-        const VodkaEvent* vodka = (VodkaEvent*)event;
-        Server::Core::Log("We don't need %s vodka anymore (lies)!", vodka->amount.c_str());
-    });
-
-    Server::Event::Manager::Instance()->Dispatch("onVodkaTooWeak",
-        new VodkaEvent{ "any" }
-    );
+    Event::Manager::Instance()->Dispatch("onVodkaTooWeak",
+    new VodkaEvent{ "a lot" });
 }
 
 /**

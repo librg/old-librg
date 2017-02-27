@@ -2,6 +2,7 @@
 #define __event_manager
 
 #include <uv.h>
+#include <sqrat.h>
 
 #include <map>
 #include <unordered_map>
@@ -11,20 +12,28 @@
 
 #include <Utils/Singleton.h>
 
+typedef std::function<void(const void*, void*)> callback_generic;
+typedef std::function<void(const void*, Sqrat::Function*)> callback_script;
+typedef std::function<void*(const void*, Sqrat::Array*)> callback_response;
+
+#define EVENT_GENERIC(name) void name##(const void* data, void* blob)
+#define EVENT_RESPONSE(name) void* name##(const void* data, Sqrat::Array* array)
+
+struct ScriptEvent
+{
+    void* params;
+    callback_script caller;
+};
+
+typedef ScriptEvent DispatchEvent;
+
 namespace Server {
 namespace Event {
-
-typedef std::function<void(const void*, void*)> callback_generic;
-
-enum
-{
-    EventType_Generic,
-    EventType_Script,
-};
 
 struct ListenerInfo
 {
     callback_generic callback;
+    callback_response responder;
     void* blob;
 };
 
@@ -32,6 +41,7 @@ struct DispatchData
 {
     ListenerInfo info;
     void* event;
+    Sqrat::Array* array;
 };
 
 class Manager : public Singleton<Manager>
@@ -49,20 +59,16 @@ public:
      * @param callback  Callback that would be executed.
      * @param blob      Internal data for the listener. (Optional)
      */
-    size_t AddListener(std::string name, callback_generic callback, void* blob=0);
+    size_t AddListener(std::string name, callback_generic callback, callback_response responder, void* blob=0);
 
     void RemoveListener(std::string name, size_t handlerId);
-
-    void ReplaceListener(std::string name, size_t handlerId, callback_generic callback, void* blob=0);
-
-    size_t UpdateListener(std::string name, size_t handlerId, callback_generic callback, void* blob=0);
 
     /**
      * Public API method for triggering server event. This method passes custom event data to the callback. This method calls all registered handlers under specified event name.
      * @param eventName   Name of the event to call.
      * @param event       Event data to be passed.
      */
-    void Dispatch(std::string name, void* event);
+    void Dispatch(std::string name, void* event=0, Sqrat::Array* array=0);
 
 private:
     static void Callback(uv_async_t* req);

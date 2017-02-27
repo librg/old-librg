@@ -7,8 +7,8 @@ void Manager::Init() {
     // TODO(zaklaus): do something useful, if required..
 }
 
-size_t Manager::AddListener(std::string name, callback_generic callback, void* blob) {
-    ListenerInfo info{ callback, blob };
+size_t Manager::AddListener(std::string name, callback_generic callback, callback_response responder, void* blob) {
+    ListenerInfo info{ callback, responder, blob };
 
     if(mEventHandlers.find(name) != mEventHandlers.end()) {
         mEventHandlers[name].push_back(info);
@@ -30,42 +30,11 @@ void Manager::RemoveListener(std::string name, size_t handlerId) {
     }
 }
 
-void Manager::ReplaceListener(std::string name, size_t handlerId, callback_generic callback, void* blob) {
-    ListenerInfo info{ callback, blob };
-
-    if(mEventHandlers.find(name) != mEventHandlers.end()) {
-        try {
-            mEventHandlers[name][handlerId] = info;
-        } catch(std::exception ex) {
-            // TODO(zaklaus): Print error message here!
-        }
-    }
-}
-
-size_t Manager::UpdateListener(std::string name, size_t handlerId, callback_generic callback, void* blob) {
-    ListenerInfo info{ callback, blob };
-    bool isPushed = true;
-
-    if(mEventHandlers.find(name) != mEventHandlers.end()) {
-        try {
-            mEventHandlers[name][handlerId] = info;
-            isPushed = false;
-        } catch(std::exception ex) {
-            mEventHandlers[name].push_back(info);
-        }
-    } else {
-        std::vector<ListenerInfo> newList = { info };
-        mEventHandlers.insert(std::make_pair(name, newList));
-    }
-
-    return isPushed ? mEventHandlers[name].size() - 1 : handlerId;
-}
-
-void Manager::Dispatch(std::string name, void* event) {
+void Manager::Dispatch(std::string name, void* event, Sqrat::Array* array) {
     if(mEventHandlers.find(name) != mEventHandlers.end()) {
         for(auto handler : mEventHandlers[name]) {
             uv_async_t* async = new uv_async_t;
-            auto data = new DispatchData{ handler, event };
+            auto data = new DispatchData{ handler, event, array };
             uv_async_init(uv_default_loop(), async, &Manager::Callback);
             async->data = (void*)data;
             uv_async_send(async);
@@ -81,8 +50,9 @@ void Manager::Dispatch(std::string name, void* event) {
 
 void Manager::Callback(uv_async_t* req) {
     auto data = (DispatchData*)req->data;
+    void* params = data->info.responder(data->event, data->array);
 
-    data->info.callback(data->event, data->info.blob);
+    data->info.callback(params, data->info.blob);
 
     uv_async_t* async = new uv_async_t;
     uv_async_init(uv_default_loop(), async, &Manager::Cleanup);
