@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = git@gitlab.com:reguider/lib-http-parser.git
+	branch = master
+	commit = 2a9f3fd83ad00f0ebcbb372c5d47c464666137c3
+	parent = 6f4c3e5fdd274a0fa06e7bbedaffce61269150b9
+	cmdver = 0.3.1
