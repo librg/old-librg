@@ -12,10 +12,10 @@
 
 #include <Utils/Singleton.h>
 
-typedef std::function<void(const void*, void*)> callback_generic;
-typedef std::function<void(const void*, Sqrat::Function*)> callback_script;
-typedef std::function<void*(const void*, Sqrat::Array*)> callback_response;
-typedef std::function<Sqrat::Array*(HSQUIRRELVM vm)> callback_array;
+using callback_generic = std::function<void(const void*, void*)>;
+using callback_script = std::function<void(const void*, Sqrat::Function*)>;
+using callback_response = std::function<void*(const void*, Sqrat::Array*)>;
+using callback_array = std::function<Sqrat::Array*(HSQUIRRELVM vm)>;
 
 #define EVENT_GENERIC(name) void name##(const void* data, void* blob)
 #define EVENT_RESPONSE(name) void* name##(const void* data, Sqrat::Array* array)
