@@ -94,7 +94,7 @@ struct VodkaEvent
     std::string amount;
 };
 
-EVENT_RESPONSE(VodkaEventResponse) {
+void* VodkaEventResponse(const void* data, Sqrat::Array* array) {
     if(array!=0) {
         auto vodka = new VodkaEvent;
         std::string amount = array->Pop().Cast<char*>();
