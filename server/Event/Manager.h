@@ -21,11 +21,11 @@ typedef std::function<Sqrat::Array*(HSQUIRRELVM vm)> callback_array;
 #define EVENT_RESPONSE(name) void* name##(const void* data, Sqrat::Array* array)
 #define EVENT_ARRAY(name) Sqrat::Array* name##(HSQUIRRELVM vm)
 
-inline static EVENT_RESPONSE(GenericNoResponse) {
+inline static void* GenericNoResponse(const void*, Sqrat::Array*) {
     return nullptr;
 }
 
-inline static EVENT_ARRAY(GenericNoArray) {
+inline static Sqrat::Array* GenericNoArray(HSQUIRRELVM vm) {
     return nullptr;
 }
 
