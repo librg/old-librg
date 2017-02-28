@@ -110,7 +110,7 @@ void event_system_test() {
         Core::Log("We need %s of vodka!", vodka->amount.c_str());
     }, VodkaEventResponse);
 
-    Event::Manager::Instance()->Dispatch("onVodkaTooWeak", EVENT_PARAM(new VodkaEvent{ "a lot" }));
+    Event::Manager::Instance()->Dispatch("onVodkaTooWeak", EVENT_PARAM_CPP(new VodkaEvent{ "a lot" }));
 
     Event::Manager::Instance()->AddListener("onTestMessageRequested", [](const void* /* event */, void* /* blob */){
         Core::Log("This is a test message!");
@@ -118,12 +118,12 @@ void event_system_test() {
 }
 
 /**
- * Main program enter point
+ * Starts the server!
  * @param  argc
  * @param  argv
  * @return exit code
  */
-int main(int argc, char * argv[]) {
+int Start(int argc, char * argv[]) {
     uv_timer_t idler;
     uv_timer_t timer_req;
     uv_tty_t tty;

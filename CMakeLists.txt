@@ -2,7 +2,7 @@
 # CMake entry point
 ###
 cmake_minimum_required (VERSION 2.8)
-project (M2OServer)
+project (ReGuider)
 
 
 ###
@@ -56,11 +56,11 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 # Hacks
 # On Visual 2005 and above, this module can set the debug working directory
 ###
-cmake_policy(SET CMP0026 OLD)
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/vendor/rpavlik-cmake-modules-fe2273")
-include(CreateLaunchers)
-include(MSVCMultipleProcessCompile) # /MP
-set(CMAKE_MACOSX_RPATH 1)
+# cmake_policy(SET CMP0026 OLD)
+# list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/vendor/rpavlik-cmake-modules-fe2273")
+# include(CreateLaunchers)
+# include(MSVCMultipleProcessCompile) # /MP
+# set(CMAKE_MACOSX_RPATH 1)
 
 ###
 # Includes for libs and remote sources
@@ -73,28 +73,24 @@ include_directories(
     vendor/lib-sqrat/include
     vendor/lib-tinyxml2
     vendor/lib-http-parser
-    server/
+    librg/
 )
 
-file(GLOB_RECURSE SERVER_FILES
-  "${PROJECT_SOURCE_DIR}/server/*.cpp"
+file(GLOB_RECURSE LIBRG_FILES
+  "${PROJECT_SOURCE_DIR}/librg/*.cpp"
 )
 
 ###
 # Includes for current source executable
 ###
-add_executable(server
-    ${SERVER_FILES}
-)
-
-add_executable(client-test
-    client-test/main.cpp
+add_library(librg STATIC
+    ${LIBRG_FILES}
 )
 
 ###
 # Linking libraries
 ###
-target_link_libraries(server
+target_link_libraries(librg
     RakNetLibStatic
     squirrel
     sqstdlib
@@ -103,24 +99,16 @@ target_link_libraries(server
     uv
 )
 
-target_include_directories(server PUBLIC
+target_include_directories(librg PUBLIC
     vendor/lib-raknet/Source
     # vendor/squirrel/include
     # vendor/squirrel/squirrel
     # vendor/squirrel/squirrel
 )
 
-target_link_libraries(client-test
-    RakNetLibStatic
-)
-
-target_include_directories(client-test PUBLIC
-    vendor/lib-raknet/Source
-)
-
 # Xcode and Visual working directories
-set_target_properties(server PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/server/")
-create_target_launcher(server WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/server/")
+# set_target_properties(librg PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/librg/")
+# create_target_launcher(librg WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/librg/")
 
 
 # SOURCE_GROUP(shared REGULAR_EXPRESSION ".*/shared/.*" )
@@ -134,4 +122,3 @@ create_target_launcher(server WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/ser
 # elseif (${CMAKE_GENERATOR} MATCHES "Xcode" )
 
 # endif (NOT ${CMAKE_GENERATOR} MATCHES "Xcode" )
-

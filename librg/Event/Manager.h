@@ -29,8 +29,9 @@ inline static Sqrat::Array* GenericNoArray(HSQUIRRELVM vm) {
     return nullptr;
 }
 
-#define EVENT_PARAM(data) { data, nullptr, GenericNoArray }
+#define EVENT_PARAM(data,cb) { data, nullptr, cb }
 #define EVENT_PARAM_SQ(cb) { nullptr, nullptr, cb }
+#define EVENT_PARAM_CPP(data) { data, nullptr, GenericNoArray }
 #define EVENT_PARAM_SQ_INTERNAL(array) { nullptr, array, GenericNoArray }
 
 struct ScriptEvent
