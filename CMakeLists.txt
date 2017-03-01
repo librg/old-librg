@@ -64,13 +64,6 @@ set(CMAKE_MACOSX_RPATH 1)
 # Includes for libs and remote sources
 ###
 include_directories(
-    vendor/lib-raknet/
-    # vendor/squirrel/include
-    # vendor/squirrel/squirrel
-    vendor/lib-libuv-cmake/libuv/include
-    vendor/lib-sqrat/include
-    vendor/lib-tinyxml2
-    vendor/lib-http-parser
     include/librg/
 )
 
@@ -112,7 +105,10 @@ target_include_directories(librg PUBLIC
     vendor/lib-raknet/Source
     # vendor/squirrel/include
     # vendor/squirrel/squirrel
-    # vendor/squirrel/squirrel
+    vendor/lib-libuv-cmake/libuv/include
+    vendor/lib-sqrat/include
+    vendor/lib-tinyxml2
+    vendor/lib-http-parser
 )
 
 # Xcode and Visual working directories
