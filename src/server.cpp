@@ -1,12 +1,10 @@
 #include <uv.h>
 #include <stdinc.h>
 #include <clocale>
+
 #include <Core.h>
-#include <mathfu/vector.h>
 
 namespace Server {
-
-    mathfu::vec2 vector(1.0f, 2.0f);
 
     uint64_t counter = 0;
 

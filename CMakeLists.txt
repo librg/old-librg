@@ -113,6 +113,7 @@ target_include_directories(librg PUBLIC
     vendor/lib-sqrat/include
     vendor/lib-tinyxml2
     vendor/lib-http-parser
+    vendor/lib-mathfu/dependencies/vectorial/include
     vendor/lib-mathfu/include
 )
 
