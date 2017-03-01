@@ -56,8 +56,8 @@ endif()
 ###
 cmake_policy(SET CMP0026 OLD)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/vendor/rpavlik-cmake-modules-fe2273")
-include(CreateLaunchers)
-include(MSVCMultipleProcessCompile) # /MP
+# include(CreateLaunchers)
+# include(MSVCMultipleProcessCompile) # /MP
 set(CMAKE_MACOSX_RPATH 1)
 
 ###
@@ -71,7 +71,7 @@ include_directories(
     vendor/lib-sqrat/include
     vendor/lib-tinyxml2
     vendor/lib-http-parser
-    include/
+    include/librg/
 )
 
 file(GLOB_RECURSE LIBRG_FILES
@@ -105,8 +105,8 @@ target_include_directories(librg PUBLIC
 )
 
 # Xcode and Visual working directories
-set_target_properties(librg PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/librg/")
-create_target_launcher(librg WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/librg/")
+# set_target_properties(librg PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/librg/")
+# create_target_launcher(librg WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/librg/")
 
 
 # SOURCE_GROUP(shared REGULAR_EXPRESSION ".*/shared/.*" )
