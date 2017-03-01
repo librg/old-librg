@@ -97,6 +97,17 @@ target_link_libraries(librg
     uv
 )
 
+if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    target_link_libraries(librg
+        IPHLPAPI
+        psapi
+        shell32
+        advapi32
+        ws2_32
+        userenv
+    )
+endif()
+
 target_include_directories(librg PUBLIC
     vendor/lib-raknet/Source
     # vendor/squirrel/include

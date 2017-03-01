@@ -1,11 +1,11 @@
-#ifdef WIN32
-#pragma comment(lib, "IPHLPAPI.lib")
-#pragma comment(lib, "psapi.lib")
-#pragma comment(lib, "shell32.lib")
-#pragma comment(lib, "advapi32.lib")
-#pragma comment(lib, "ws2_32.lib")
-#pragma comment(lib, "userenv.lib")
-#endif
+// #ifdef WIN32
+// #pragma comment(lib, "IPHLPAPI.lib")
+// #pragma comment(lib, "psapi.lib")
+// #pragma comment(lib, "shell32.lib")
+// #pragma comment(lib, "advapi32.lib")
+// #pragma comment(lib, "ws2_32.lib")
+// #pragma comment(lib, "userenv.lib")
+// #endif
 
 #include <uv.h>
 #include <stdinc.h>
