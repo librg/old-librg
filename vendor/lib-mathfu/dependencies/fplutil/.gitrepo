@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/google/fplutil.git
+	branch = master
+	commit = 85707ff7a9f25086872995aef025b666fea120de
+	parent = 6fe7b1f63bdf65b30f12d5346db7cbcb536d428b
+	cmdver = 0.3.1
