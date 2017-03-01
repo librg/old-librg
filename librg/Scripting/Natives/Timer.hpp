@@ -4,12 +4,7 @@
 #include <uv.h>
 #include <cstdint>
 
-namespace Server    {
-namespace Scripting {
-
-
-namespace Timer
-{
+namespace Server::Scripting::Timer {
     /**
      * Private method for cleaning up timers(intervals)
      * after they are finished
@@ -72,10 +67,5 @@ namespace Timer
         native.Func("clearInterval", &clearInterval);
     }
 }
-
-
-
-} // Scripting
-} // Server
 
 #endif // __scripting_timer

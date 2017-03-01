@@ -7,34 +7,29 @@
 
 #include "Client.h"
 
-namespace Server {
-namespace Network  {
+namespace Server::Network {
+    const short NETWORK_PACKET_LIMIT = 256; // current limit for amount of packets introduced by the mod on top of (134) raknet packets
 
-const short NETWORK_PACKET_LIMIT = 256; // current limit for amount of packets introduced by the mod on top of (134) raknet packets
+    class Handler
+    {
+    public:
+        Handler(RakNet::RakPeerInterface *peer, std::map<RakNet::RakNetGUID, Client*> *Clients);
+        ~Handler();
 
-class Handler
-{
-public:
-    Handler(RakNet::RakPeerInterface *peer, std::map<RakNet::RakNetGUID, Client*> *Clients);
-    ~Handler();
+        void Dispatch(RakNet::Packet* packet);
 
-    void Dispatch(RakNet::Packet* packet);
+    private:
+        void OnClientConnectAttempt(RakNet::Packet* packet);
+        void OnClientInit(RakNet::Packet* packet);
+        void OnClientConnect(RakNet::Packet* packet);
+        void OnClientDisconnect(RakNet::Packet* packet);
+        void OnTest(RakNet::Packet* packet);
 
-private:
-    void OnClientConnectAttempt(RakNet::Packet* packet);
-    void OnClientInit(RakNet::Packet* packet);
-    void OnClientConnect(RakNet::Packet* packet);
-    void OnClientDisconnect(RakNet::Packet* packet);
-    void OnTest(RakNet::Packet* packet);
+        void (Handler::*mRegistry[NETWORK_PACKET_LIMIT])(RakNet::Packet* packet);
 
-    void (Handler::*mRegistry[NETWORK_PACKET_LIMIT])(RakNet::Packet* packet);
-
-    std::map<RakNet::RakNetGUID, Client*> *mClients;
-    RakNet::RakPeerInterface *mPeer;
-};
-
-
-} // namespace Network
-} // namespace Server
+        std::map<RakNet::RakNetGUID, Client*> *mClients;
+        RakNet::RakPeerInterface *mPeer;
+    };
+}
 
 #endif // __network_handler_h
