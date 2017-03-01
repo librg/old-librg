@@ -43,24 +43,24 @@ add_subdirectory(vendor/lib-sqrat)
 add_subdirectory(vendor/lib-tinyxml2)
 add_subdirectory(vendor/lib-http-parser)
 
-## TODO: fix later for beautiful c++17 code
-# if (NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-#     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z")
-# else()
-#     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++latest")
-# endif()
-
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
+# TODO: fix later for beautiful c++17 code
+if (NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z")
+else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++latest")
+endif()
 
 ###
 # Hacks
 # On Visual 2005 and above, this module can set the debug working directory
 ###
-# cmake_policy(SET CMP0026 OLD)
-# list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/vendor/rpavlik-cmake-modules-fe2273")
-# include(CreateLaunchers)
-# include(MSVCMultipleProcessCompile) # /MP
-# set(CMAKE_MACOSX_RPATH 1)
+cmake_policy(SET CMP0026 OLD)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/vendor/rpavlik-cmake-modules-fe2273")
+include(CreateLaunchers)
+include(MSVCMultipleProcessCompile) # /MP
+set(CMAKE_MACOSX_RPATH 1)
 
 ###
 # Includes for libs and remote sources
@@ -107,8 +107,8 @@ target_include_directories(librg PUBLIC
 )
 
 # Xcode and Visual working directories
-# set_target_properties(librg PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/librg/")
-# create_target_launcher(librg WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/librg/")
+set_target_properties(librg PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/librg/")
+create_target_launcher(librg WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/librg/")
 
 
 # SOURCE_GROUP(shared REGULAR_EXPRESSION ".*/shared/.*" )

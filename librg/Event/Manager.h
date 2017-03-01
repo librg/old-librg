@@ -49,8 +49,7 @@ struct DispatchParams
     callback_array arproc;
 };
 
-namespace Server {
-namespace Event {
+namespace Server::Event {
 
 struct ListenerInfo
 {
@@ -106,7 +105,6 @@ private:
     std::unordered_map<std::string, std::vector<ListenerInfo>> mEventHandlers;
 };
 
-} // Event
-} // Server
+}
 
 #endif
