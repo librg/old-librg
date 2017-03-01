@@ -17,6 +17,6 @@
  * version of build. server owner can decide,
  * should clients should be refused or allowed joining the game
  */
-#ifndef NETWORK_PROTOCOL_VERSION
+#ifndef NETWORK_BUILD_VERSION
 #define NETWORK_BUILD_VERSION 1
 #endif

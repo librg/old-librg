@@ -32,6 +32,9 @@ ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 option(RAKNET_ENABLE_DLL "Generate the DLL project if true." OFF)
 option(RAKNET_ENABLE_SAMPLES "" OFF)
 set(RAKNET_ENABLE_DLL OFF CACHE BOOL "Generate the DLL project if true.")
+option(mathfu_build_benchmarks "Build MathFu benchmarks." OFF)
+option(mathfu_build_tests "Build MathFu unit tests." OFF)
+
 
 ###
 # Compile vendor dependencies
@@ -42,6 +45,7 @@ add_subdirectory(vendor/lib-squirrel)
 add_subdirectory(vendor/lib-sqrat)
 add_subdirectory(vendor/lib-tinyxml2)
 add_subdirectory(vendor/lib-http-parser)
+add_subdirectory(vendor/lib-mathfu)
 
 # TODO: fix later for beautiful c++17 code
 if (NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
@@ -109,6 +113,7 @@ target_include_directories(librg PUBLIC
     vendor/lib-sqrat/include
     vendor/lib-tinyxml2
     vendor/lib-http-parser
+    vendor/lib-mathfu/include
 )
 
 # Xcode and Visual working directories
