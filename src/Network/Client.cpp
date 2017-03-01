@@ -1,4 +1,4 @@
-#include "Client.h"
+#include <Network/Client.h>
 
 Client::Client(std::string nickName, RakNet::SystemAddress systemAddress, std::string serial)
     : mNickName(nickName)

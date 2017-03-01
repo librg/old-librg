@@ -1,6 +1,6 @@
-#include <Scripting/Index.hpp>
 #include <Core.h>
-#include "Resource.h"
+#include <Scripting/Index.hpp>
+#include <Resource/Resource.h>
 
 using namespace Server::Resource;
 

@@ -3,7 +3,7 @@
 #include <Shared/BuildVersion.h>
 #include <Shared/MessageID.h>
 
-#include "Connection.h"
+// #include "Connection.h"
 
 using namespace Server;
 
@@ -78,12 +78,12 @@ void Network::Handler::OnClientConnect(RakNet::Packet* packet)
     bsOutput.Write(static_cast<RakNet::MessageID>(MessageID::CONNECTION_ACCEPTED));
     mPeer->Send(&bsOutput, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
 
-    Game::Manager::Instance()->Trigger(1, packet);
-    Event::Manager::Instance()->Dispatch("OnClientConnect", EVENT_PARAM(new OnClientConnectData{ packet }, [=](HSQUIRRELVM vm){
-        auto array = new Sqrat::Array(vm);
-        array->Append(packet);
-        return array;
-    }));
+    // Game::Manager::Instance()->Trigger(1, packet);
+    // Event::Manager::Instance()->Dispatch("OnClientConnect", EVENT_PARAM(new OnClientConnectData{ packet }, [=](HSQUIRRELVM vm){
+    //     auto array = new Sqrat::Array(vm);
+    //     array->Append(packet);
+    //     return array;
+    // }));
     // Core::Log("OnClientConnect: id: %d name: %s serial: %s", packet->systemAddress.systemIndex, nickName.C_String(), serial.C_String());
     return;
 }
@@ -93,10 +93,11 @@ void Network::Handler::OnClientConnect(RakNet::Packet* packet)
  */
 void Network::Handler::OnClientDisconnect(RakNet::Packet* packet)
 {
-    Event::Manager::Instance()->Dispatch("OnClientDisconnect", EVENT_PARAM(new OnClientConnectData{ packet }, [=](HSQUIRRELVM vm){
-        auto array = new Sqrat::Array(vm);
-        array->Append(packet);
-        return array;
-    }));
+    // Event::Manager::Instance()->Dispatch("OnClientDisconnect", EVENT_PARAM(new OnClientConnectData{ packet }, [=](HSQUIRRELVM vm){
+    //     auto array = new Sqrat::Array(vm);
+    //     array->Append(packet);
+    //     return array;
+    // }));
+
     Core::Log("OnClientDisconnect: id: %d", packet->systemAddress.systemIndex);
 }

@@ -45,7 +45,7 @@ add_subdirectory(vendor/lib-http-parser)
 
 # TODO: fix later for beautiful c++17 code
 if (NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -Wno-delete-incomplete")
 else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++latest")
 endif()
@@ -71,11 +71,11 @@ include_directories(
     vendor/lib-sqrat/include
     vendor/lib-tinyxml2
     vendor/lib-http-parser
-    librg/
+    include/
 )
 
 file(GLOB_RECURSE LIBRG_FILES
-  "${PROJECT_SOURCE_DIR}/librg/*.cpp"
+  "${PROJECT_SOURCE_DIR}/src/*.cpp"
 )
 
 ###

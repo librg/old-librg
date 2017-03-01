@@ -1,9 +1,9 @@
-#include <Core.h>
-#include "Manager.h"
-
-#include <Utils/Filesystem.h>
 #include <tinyxml2.h>
 #include <vector>
+
+#include <Core.h>
+#include <Utils/Filesystem.h>
+#include <Resource/Manager.h>
 
 using namespace tinyxml2;
 using namespace Server::Resource;

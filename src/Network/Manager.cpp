@@ -1,5 +1,5 @@
-#include "Manager.h"
 #include <Core.h>
+#include <Network/Manager.h>
 
 const short DEFAULT_SERVER_PORT = 27010;
 
