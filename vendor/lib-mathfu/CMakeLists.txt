@@ -17,9 +17,9 @@ set(PROJECT_NAME MathFu)
 project(MathFu)
 
 # Call fplutil to get locations of dependencies and set common build settings.
-include("cmake/find_fplutil.cmake")
-include("${fplutil_dir}/buildutil/cmake_common.txt")
-set_common_build_variables()
+# include("cmake/find_fplutil.cmake")
+# include("${fplutil_dir}/buildutil/cmake_common.txt")
+# set_common_build_variables()
 
 # Options that control the build configuration.
 # To configure MathFu flags per build target, see the
