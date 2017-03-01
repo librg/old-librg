@@ -6,7 +6,10 @@
 #include "Natives/Timer.hpp"
 #include "Natives/Resource.hpp"
 
-namespace Server::Scripting::Registry {
+namespace Server    {
+namespace Scripting {
+namespace Registry  {
+
     /**
      * All our bingings are going in there
      */
@@ -22,6 +25,10 @@ namespace Server::Scripting::Registry {
         // System::Install(vm);
         // System::Install(vm);
     }
-}
+
+
+} // Registry
+} // Scripting
+} // Server
 
 #endif // __scripting_registry

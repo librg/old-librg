@@ -1,7 +1,12 @@
 #ifndef __scripting_system
 #define __scripting_system
 
-namespace Server::Scripting::System {
+namespace Server    {
+namespace Scripting {
+
+
+namespace System
+{
     /**
      * TODO: remove
      * @param message [description]
@@ -32,5 +37,10 @@ namespace Server::Scripting::System {
         native.Func("test2", &test2);
     }
 }
+
+
+} // Scripting
+} // Server
+
 
 #endif // __scripting_system

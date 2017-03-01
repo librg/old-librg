@@ -3,7 +3,12 @@
 
 #include <Resource/Manager.h>
 
-namespace Server::Scripting::Resource {
+namespace Server    {
+namespace Scripting {
+
+
+namespace Resource
+{
     /**
      * Public api
      * check wether or not particular resource has been loaded
@@ -24,5 +29,10 @@ namespace Server::Scripting::Resource {
         native.Func("resourceLoaded", &resourceLoaded);
     }
 }
+
+
+
+} // Scripting
+} // Server
 
 #endif // __scripting_resource

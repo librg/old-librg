@@ -9,28 +9,34 @@
 #include "Client.h"
 #include "Handler.h"
 
-namespace Server::Network {
-    class Manager : public Singleton<Manager>
-    {
-        friend class Singleton<Manager>;
+namespace Server {
+namespace Network  {
 
-    public:
-        Manager();
-        ~Manager();
-        void Init();
-        void Tick();
 
-        void Update(uint64_t tick);
-        void Receive();
+class Manager : public Singleton<Manager>
+{
+    friend class Singleton<Manager>;
 
-        RakNet::RakPeerInterface* GetPeer() { return mPeer; }
+public:
+    Manager();
+    ~Manager();
+    void Init();
+    void Tick();
 
-    private:
-        RakNet::RakPeerInterface* mPeer;
-        RakNet::SocketDescriptor mSocketDescriptor;
-        std::map<RakNet::RakNetGUID, Client*> mClients;
-        Network::Handler* mHandler;
-    };
-}
+    void Update(uint64_t tick);
+    void Receive();
+
+    RakNet::RakPeerInterface* GetPeer() { return mPeer; }
+
+private:
+    RakNet::RakPeerInterface* mPeer;
+    RakNet::SocketDescriptor mSocketDescriptor;
+    std::map<RakNet::RakNetGUID, Client*> mClients;
+    Network::Handler* mHandler;
+};
+
+
+} // Netwrok
+} // Server
 
 #endif // __network_manager

@@ -5,7 +5,11 @@ using namespace Sqrat;
 #include "Core.h"
 
 
-namespace Server::Scripting::Event {
+namespace Server    {
+namespace Scripting {
+
+namespace Event
+{
     /**
      * Public API method for adding event handler. Multiple event handlers per event name are supported.
      * @param eventName Event name under which the handler should be registered.
@@ -45,5 +49,10 @@ namespace Server::Scripting::Event {
         table.Func("eventServerTrigger", &eventServerTrigger);
     }
 }
+
+
+
+} // Scripting
+} // Server
 
 #endif // __event_system
