@@ -1,6 +1,11 @@
 #ifndef _stdinc_h
 #define _stdinc_h
 
+#ifdef _MSC_VER
+#define _CRT_SECURE_NO_WARNINGS
+#pragma warning(disable:4996)
+#endif
+
 /**
  * Always include stdio.h and stdlib.h.
  */

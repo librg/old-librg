@@ -43,8 +43,6 @@ add_subdirectory(vendor/lib-sqrat)
 add_subdirectory(vendor/lib-tinyxml2)
 add_subdirectory(vendor/lib-http-parser)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-
 # TODO: fix later for beautiful c++17 code
 if (NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z")
