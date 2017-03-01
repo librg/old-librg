@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/google/mathfu.git
+	branch = master
+	commit = 85b4c9f5b67457492c47bdfc4e669e3d6cae2e81
+	parent = 9759488c39c34d035a84163170a20950706cb5d1
+	cmdver = 0.3.1
