@@ -6,25 +6,21 @@
 #include "Natives/Timer.hpp"
 #include "Natives/Resource.hpp"
 
-namespace Server::Scripting {
-    namespace Registry
+namespace Server::Scripting::Registry {
+    /**
+     * All our bingings are going in there
+     */
+    inline static void Install(Sqrat::Table& native)
     {
-        /**
-         * All our bingings are going in there
-         */
-        inline static void Install(Sqrat::Table& native)
-        {
-            Event::Install(native);
-            System::Install(native);
-            Timer::Install(native);
-            Resource::Install(native);
-            // System::Install(vm);
-            // System::Install(vm);
-            // System::Install(vm);
-            // System::Install(vm);
-            // System::Install(vm);
-        }
-
+        Event::Install(native);
+        System::Install(native);
+        Timer::Install(native);
+        Resource::Install(native);
+        // System::Install(vm);
+        // System::Install(vm);
+        // System::Install(vm);
+        // System::Install(vm);
+        // System::Install(vm);
     }
 }
 
