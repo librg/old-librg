@@ -1,7 +1,7 @@
 #ifndef __game_entity
 #define __game_entity
 
-#include <Game/World.h>
+#include <librg/Game/World.h>
 
 namespace Server  {
 namespace Game    {

@@ -1,8 +1,8 @@
 #include <uv.h>
-#include <stdinc.h>
+#include <librg/stdinc.h>
 #include <clocale>
 
-#include <Core.h>
+#include <librg/Core.h>
 
 namespace Server {
 

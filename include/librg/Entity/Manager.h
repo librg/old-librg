@@ -1,7 +1,7 @@
 #ifndef __entity_system
 #define __entity_system
 
-#include <Utils/Singleton.h>
+#include <librg/Utils/Singleton.h>
 
 #include <array>
 
@@ -21,7 +21,7 @@ struct entity_id
     void*   data;
 };
 
-entity_id InvalidEntity = {-1,-1,-1,nullptr};
+static entity_id InvalidEntity = {-1,-1,-1,nullptr};
 
 namespace Server {
 namespace Entity {

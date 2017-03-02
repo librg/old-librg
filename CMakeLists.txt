@@ -68,7 +68,7 @@ set(CMAKE_MACOSX_RPATH 1)
 # Includes for libs and remote sources
 ###
 include_directories(
-    include/librg/
+    include/
 )
 
 file(GLOB_RECURSE LIBRG_FILES

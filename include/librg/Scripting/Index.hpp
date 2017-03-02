@@ -9,7 +9,7 @@
 #include <sqstdsystem.h>
 #include <sqstdstring.h>
 
-#include <Core.h>
+#include <librg/Core.h>
 #include "Registry.hpp"
 
 namespace Server    {

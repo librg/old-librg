@@ -1,7 +1,7 @@
-#include <Core.h>
-#include <Network/Handler.h>
-#include <Shared/BuildVersion.h>
-#include <Shared/MessageID.h>
+#include <librg/Core.h>
+#include <librg/Network/Handler.h>
+#include <librg/Shared/BuildVersion.h>
+#include <librg/Shared/MessageID.h>
 
 // #include "Connection.h"
 

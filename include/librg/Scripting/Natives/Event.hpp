@@ -2,8 +2,6 @@
 #define __event_system
 
 using namespace Sqrat;
-#include "Core.h"
-
 
 namespace Server    {
 namespace Scripting {

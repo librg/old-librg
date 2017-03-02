@@ -3,14 +3,14 @@
 
 #define SERVER
 
-#include <Event/Manager.h>
-#include <Entity/Manager.h>
-#include <Game/Manager.h>
-#include <Network/Manager.h>
-#include <Resource/Manager.h>
+#include <librg/Event/Manager.h>
+#include <librg/Entity/Manager.h>
+#include <librg/Game/Manager.h>
+#include <librg/Network/Manager.h>
+#include <librg/Resource/Manager.h>
 
-#include <Utils/Singleton.h>
-#include <Utils/Utils.h>
+#include <librg/Utils/Singleton.h>
+#include <librg/Utils/Utils.h>
 
 namespace Server {
 

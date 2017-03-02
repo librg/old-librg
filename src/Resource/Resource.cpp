@@ -1,6 +1,6 @@
-#include <Core.h>
-#include <Scripting/Index.hpp>
-#include <Resource/Resource.h>
+#include <librg/Core.h>
+#include <librg/Scripting/Index.hpp>
+#include <librg/Resource/Resource.h>
 
 using namespace Server::Resource;
 

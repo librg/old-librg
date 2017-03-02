@@ -1,7 +1,7 @@
 #ifndef __scripting_resource
 #define __scripting_resource
 
-#include <Resource/Manager.h>
+#include <librg/Resource/Manager.h>
 
 namespace Server    {
 namespace Scripting {

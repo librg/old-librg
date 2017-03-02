@@ -1,7 +1,7 @@
 #include <MessageIdentifiers.h>
 
-#include <Shared/MessageID.h>
-#include <Network/Handler.h>
+#include <librg/Shared/MessageID.h>
+#include <librg/Network/Handler.h>
 
 #ifdef DEBUG
 #include <Core.h>

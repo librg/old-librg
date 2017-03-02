@@ -10,7 +10,7 @@
 #include <string>
 #include <functional>
 
-#include <Utils/Singleton.h>
+#include <librg/Utils/Singleton.h>
 
 using callback_generic = std::function<void(const void*, void*)>;
 using callback_script = std::function<void(const void*, Sqrat::Function*)>;
