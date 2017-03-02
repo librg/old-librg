@@ -4,6 +4,7 @@
 #define SERVER
 
 #include <Event/Manager.h>
+#include <Entity/Manager.h>
 #include <Game/Manager.h>
 #include <Network/Manager.h>
 #include <Resource/Manager.h>

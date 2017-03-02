@@ -11,7 +11,7 @@
 namespace Server {
 namespace Game  {
 
-const entityId_t MAX_ENTITIES = 1000;
+//const entityId_t MAX_ENTITIES = 1000;
 
 class Manager : public Singleton<Manager>
 {
