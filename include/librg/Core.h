@@ -5,7 +5,6 @@
 
 #include <librg/Event/Manager.h>
 #include <librg/Entity/Manager.h>
-#include <librg/Game/Manager.h>
 #include <librg/Network/Manager.h>
 #include <librg/Resource/Manager.h>
 
@@ -22,7 +21,6 @@ private:
     bool mRunning;
 
     Network::Manager* mNetworkManager;
-    Game::Manager* mGameManager;
 
 public:
     Core();

@@ -2,6 +2,7 @@
 #define __scripting_registry
 
 #include "Natives/Event.hpp"
+#include "Natives/Entity.hpp"
 #include "Natives/System.hpp"
 #include "Natives/Timer.hpp"
 #include "Natives/Resource.hpp"
@@ -16,10 +17,10 @@ namespace Registry  {
     inline static void Install(Sqrat::Table& native)
     {
         Event::Install(native);
+        Entity::Install(native);
         System::Install(native);
         Timer::Install(native);
         Resource::Install(native);
-        // System::Install(vm);
         // System::Install(vm);
         // System::Install(vm);
         // System::Install(vm);

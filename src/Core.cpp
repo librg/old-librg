@@ -5,7 +5,6 @@ using namespace Server;
 Core::Core()
     : mRunning(false)
     , mNetworkManager(nullptr)
-    , mGameManager(nullptr)
     // , mDebugLogger(true, true)
 {
     this->Init();
@@ -55,7 +54,6 @@ void Core::Init()
 
     printf("%s\n\n", test.c_str());
 
-    Game::Manager::Instance();
     Network::Manager::Instance();
     Resource::Manager::Instance();
 
