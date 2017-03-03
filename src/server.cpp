@@ -7,6 +7,7 @@
 namespace Server {
 
     uint64_t counter = 0;
+    int width, height;
 
     /**
      * Main loop ticker
@@ -66,6 +67,17 @@ namespace Server {
         Server::Core::Instance()->OnInput(buf->base);
     }
 
+    void update(uv_timer_t* req)
+    {
+        char data[500];
+
+        uv_write_t write_req;
+        uv_buf_t buf;
+        buf.base = data;
+        buf.len = sprintf(data, "\0337\033[H\033[47;37m\033[2K\033[30m  Hello world\033[0;%dHTesting stuff\0338\033[39;49m", width - 20);
+        uv_write(&write_req, (uv_stream_t*)req->data, &buf, 1, NULL);
+    }
+
     /**
      * Starts the server!
      * @param  argc
@@ -108,24 +120,26 @@ namespace Server {
         uv_tty_init(uv_default_loop(), &tty, 0, 1);
         uv_tty_set_mode(&tty, UV_TTY_MODE_NORMAL);
 
+        uv_timer_t tick;
+        tick.data = &tty;
+        // fprintf(stderr, "Width %d, height %d\n", width, height);
+        uv_timer_init(uv_default_loop(), &tick);
+        uv_timer_start(&tick, update, 200, 200);
+
         // setup reading callback
         uv_read_start((uv_stream_t*)&tty, tty_alloc, on_console_message);
 
-        // if (uv_tty_get_winsize(&tty, &width, &height)) {
-        //     fprintf(stderr, "Could not get TTY information\n");
-        //     uv_tty_reset_mode();
-        //     return 1;
-        // }
-
-        // fprintf(stderr, "Width %d, height %d\n", width, height);
-        // uv_timer_init(uv_default_loop(), &tick);
-        // uv_timer_start(&tick, update, 200, 200);
+        if (uv_tty_get_winsize(&tty, &width, &height)) {
+            fprintf(stderr, "Could not get TTY information\n");
+            // uv_tty_reset_mode();
+        }
 
         // starting loop
         uv_run(uv_default_loop(), UV_RUN_DEFAULT);
 
         // after work is done, closing loop
         uv_loop_close(uv_default_loop());
+        // uv_tty_reset_mode();
 
         return 0;
     }
