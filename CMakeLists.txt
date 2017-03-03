@@ -35,6 +35,11 @@ set(RAKNET_ENABLE_DLL OFF CACHE BOOL "Generate the DLL project if true.")
 option(mathfu_build_benchmarks "Build MathFu benchmarks." OFF)
 option(mathfu_build_tests "Build MathFu unit tests." OFF)
 
+set(ENTITYX_BUILD_TESTING false CACHE BOOL "Enable building of tests.")
+set(ENTITYX_RUN_BENCHMARKS false CACHE BOOL "Run benchmarks (in conjunction with -DENTITYX_BUILD_TESTING=1).")
+set(ENTITYX_MAX_COMPONENTS 64 CACHE STRING "Set the maximum number of components.")
+set(ENTITYX_DT_TYPE double CACHE STRING "The type used for delta time in EntityX update methods.")
+set(ENTITYX_BUILD_SHARED false CACHE BOOL "Build shared libraries?")
 
 ###
 # Compile vendor dependencies
@@ -46,6 +51,7 @@ add_subdirectory(vendor/lib-sqrat)
 add_subdirectory(vendor/lib-tinyxml2)
 add_subdirectory(vendor/lib-http-parser)
 add_subdirectory(vendor/lib-mathfu)
+add_subdirectory(vendor/lib-entityx)
 
 # TODO: fix later for beautiful c++17 code
 if (NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
@@ -91,6 +97,7 @@ target_link_libraries(librg
     sqstdlib
     tinyxml2
     http_parser
+    entityx
     uv
 )
 
@@ -115,6 +122,7 @@ target_include_directories(librg PUBLIC
     vendor/lib-http-parser
     vendor/lib-mathfu/dependencies/vectorial/include
     vendor/lib-mathfu/include
+    vendor/lib-entityx
 )
 
 # Xcode and Visual working directories
