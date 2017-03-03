@@ -63,7 +63,7 @@ public:
 private:
     entity_id* Get(entity_id entity);
 
-    std::array<entity_id, MAX_ENTITIES> mEntities;
+    std::array<entity_id, MAX_ENTITIES> mEntities = {-1, 0, -1, nullptr };
 };
 
 } // Entity
