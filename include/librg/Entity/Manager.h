@@ -36,34 +36,34 @@ public:
     void Init();
 
     /**
-    * Public API method for creating an entity.
-    */
+     * Public API method for creating an entity.
+     */
     entity_id Create(int64_t type);
 
     /**
-    * Public API method for destroying an entity.
-    * @param    oldEntity  An entity to destroy.
-    */
+     * Public API method for destroying an entity.
+     * @param    oldEntity  An entity to destroy.
+     */
     void Destroy(entity_id oldEntity);
 
     /**
-    * Public API method for attaching data to the entity.
-    * @param    entity  An entity to attach to.
-    * @param    data    Data to attach.
-    */
+     * Public API method for attaching data to the entity.
+     * @param    entity  An entity to attach to.
+     * @param    data    Data to attach.
+     */
     void AttachData(entity_id entity, void* data);
 
     /**
-    * Public API method for detaching data from the entity.
-    * @note Caller handles data de-allocation.
-    * @param    entity  An entity to detach from.
-    */
+     * Public API method for detaching data from the entity.
+     * @note Caller handles data de-allocation.
+     * @param    entity  An entity to detach from.
+     */
     void DetachData(entity_id entity);
 
 private:
     entity_id* Get(entity_id entity);
 
-    std::array<entity_id, MAX_ENTITIES> mEntities;
+    std::array<entity_id, MAX_ENTITIES> mEntities = {-1, 0, -1, nullptr };
 };
 
 } // Entity
