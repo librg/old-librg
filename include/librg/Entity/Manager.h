@@ -9,11 +9,25 @@ namespace Server {
 namespace Entity {
 
 namespace Manager {
-    static inline entityx::EntityManager* Instance()
+    static inline entityx::EventManager* GetEvents()
     {
         static entityx::EventManager events;
-        static entityx::EntityManager entities(events);
+        return &events;
+    }
+
+    static inline entityx::EntityManager* Instance()
+    {
+        auto events = GetEvents();
+        static entityx::EntityManager entities(*events);
         return &entities;
+    }
+
+    static inline entityx::SystemManager* GetSystems()
+    {
+        auto entities = Instance();
+        auto events = GetEvents();
+        static entityx::SystemManager systems(*entities, *events);
+        return &systems;
     }
 }
 
