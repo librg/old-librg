@@ -84,7 +84,7 @@ void Network::Handler::OnClientConnect(RakNet::Packet* packet)
     //     array->Append(packet);
     //     return array;
     // }));
-    // Core::Log("OnClientConnect: id: %d name: %s serial: %s", packet->systemAddress.systemIndex, nickName.C_String(), serial.C_String());
+    Core::Log("OnClientConnect: id: %d name: %s serial: %s", packet->systemAddress.systemIndex, nickName.C_String(), serial.C_String());
     return;
 }
 

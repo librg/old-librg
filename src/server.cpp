@@ -139,7 +139,7 @@ namespace Server {
 
         // after work is done, closing loop
         uv_loop_close(uv_default_loop());
-        // uv_tty_reset_mode();
+        uv_tty_reset_mode();
 
         return 0;
     }
