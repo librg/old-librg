@@ -74,9 +74,5 @@ Manager::Manager()
 
 Manager::~Manager()
 {
-    for (auto resource : mResources) {
-        delete resource.second;
-    }
-
-    mResources.clear();
+    
 }

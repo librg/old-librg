@@ -20,17 +20,14 @@ namespace Event
             auto cb = (Function*)blob;
             cb->Execute(*array);
         }, [](const void* data, Sqrat::Array* array){
-            if(array) {
-                return ((void*)array);
-            }
-            return (void*)data;
+            return array ? (void*)array : (void*)data;
         }, new Function(callback));
     }
 
     /**
-     * Public API method for triggering server event. This method passes handler arguments via JSON blob. This method calls all registered handlers under specified event name.
+     * Public API method for triggering server event. This method passes handler arguments via Squirrel array. This method calls all registered handlers under specified event name.
      * @param eventName   Name of the event to call.
-     * @param params      JSON serialized data blob.
+     * @param params      Array of values.
      */
     inline static void eventServerTrigger(const char* eventName, Array array)
     {
