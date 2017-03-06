@@ -114,8 +114,7 @@ endif()
 
 target_include_directories(librg PUBLIC
     vendor/lib-raknet/Source
-    # vendor/squirrel/include
-    # vendor/squirrel/squirrel
+    vendor/squirrel/include
     vendor/lib-libuv-cmake/libuv/include
     vendor/lib-sqrat/include
     vendor/lib-tinyxml2
@@ -123,6 +122,7 @@ target_include_directories(librg PUBLIC
     vendor/lib-mathfu/dependencies/vectorial/include
     vendor/lib-mathfu/include
     vendor/lib-entityx
+    # vendor/squirrel/squirrel
 )
 
 # Xcode and Visual working directories
