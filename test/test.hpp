@@ -18,6 +18,7 @@ static inline void motd()
 
 static inline int results()
 {
+    puts("\n== TEST RESULTS ==");
     printf("Tests passed:\t%d\n", gPassed);
     printf("Tests failed:\t%d\n", gTotal-gPassed);
     printf("Total tests:\t%d\n",  gTotal);
