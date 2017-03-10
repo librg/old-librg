@@ -9,7 +9,7 @@ static int gPassed = 0;
 #define TEST_STRINGIFY(name) #name
 #define TEST(name) printf("Category: %s\n", name);
 #define IT(req) printf("- It %s\t", req); ++gTotal;
-#define EXPECT(cond) if(cond) { printf("%s\n", "[PASS]"); ++gPassed; } else { printf("%s\n", "[FAIL]"); } puts(" ");
+#define EXPECT(cond) if(cond) { printf("%s", "[PASS]"); ++gPassed; } else { printf("%s", "[FAIL]"); } puts(" ");
 
 static inline void motd()
 {
