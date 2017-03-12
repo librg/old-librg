@@ -1,5 +1,7 @@
-#include <librg/Core.h>
-#include <librg/Utils/Filesystem.h>
+#include <librg/utils/fs.h>
+#include <librg/core/shared.h>
+
+using namespace librg;
 
 /**
  * Inner method
@@ -10,7 +12,7 @@ void fs::private_onread(uv_fs_t *req)
     uv_fs_req_cleanup(req);
 
     if (req->result < 0) {
-        Server::Core::Error("file reading: %s\n", uv_strerror(req->result));
+        core::error("file reading: %s\n", uv_strerror(req->result));
     }
 
     fs_result_t* result = (fs_result_t*) req->data;
@@ -57,7 +59,7 @@ bool fs::read(std::string filename, fs::callback callback)
     int handle = uv_fs_open(uv_default_loop(), req, filename.c_str(), 0, 0, NULL);
 
     if (handle < 0) {
-        Server::Core::Error("file reading: \"%s\" %s\n", filename.c_str(), uv_strerror(handle));
+        core::error("file reading: \"%s\" %s\n", filename.c_str(), uv_strerror(handle));
         return false;
     }
 

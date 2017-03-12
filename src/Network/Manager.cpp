@@ -1,11 +1,11 @@
-#include <librg/Core.h>
-#include <librg/Network/Manager.h>
+#include <librg/core/shared.h>
+#include <librg/network/manager.h>
 
 const short DEFAULT_SERVER_PORT = 27010;
 
 using namespace Server;
 
-Network::Manager::Manager()
+NetworkManager::Manager()
     : mPeer   (nullptr)
     , mHandler(nullptr)
 {
@@ -15,7 +15,7 @@ Network::Manager::Manager()
     this->Init();
 }
 
-Network::Manager::~Manager()
+NetworkManager::~Manager()
 {
     mPeer->Shutdown(300);
     RakNet::RakPeerInterface::DestroyInstance( mPeer );
@@ -28,9 +28,9 @@ Network::Manager::~Manager()
  * sets up RakNet and starts
  * all network activty
  */
-void Network::Manager::Init()
+void NetworkManager::Init()
 {
-    Core::Log("initializing network...");
+    core::log("initializing network...");
 
     // TODO(inlife): move to settings.json
     mSocketDescriptor = RakNet::SocketDescriptor(DEFAULT_SERVER_PORT, 0);
@@ -56,7 +56,7 @@ void Network::Manager::Init()
  * Regulated ticker, should be used
  * to send regular messages to all connected clients
  */
-void Network::Manager::Update(uint64_t tick)
+void NetworkManager::Update(uint64_t tick)
 {
     // // Use a BitStream to write a custom user message
     // // Bitstreams are easier to use than sending casted structures, and handle endian swapping automatically
@@ -71,7 +71,7 @@ void Network::Manager::Update(uint64_t tick)
  * Called with very high rate, should be used
  * only to handle some light, none-blocking ops
  */
-void Network::Manager::Receive()
+void NetworkManager::Receive()
 {
     RakNet::Packet* packet = nullptr;
 

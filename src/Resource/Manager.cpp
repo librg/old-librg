@@ -1,15 +1,15 @@
-#include <tinyxml2.h>
 #include <vector>
+#include <tinyxml2.h>
 
-#include <librg/Core.h>
-#include <librg/Utils/Filesystem.h>
-#include <librg/Resource/Manager.h>
+#include <librg/core/shared.h>
+#include <librg/resource/manager.h>
+#include <librg/utils/fs.h>
 
+using namespace librg;
 using namespace tinyxml2;
-using namespace Server::Resource;
 
 // TODO(inlife): move to config.xml!
-std::vector<std::string> resources = {
+std::vector<std::string> resourcesList = {
     "resource-default",
     // "default",
 };
@@ -20,18 +20,18 @@ std::unordered_map<std::string, scriptType> scriptTypes = {
     std::make_pair<std::string, scriptType>("shared", tShared),
 };
 
-Manager::Manager()
+void ResourceManager::load()
 {
     // try to create resources folder
     int result = fs::mkdir("resources");
 
     if (result != 0 && result != UV_EEXIST) {
-        Core::Error(uv_strerror((int)result));
+        core::error(uv_strerror((int)result));
         return;
     }
 
     // iterate and try to load all provided resources
-    for (auto resource : resources) {
+    for (auto resource : resourcesList) {
         fs::read(fs::path("resources", resource, "meta.xml"), [resource] (fs::result_t* result) -> void {
 			tinyxml2::XMLDocument doc;
 
@@ -39,7 +39,7 @@ Manager::Manager()
             XMLElement* meta = doc.FirstChildElement("meta");
 
             if (!meta) {
-                Core::Error("There is no <meta> tag inside your %.*s file.", result->fplength, result->filepath);
+                core::error("There is no <meta> tag inside your %.*s file.", result->fplength, result->filepath);
                 return;
             }
 
@@ -67,12 +67,12 @@ Manager::Manager()
                 element = element->NextSiblingElement("script");
             }
 
-            Manager::Instance()->Add(resource, new Resource(resource, scripts));
+            ResourceManager::add(resource, new Resource(resource, scripts));
         });
     }
 }
 
-Manager::~Manager()
+void ResourceManager::unload()
 {
-    
+    // todo
 }

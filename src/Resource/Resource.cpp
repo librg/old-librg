@@ -1,8 +1,8 @@
-#include <librg/Core.h>
-#include <librg/Scripting/Index.hpp>
-#include <librg/Resource/Resource.h>
+#include <librg/core/shared.h>
+#include <librg/scripting/scripting.hpp>
+#include <librg/resource/resource.h>
 
-using namespace Server::Resource;
+using namespace librg;
 
 Resource::Resource(std::string name, std::vector<script_t*> scripts)
     : mVM(nullptr)
@@ -14,6 +14,13 @@ Resource::Resource(std::string name, std::vector<script_t*> scripts)
     this->Start();
 }
 
+Resource::~Resource()
+{
+    if (this->mRunning) {
+        this->Stop();
+    }
+}
+
 /**
  * Start this resource
  * @return [description]
@@ -21,18 +28,18 @@ Resource::Resource(std::string name, std::vector<script_t*> scripts)
 bool Resource::Start()
 {
     if (this->mRunning) {
-        Core::Error("Cannot start resource, its already running!");
+        core::error("Cannot start resource, its already running!");
         return false;
     }
 
-    Core::Log("Starting resource '%s'!", mName.c_str());
+    core::log("Starting resource '%s'!", mName.c_str());
 
     // setup data
     mRunning = true;
     mVM      = sq_open(1024);
 
     // load all scripting bindings
-    Scripting::Index::Install(mVM);
+    scripting::install(mVM);
 
     // iterate over each script and start it
     // and clean up filename string pointer
@@ -44,7 +51,7 @@ bool Resource::Start()
             vscript.CompileFile(script->filename->c_str());
             vscript.Run();
         } catch( Sqrat::Exception e ) {
-            Core::Error("Script loading exception: %s", e.Message().c_str());
+            core::error("Script loading exception: %s", e.Message().c_str());
         }
 
         delete script->filename;
@@ -56,19 +63,12 @@ bool Resource::Start()
 bool Resource::Stop()
 {
     if (!this->mRunning) {
-        Core::Error("Cannot stop resource, its already stopped!");
+        core::error("Cannot stop resource, its already stopped!");
         return false;
     }
 
-    Core::Log("Stopping resource '%s'!", mName.c_str());
+    core::log("Stopping resource '%s'!", mName.c_str());
     sq_close(mVM);
 
     return !(mRunning = false);
-}
-
-Resource::~Resource()
-{
-    if (this->mRunning) {
-        this->Stop();
-    }
 }

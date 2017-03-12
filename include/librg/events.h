@@ -1,5 +1,5 @@
-#ifndef __event_manager
-#define __event_manager
+#ifndef __event
+#define __event
 
 #include <uv.h>
 #include <sqrat.h>
@@ -109,4 +109,4 @@ private:
 } // Event
 } // Server
 
-#endif
+#endif // __event

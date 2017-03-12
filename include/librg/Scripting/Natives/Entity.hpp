@@ -1,45 +1,40 @@
-#ifndef __entity_system
-#define __entity_system
+#ifndef __scripting_entity
+#define __scripting_entity
 
 using namespace Sqrat;
 
-namespace Server    {
-namespace Scripting {
-
-namespace Entity
+namespace librg
 {
-    /**
-     * Public API method for creating an entity.
-     */
-    inline static uint64_t entityCreate(Function callback)
+    namespace scripting
     {
-        entityx::Entity entity = Server::Entity::Manager::Instance()->create();
-        return entity.id().id();
-    }
+        /**
+         * Public API method for creating an entity.
+         */
+        inline static uint64_t entity_create(Function callback)
+        {
+            entityx::Entity entity = librg::entity->create();
+            return entity.id().id();
+        }
 
-    /**
-     * Public API method for destroying an event.
-     * @param index   An ID of the entity.
-     */
-    inline static void entityDestroy(uint64_t index)
-    {
-        Server::Entity::Manager::Instance()->get((entityx::Entity::Id)index).destroy();
-    }
+        /**
+         * Public API method for destroying an event.
+         * @param index   An ID of the entity.
+         */
+        inline static void entity_destroy(uint64_t index)
+        {
+            librg::entity->get((entityx::Entity::Id)index).destroy();
+        }
 
-    /**
-     * Registry method
-     * @param table
-     */
-    inline static void Install(Table& table)
-    {
-        table.Func("entityCreate",  &entityCreate);
-        table.Func("entityDestroy", &entityDestroy);
+        /**
+         * Registry method
+         * @param table
+         */
+        inline static void entity_install(Table& table)
+        {
+            table.Func("entityCreate",  &entity_create);
+            table.Func("entityDestroy", &entity_destroy);
+        }
     }
 }
 
-
-
-} // Scripting
-} // Server
-
-#endif // __entity_system
+#endif // __scripting_entity

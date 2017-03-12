@@ -4,78 +4,72 @@
 #include <uv.h>
 #include <cstdint>
 
-namespace Server    {
-namespace Scripting {
-
-
-namespace Timer
+namespace librg
 {
-    /**
-     * Private method for cleaning up timers(intervals)
-     * after they are finished
-     * @param req
-     */
-    inline static void private_cleanup(uv_async_t* req)
+    namespace scripting
     {
-        delete (Sqrat::Function*)req->data;
-        uv_close((uv_handle_t*) req, NULL);
-    }
+        /**
+         * Private method for cleaning up timers(intervals)
+         * after they are finished
+         * @param req
+         */
+        inline static void __timer_cleanup(uv_async_t* req)
+        {
+            delete (Sqrat::Function*)req->data;
+            uv_close((uv_handle_t*) req, NULL);
+        }
 
-    /**
-     * Private method for calling up callback
-     * when interval iterations is triggered
-     * @param req
-     */
-    inline static void private_intervalCallback(uv_timer_t* req)
-    {
-        ((Sqrat::Function*)req->data)->Execute();
-    }
+        /**
+         * Private method for calling up callback
+         * when interval iterations is triggered
+         * @param req
+         */
+        inline static void __timer_interval_callback(uv_timer_t* req)
+        {
+            ((Sqrat::Function*)req->data)->Execute();
+        }
 
-    /**
-     * Public api method, for creating ticking timer with provided interval
-     * @param  callback    Squirrel wrapped function object, which will be added as a handler
-     * @param  miliseconds delay between each tick
-     * @return pointer onto created timer casted to uint
-     */
-    inline static std::uintptr_t setInterval(Sqrat::Function callback, uint16_t miliseconds)
-    {
-        uv_timer_t* timer_req = new uv_timer_t;
-        timer_req->data = new Sqrat::Function(callback);
+        /**
+         * Public api method, for creating ticking timer with provided interval
+         * @param  callback    Squirrel wrapped function object, which will be added as a handler
+         * @param  miliseconds delay between each tick
+         * @return pointer onto created timer casted to uint
+         */
+        inline static std::uintptr_t timer_create(Sqrat::Function callback, uint16_t miliseconds)
+        {
+            uv_timer_t* timer_req = new uv_timer_t;
+            timer_req->data = new Sqrat::Function(callback);
 
-        uv_timer_init(uv_default_loop(), timer_req);
-        uv_timer_start(timer_req, private_intervalCallback, miliseconds, miliseconds);
+            uv_timer_init(uv_default_loop(), timer_req);
+            uv_timer_start(timer_req, __timer_interval_callback, miliseconds, miliseconds);
 
-        return reinterpret_cast<std::uintptr_t>(timer_req);
-    }
+            return reinterpret_cast<std::uintptr_t>(timer_req);
+        }
 
-    /**
-     * Public api method for cleaning up created timer
-     * @param req uint pointer, which was returned with setInterval
-     */
-    inline static void clearInterval(std::uintptr_t req)
-    {
-        uv_timer_t* timer_req = reinterpret_cast<uv_timer_t*>(req);
-        uv_timer_stop(timer_req);
-        uv_async_t* async = new uv_async_t;
-        uv_async_init(uv_default_loop(), async, private_cleanup);
-        async->data = timer_req->data;
-        uv_async_send(async);
-    }
+        /**
+         * Public api method for cleaning up created timer
+         * @param req uint pointer, which was returned with setInterval
+         */
+        inline static void timer_destroy(std::uintptr_t req)
+        {
+            uv_timer_t* timer_req = reinterpret_cast<uv_timer_t*>(req);
+            uv_timer_stop(timer_req);
+            uv_async_t* async = new uv_async_t;
+            uv_async_init(uv_default_loop(), async, __timer_cleanup);
+            async->data = timer_req->data;
+            uv_async_send(async);
+        }
 
-    /**
-     * Registry method
-     * @param native
-     */
-    inline static void Install(Sqrat::Table& native)
-    {
-        native.Func("setInterval",   &setInterval);
-        native.Func("clearInterval", &clearInterval);
+        /**
+         * Registry method
+         * @param native
+         */
+        inline static void timer_install(Sqrat::Table& native)
+        {
+            native.Func("timerCreate",  &timer_create);
+            native.Func("timerDestroy", &timer_destroy);
+        }
     }
 }
-
-
-
-} // Scripting
-} // Server
 
 #endif // __scripting_timer

@@ -1,35 +1,28 @@
 #ifndef __scripting_registry
 #define __scripting_registry
 
-#include "Natives/Event.hpp"
-#include "Natives/Entity.hpp"
-#include "Natives/System.hpp"
-#include "Natives/Timer.hpp"
-#include "Natives/Resource.hpp"
+#include "natives/event.hpp"
+#include "natives/entity.hpp"
+#include "natives/system.hpp"
+#include "natives/timer.hpp"
+#include "natives/resource.hpp"
 
-namespace Server    {
-namespace Scripting {
-namespace Registry  {
-
-    /**
-     * All our bingings are going in there
-     */
-    inline static void Install(Sqrat::Table& native)
+namespace librg
+{
+    namespace scripting
     {
-        Event::Install(native);
-        Entity::Install(native);
-        System::Install(native);
-        Timer::Install(native);
-        Resource::Install(native);
-        // System::Install(vm);
-        // System::Install(vm);
-        // System::Install(vm);
-        // System::Install(vm);
+        /**
+         * All our bingings are going in there
+         */
+        inline static void registry_install(Sqrat::Table& native)
+        {
+            event_install(native);
+            entity_install(native);
+            system_install(native);
+            timer_install(native);
+            resource_install(native);
+        }
     }
-
-
-} // Registry
-} // Scripting
-} // Server
+}
 
 #endif // __scripting_registry

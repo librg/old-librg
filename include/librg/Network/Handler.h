@@ -5,7 +5,7 @@
 #include <RakPeerInterface.h>
 #include <BitStream.h>
 
-#include "Client.h"
+#include "client.h"
 
 namespace Server {
 namespace Network  {

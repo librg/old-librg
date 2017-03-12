@@ -1,25 +1,19 @@
 #ifndef __scripting_system
 #define __scripting_system
 
-namespace Server    {
-namespace Scripting {
-
-
-namespace System
+namespace librg
 {
-    /**
-     * Registry method
-     * @param native
-     */
-    inline static void Install(Sqrat::Table& native)
+    namespace scripting
     {
-        
+        /**
+         * Registry method
+         * @param native
+         */
+        inline static void system_install(Sqrat::Table& native)
+        {
+            // todo
+        }
     }
 }
-
-
-} // Scripting
-} // Server
-
 
 #endif // __scripting_system

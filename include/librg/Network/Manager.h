@@ -2,41 +2,34 @@
 #define __network_manager
 
 #include <map>
-
 #include <RakPeerInterface.h>
-#include <librg/Utils/Singleton.h>
 
-#include "Client.h"
-#include "Handler.h"
+#include "client.h"
+#include "handler.h"
 
-namespace Server {
-namespace Network  {
-
-
-class Manager : public Singleton<Manager>
+namespace librg
 {
-    friend class Singleton<Manager>;
+    class NetworkManager : public Singleton<Manager>
+    {
+        friend class Singleton<Manager>;
 
-public:
-    Manager();
-    ~Manager();
-    void Init();
-    void Tick();
+    public:
+        Manager();
+        ~Manager();
+        void Init();
+        void Tick();
 
-    void Update(uint64_t tick);
-    void Receive();
+        void Update(uint64_t tick);
+        void Receive();
 
-    RakNet::RakPeerInterface* GetPeer() { return mPeer; }
+        RakNet::RakPeerInterface* GetPeer() { return mPeer; }
 
-private:
-    RakNet::RakPeerInterface* mPeer;
-    RakNet::SocketDescriptor mSocketDescriptor;
-    std::map<RakNet::RakNetGUID, Client*> mClients;
-    Network::Handler* mHandler;
-};
-
-
-} // Netwrok
-} // Server
+    private:
+        RakNet::RakPeerInterface* mPeer;
+        RakNet::SocketDescriptor mSocketDescriptor;
+        std::map<RakNet::RakNetGUID, Client*> mClients;
+        Network::Handler* mHandler;
+    };
+}
 
 #endif // __network_manager
