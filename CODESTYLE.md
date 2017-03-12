@@ -2,6 +2,8 @@
 
 (and other stuff)
 
+**Main rule:** You required to use `cmake`
+
 ## Naming convention
 
 0. All files should have lowercased name
