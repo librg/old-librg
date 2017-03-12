@@ -2,22 +2,43 @@
 #define network_h
 
 #include <map>
+#include <string>
+#include <array>
+
 #include <RakPeerInterface.h>
+#include <BitStream.h>
 
 namespace librg
 {
-    static inline void network_initialize() {};
-    static inline void network_terminate() {};
+    void network_initialize();
+    void network_terminate();
 
     namespace network
     {
-        void Update(uint64_t tick);
-        void Receive();
+        const short int PACKET_LIMIT = 256;
+        using handler_t = std::array<std::function<void(RakNet::Packet* packet)>, PACKET_LIMIT>;
 
-        static RakNet::RakPeerInterface* mPeer;
-        static RakNet::SocketDescriptor mSocketDescriptor;
-        // static std::map<RakNet::RakNetGUID, Client*> mClients;
-        // static Network::Handler* mHandler;
+        struct client_t {
+            RakNet::SystemAddress address;
+            std::string nickname;
+            std::string serial;
+        };
+
+        struct data_t
+        {
+            RakNet::RakPeerInterface* peer;
+            RakNet::SocketDescriptor socket_descriptor;
+        };
+
+        void server(uint port);
+        void client(std::string ip, uint port);
+
+        void update();
+        void receive();
+
+        extern data_t data;
+        extern std::map<RakNet::RakNetGUID, client_t> clients;
+        extern handler_t handlers;
     }
 }
 

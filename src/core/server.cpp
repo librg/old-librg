@@ -10,7 +10,7 @@ int width, height;
  */
 void timed_loop(uv_timer_t* handle)
 {
-    // librg::core::tick(counter++);
+    librg::core::tick();
 }
 
 /**
@@ -19,7 +19,7 @@ void timed_loop(uv_timer_t* handle)
  */
 void idle_loop(uv_timer_t* handle)
 {
-    // librg::core::idle();
+    librg::core::poll();
 }
 
 /**
@@ -96,7 +96,7 @@ int librg::core::server(int argc, char * argv[])
     // define main timed loop (network send)
     // start after 1 sec, each 15 ms
     uv_timer_init(uv_default_loop(), &timer_req);
-    uv_timer_start(&timer_req, timed_loop, 1000, 16);
+    uv_timer_start(&timer_req, timed_loop, 250, 16);
 
     uv_timer_init(uv_default_loop(), &idler);
     uv_timer_start(&idler, idle_loop, 0, 1);

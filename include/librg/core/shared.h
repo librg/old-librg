@@ -53,6 +53,9 @@ namespace librg
     {
         static uint64_t counter = 0;
 
+        /**
+         * WARNING: UGLY
+         */
         static inline void error(const char* format, ...)
         {
             va_list ap;
@@ -73,6 +76,9 @@ namespace librg
             printf("[SERVER][%s] - %s\n", buf, message);
         }
 
+        /**
+         * WARNING: UGLY
+         */
         static inline void log(const char* format, ...)
         {
             va_list ap;
@@ -92,6 +98,14 @@ namespace librg
             // TODO(inlife): move to async trigger -> callback
             printf("[SERVER][%s] - %s\n", buf, message);
         }
+
+        /**
+         * [set_tick_cb description]
+         * @param callback [description]
+         */
+        void set_tick_cb(std::function<void(double)> callback);
+        void tick();
+        void poll();
     }
 }
 
