@@ -6,9 +6,8 @@ using namespace librg;
 void librg::network_initialize()
 {
     network::data.peer = RakNet::RakPeerInterface::GetInstance();
-    // mHandler = new Network::Handler(mPeer, &mClients);
 
-        // reset all registry to nulls
+    // reset all registry to nulls
     for (int i = 0; i < network::PACKET_LIMIT; ++i) {
         network::handlers[i] = nullptr;
     }
