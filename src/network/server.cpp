@@ -8,7 +8,7 @@ using namespace librg;
  * sets up RakNet and starts
  * all network activty
  */
-void network::server(uint port)
+void network::server(int port)
 {
     core::log("initializing network...");
 

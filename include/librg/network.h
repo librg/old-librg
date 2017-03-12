@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <array>
+#include <functional>
 
 #include <RakPeerInterface.h>
 #include <BitStream.h>
@@ -19,6 +20,8 @@ namespace librg
         using handler_t = std::array<std::function<void(RakNet::Packet* packet)>, PACKET_LIMIT>;
 
         struct client_t {
+            client_t(RakNet::SystemAddress a, std::string n, std::string s) : address(a), nickname(n), serial(s) {}
+
             RakNet::SystemAddress address;
             std::string nickname;
             std::string serial;
@@ -30,8 +33,8 @@ namespace librg
             RakNet::SocketDescriptor socket_descriptor;
         };
 
-        void server(uint port);
-        void client(std::string ip, uint port);
+        void server(int port);
+        void client(std::string ip, int port);
 
         void update();
         void receive();

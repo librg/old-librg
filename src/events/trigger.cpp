@@ -5,7 +5,7 @@ using namespace librg::events;
 /**
  * Private inner file
  */
-void __cleanup(uv_async_t* req) {
+void _cleanup(uv_async_t* req) {
     delete req->data;
     uv_close((uv_handle_t*)req, NULL);
 }
@@ -13,7 +13,7 @@ void __cleanup(uv_async_t* req) {
 /**
  * Private inner file
  */
-void __callback(uv_async_t* req)
+void _callback(uv_async_t* req)
 {
     auto data    = (dispatch_data_t *)req->data;
     void *params = data->info.responder(data->event, data->array);
@@ -21,7 +21,7 @@ void __callback(uv_async_t* req)
     data->info.callback(params, data->info.blob);
 
     uv_async_t* async = new uv_async_t;
-    uv_async_init(uv_default_loop(), async, __cleanup);
+    uv_async_init(uv_default_loop(), async, _cleanup);
 
     async->data = req->data;
     uv_close((uv_handle_t*)req, NULL);
@@ -32,7 +32,7 @@ void __callback(uv_async_t* req)
 /**
  * Private inner file
  */
-void __cleanup_event(uv_async_t* req)
+void _cleanup_event(uv_async_t* req)
 {
     auto data = (dispatch_cleanup_stack_t *)req->data;
 
@@ -59,7 +59,7 @@ void librg::events::trigger(std::string name, dispatch_params_t params)
 
             auto data = new dispatch_data_t { handler, params.event, params.array };
 
-            uv_async_init(uv_default_loop(), async, __callback);
+            uv_async_init(uv_default_loop(), async, _callback);
             async->data = (void*)data;
             uv_async_send(async);
         }
@@ -67,7 +67,7 @@ void librg::events::trigger(std::string name, dispatch_params_t params)
 
     // NOTE(zaklaus): Destroy the event data once we're done with the calls.
     uv_async_t* async = new uv_async_t;
-    uv_async_init(uv_default_loop(), async, __cleanup_event);
+    uv_async_init(uv_default_loop(), async, _cleanup_event);
     async->data = (void *)new dispatch_cleanup_stack_t{ params.event, params.array };
     uv_async_send(async);
 }

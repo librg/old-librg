@@ -70,9 +70,9 @@ namespace librg
             RakNet::RakString serial;
             bsInput.Read(serial);
 
-            // mClients->insert(std::make_pair(
-            //     packet->guid, new Client(nickName.C_String(), packet->systemAddress, serial.C_String())
-            // ));
+            network::clients.insert(std::make_pair(
+                packet->guid, network::client_t(packet->systemAddress, nickName.C_String(), serial.C_String())
+            ));
 
             // send success
             bsOutput.Write(static_cast<RakNet::MessageID>(MessageID::CONNECTION_ACCEPTED));
