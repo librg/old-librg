@@ -28,6 +28,10 @@
 #define _CRT_SECURE_NO_WARNINGS
 #pragma warning(disable:4996)
 #pragma warning(disable:4244)
+#pragma warning(disable:4312)
+#pragma warning(disable:4577)
+// #pragma warning(disable:4477)
+// #pragma warning(disable:4334)
 #endif
 
 #include <stdio.h>

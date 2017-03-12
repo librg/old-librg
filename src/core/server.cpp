@@ -114,11 +114,11 @@ int librg::core::server(int argc, char * argv[])
     uv_tty_init(uv_default_loop(), &tty, 0, 1);
     uv_tty_set_mode(&tty, UV_TTY_MODE_NORMAL);
 
-    uv_timer_t tick;
-    tick.data = &tty;
+    // uv_timer_t tick;
+    // tick.data = &tty;
     // fprintf(stderr, "Width %d, height %d\n", width, height);
-    uv_timer_init(uv_default_loop(), &tick);
-    uv_timer_start(&tick, update, 200, 200);
+    // uv_timer_init(uv_default_loop(), &tick);
+    // uv_timer_start(&tick, update, 200, 200);
 
     // setup reading callback
     uv_read_start((uv_stream_t*)&tty, tty_alloc, on_console_message);

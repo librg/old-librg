@@ -36,7 +36,7 @@ resources::resource_t create_from_xmlstring(std::string name, const char* buffer
         throw new std::exception();
     }
 
-    resources::resource_t resource;
+    resources::resource_t resource = {};
     tinyxml2::XMLElement* element = meta->FirstChildElement("script");
 
     // iterate over each script and add to the array
@@ -45,7 +45,7 @@ resources::resource_t create_from_xmlstring(std::string name, const char* buffer
         script_type = element->Attribute("type");
         if (!script_type || script_type == nullptr) continue;
 
-        resources::script_t script;
+        resources::script_t script = {};
 
         script.filename = std::string(fs::path("resources", name, std::string(element->GetText())));
         script.type = (script_types.find(script_type) == script_types.end()) ? resources::script_server : script_types[script_type];

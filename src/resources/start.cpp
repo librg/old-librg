@@ -34,11 +34,10 @@ bool librg::resources::start(std::string name)
             Sqrat::Script vscript = Sqrat::Script(resource->vm);
             vscript.CompileFile(script.filename.c_str());
             vscript.Run();
-        } catch( Sqrat::Exception e ) {
+        }
+        catch(Sqrat::Exception e) {
             core::error("script loading exception: %s", e.Message().c_str());
         }
-
-        // delete script->filename;
     }
 
     return true;

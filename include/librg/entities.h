@@ -5,23 +5,12 @@
 
 namespace librg
 {
-    static entityx::EventManager*   __events;
-    static entityx::EntityManager*  entities;
-    static entityx::SystemManager* __systems;
+    extern entityx::EventManager*   __events;
+    extern entityx::EntityManager*  entities;
+    extern entityx::SystemManager* __systems;
 
-    static inline void entities_initialize()
-    {
-         __events = new entityx::EventManager();
-         entities = new entityx::EntityManager(*__events);
-        __systems = new entityx::SystemManager(*entities, *__events);
-    }
-
-    static inline void entities_terminate()
-    {
-        delete __systems;
-        delete  entities;
-        delete  __events;
-    }
+    void entities_initialize();
+    void entities_terminate();
 }
 
 #endif // entities_h

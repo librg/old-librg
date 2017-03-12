@@ -33,10 +33,29 @@ namespace librg
             RakNet::SocketDescriptor socket_descriptor;
         };
 
+        /**
+         * Start the server
+         * @param port
+         */
         void server(int port);
+
+        /**
+         * Start the client
+         * @param ip
+         * @param port
+         */
         void client(std::string ip, int port);
 
+        /**
+         * Call an update for network
+         * Calculates update packets for clients
+         */
         void update();
+
+        /**
+         * Calls a recieve update for network
+         * (recieves new data from clients)
+         */
         void receive();
 
         extern data_t data;
