@@ -21,9 +21,12 @@
 #define NETWORK_BUILD_VERSION 1
 #endif
 
+#ifndef core_shared_h
+#define core_shared_h
 
-#ifndef __core_shared
-#define __core_shared
+#include <stdio.h>
+#include <stdlib.h>
+#include <string>
 
 #include "MessageIdentifiers.h"
 
@@ -39,7 +42,10 @@ namespace MessageID
     };
 };
 
-
+#include <librg/entities.h>
+#include <librg/events.h>
+#include <librg/network.h>
+#include <librg/resources.h>
 
 namespace librg
 {
@@ -47,21 +53,46 @@ namespace librg
     {
         static uint64_t counter = 0;
 
-        void error(std::string msg, ...)
+        static inline void error(const char* format, ...)
         {
-            // todo
+            va_list ap;
+            char message[1024] = { 0 };
+            va_start(ap, format);
+            vsprintf(message, format, ap);
+            va_end(ap);
+
+            time_t     now = time(0);
+            struct tm  tstruct;
+            char       buf[80];
+            tstruct = *localtime(&now);
+            // Visit http://en.cppreference.com/w/cpp/chrono/c/strftime
+            // for more information about date/time format
+            strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
+
+            // TODO(inlife): move to async trigger -> callback
+            printf("[SERVER][%s] - %s\n", buf, message);
         }
 
-        void log(std::string msg, ...)
+        static inline void log(const char* format, ...)
         {
-            // todo
+            va_list ap;
+            char message[1024] = { 0 };
+            va_start(ap, format);
+            vsprintf(message, format, ap);
+            va_end(ap);
+
+            time_t     now = time(0);
+            struct tm  tstruct;
+            char       buf[80];
+            tstruct = *localtime(&now);
+            // Visit http://en.cppreference.com/w/cpp/chrono/c/strftime
+            // for more information about date/time format
+            strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
+
+            // TODO(inlife): move to async trigger -> callback
+            printf("[SERVER][%s] - %s\n", buf, message);
         }
     }
 }
 
-
-
-
-
-
-#endif // __core_shared
+#endif // core_shared_h

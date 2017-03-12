@@ -2,6 +2,8 @@
 
 #include <uv.h>
 
+#include "shared.h"
+
 namespace librg
 {
     namespace core

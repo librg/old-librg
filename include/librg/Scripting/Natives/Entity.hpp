@@ -1,6 +1,8 @@
 #ifndef __scripting_entity
 #define __scripting_entity
 
+#include <librg/entities.h>
+
 using namespace Sqrat;
 
 namespace librg
@@ -12,7 +14,7 @@ namespace librg
          */
         inline static uint64_t entity_create(Function callback)
         {
-            entityx::Entity entity = librg::entity->create();
+            entityx::Entity entity = librg::entities->create();
             return entity.id().id();
         }
 
@@ -22,7 +24,7 @@ namespace librg
          */
         inline static void entity_destroy(uint64_t index)
         {
-            librg::entity->get((entityx::Entity::Id)index).destroy();
+            librg::entities->get((entityx::Entity::Id)index).destroy();
         }
 
         /**

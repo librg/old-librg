@@ -1,5 +1,5 @@
-#ifndef __entities
-#define __entities
+#ifndef entities_h
+#define entities_h
 
 #include <entityx/entityx.h>
 
@@ -9,18 +9,14 @@ namespace librg
     static entityx::EntityManager*  entities;
     static entityx::SystemManager* __systems;
 
-    // static entityx::EntityManager* entity;
-
     static inline void entities_initialize()
     {
          __events = new entityx::EventManager();
          entities = new entityx::EntityManager(*__events);
         __systems = new entityx::SystemManager(*entities, *__events);
-
-        // entity = __entity;
     }
 
-    static inline void entities_deinitialize()
+    static inline void entities_terminate()
     {
         delete __systems;
         delete  entities;
@@ -28,4 +24,4 @@ namespace librg
     }
 }
 
-#endif // __entities
+#endif // entities_h

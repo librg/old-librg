@@ -1,35 +1,35 @@
-#ifndef __network_manager
-#define __network_manager
+// #ifndef __network_manager
+// #define __network_manager
 
-#include <map>
-#include <RakPeerInterface.h>
+// #include <map>
+// #include <RakPeerInterface.h>
 
-#include "client.h"
-#include "handler.h"
+// #include "client.h"
+// #include "handler.h"
 
-namespace librg
-{
-    class NetworkManager : public Singleton<Manager>
-    {
-        friend class Singleton<Manager>;
+// namespace librg
+// {
+//     class NetworkManager : public Singleton<Manager>
+//     {
+//         friend class Singleton<Manager>;
 
-    public:
-        Manager();
-        ~Manager();
-        void Init();
-        void Tick();
+//     public:
+//         Manager();
+//         ~Manager();
+//         void Init();
+//         void Tick();
 
-        void Update(uint64_t tick);
-        void Receive();
+//         void Update(uint64_t tick);
+//         void Receive();
 
-        RakNet::RakPeerInterface* GetPeer() { return mPeer; }
+//         RakNet::RakPeerInterface* GetPeer() { return mPeer; }
 
-    private:
-        RakNet::RakPeerInterface* mPeer;
-        RakNet::SocketDescriptor mSocketDescriptor;
-        std::map<RakNet::RakNetGUID, Client*> mClients;
-        Network::Handler* mHandler;
-    };
-}
+//     private:
+//         RakNet::RakPeerInterface* mPeer;
+//         RakNet::SocketDescriptor mSocketDescriptor;
+//         std::map<RakNet::RakNetGUID, Client*> mClients;
+//         Network::Handler* mHandler;
+//     };
+// }
 
-#endif // __network_manager
+// #endif // __network_manager

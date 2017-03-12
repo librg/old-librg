@@ -1,7 +1,7 @@
 #ifndef __scripting_resource
 #define __scripting_resource
 
-#include <librg/resource/manager.h>
+#include <librg/resources.h>
 
 namespace librg
 {
@@ -13,9 +13,9 @@ namespace librg
          * @param  resourceName
          * @return
          */
-        inline static bool resource_loaded(const char* resourceName)
+        inline static bool resource_loaded(const char *resourceName)
         {
-            return librg::ResourceManager::exist(resourceName);
+            return librg::resources::exists(resourceName);
         }
 
         /**

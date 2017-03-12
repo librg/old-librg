@@ -5,9 +5,9 @@ using namespace librg;
 
 /**
  * Inner method
- * @param req [description]
+ * @param req
  */
-void fs::private_onread(uv_fs_t *req)
+void _onread(uv_fs_t *req)
 {
     uv_fs_req_cleanup(req);
 
@@ -15,7 +15,7 @@ void fs::private_onread(uv_fs_t *req)
         core::error("file reading: %s\n", uv_strerror(req->result));
     }
 
-    fs_result_t* result = (fs_result_t*) req->data;
+    fs::result_t* result = (fs::result_t*) req->data;
 
     if (req->result > 0) {
         // result
@@ -74,7 +74,7 @@ bool fs::read(std::string filename, fs::callback callback)
     memcpy(filepath, filename.c_str(), filename.size());
 
     // creating content buffer
-    fs_result_t* data = new fs_result_t;
+    result_t* data = new result_t;
     data->handle      = handle;
     data->length      = req->statbuf.st_size;
     data->content     = str;
@@ -85,7 +85,7 @@ bool fs::read(std::string filename, fs::callback callback)
     req->data = data;
     uv_buf_t uvBuf = uv_buf_init(str, req->statbuf.st_size);
 
-    uv_fs_read(uv_default_loop(), req, handle, &uvBuf, 1, -1, private_onread);
+    uv_fs_read(uv_default_loop(), req, handle, &uvBuf, 1, -1, _onread);
     return true;
 }
 

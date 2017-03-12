@@ -3,10 +3,12 @@
 #include <clocale>
 #include <uv.h>
 
+#include "shared.h"
+
 namespace librg
 {
     namespace core
     {
-        void server(int argc, char * argv[]);
+        int server(int argc, char * argv[]);
     }
 }

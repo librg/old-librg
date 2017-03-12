@@ -9,8 +9,6 @@ namespace librg
 {
     namespace fs
     {
-//private:
-        //data
         struct fs_result_t {
             int handle;
             uint64_t length;
@@ -20,10 +18,8 @@ namespace librg
             std::function<void(fs_result_t*)> callback;
         };
 
-        // methods
         void private_onread(uv_fs_t *req);
 
-//public:
     #ifdef WIN32
         static char separator = '\\';
     #else
@@ -34,13 +30,13 @@ namespace librg
         typedef std::function<void(fs_result_t*)> callback;
         typedef fs_result_t result_t;
 
-        // methods
         // async
         bool read(std::string filename, callback callback);
 
         // sync
         int mkdir(std::string filename);
 
+        // ugly
         using _s = std::string;
         static char _p = separator;
         static inline _s path(_s a1, _s a2) {return a1+_p+a2;}

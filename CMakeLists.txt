@@ -125,10 +125,10 @@ target_include_directories(librg PUBLIC
     # vendor/squirrel/squirrel
 )
 
-file(GLOB_RECURSE TEST_FILES "${PROJECT_SOURCE_DIR}/test/*.cpp")
-add_executable(rgtest ${TEST_FILES})
+# file(GLOB_RECURSE TEST_FILES "${PROJECT_SOURCE_DIR}/test/*.cpp")
+# add_executable(rgtest ${TEST_FILES})
 
-target_link_libraries(rgtest librg)
+# target_link_libraries(rgtest librg)
 
 # Xcode and Visual working directories
 # set_target_properties(librg PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/librg/")

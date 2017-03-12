@@ -1,6 +1,6 @@
 #include <librg/core/server.h>
 
-using librg::core;
+using namespace librg::core;
 
 int width, height;
 
@@ -79,7 +79,7 @@ void update(uv_timer_t* req)
  * @param  argv
  * @return exit code
  */
-int server(int argc, char * argv[])
+int librg::core::server(int argc, char * argv[])
 {
     uv_timer_t idler;
     uv_timer_t timer_req;
@@ -91,6 +91,7 @@ int server(int argc, char * argv[])
     SetConsoleOutputCP(CP_UTF8);
 #endif
     // Server::Core::Log("\033[2J\033[H\033[1B\033[1C\033[42;37m%s");
+
 
     // define main timed loop (network send)
     // start after 1 sec, each 15 ms

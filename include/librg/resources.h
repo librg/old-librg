@@ -1,24 +1,41 @@
-#ifndef __resources
-#define __resources
+#ifndef resources_h
+#define resources_h
 
 #include <uv.h>
 #include <vector>
+#include <string>
 #include <unordered_map>
+#include <squirrel.h>
+#include <librg/core/shared.h>
 
-#include "resource.h"
+// #include "resources/resource.h"
 
 namespace librg
 {
+    void resources_initialize();
+    void resources_terminate();
+
     namespace resources
     {
-        /**
-         * Add new resource to the storage
-         * @param name
-         * @param resource
-         */
-        static inline void add(std::string name, Resource* resource) {
-            __resources.insert(std::pair<std::string, Resource*>(name, resource));
+        enum script_type {
+            script_server,
+            script_client,
+            script_shared,
         };
+
+        struct script_t {
+            std::string filename;
+            script_type type;
+        };
+
+        struct resource_t {
+            HSQUIRRELVM vm;
+            std::vector<script_t> scripts;
+            std::string name;
+            bool running;
+        };
+
+        extern std::unordered_map<std::string, resource_t> __resources;
 
         /**
          * Check if resource exists
@@ -26,7 +43,16 @@ namespace librg
          * @return state
          */
         static inline bool exists(std::string name) {
-            return !(__resources.find(name) == __resources.end());
+            return (__resources.find(name) != __resources.end());
+        };
+
+        /**
+         * Add new resource to the storage
+         * @param name
+         * @param resource
+         */
+        static inline void add(std::string name, resource_t resource) {
+            __resources.insert(std::pair<std::string, resource_t>(name, resource));
         };
 
         /**
@@ -34,8 +60,8 @@ namespace librg
          * @param  name
          * @return
          */
-        static inline Resource* get(std::string name) {
-            return this->exist(name) ? __resources[name] : nullptr;
+        static inline resource_t* get(std::string name) {
+            return exists(name) ? &__resources[name] : nullptr;
         };
 
         /**
@@ -44,14 +70,27 @@ namespace librg
          * @return
          */
         static inline bool running(std::string name) {
-            return this->exist(name) && this->get(name)->running();
+            return exists(name) && get(name)->running;
         };
 
-        static void initialize();
-        static void deinitialize();
+        /**
+         * Start resource by given name
+         * @param  name
+         * @return result of operation
+         */
+        bool start(std::string name);
 
-        std::unordered_map<std::string, Resource*> __resources;
+        /**
+         * Stop resource by given name
+         * @param  name
+         * @return result of operation
+         */
+        bool stop(std::string name);
+
+        // resource_t create(std::string name, std::vector<script_t> scripts);
+        // void destroy(resource_t* resource);
+
     }
 }
 
-#endif // __resources
+#endif // resources_h

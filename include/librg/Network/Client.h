@@ -1,22 +1,19 @@
-#ifndef __network_client
-#define __network_client
+// #ifndef __network_client
+// #define __network_client
 
-#include <RakPeerInterface.h>
-#include <string>
+// #include <RakPeerInterface.h>
+// #include <string>
 
-class Client
-{
-public:
-    Client(std::string nickName, RakNet::SystemAddress systemAddress, std::string serial);
-    ~Client();
+// struct Client
+// {
+//     Client(std::string nickName, RakNet::SystemAddress systemAddress, std::string serial);
 
-    // Player* GetPlayer() { return mPlayer; }
+//     // Player* GetPlayer() { return mPlayer; }
 
-private:
-    RakNet::SystemAddress mSystemAddress;
-    std::string mNickName;
-    std::string mSerial;
-    // Player* mPlayer;
-};
+//     RakNet::SystemAddress mSystemAddress;
+//     std::string mNickName;
+//     std::string mSerial;
+//     // Player* mPlayer;
+// };
 
-#endif // __network_client
+// #endif // __network_client
