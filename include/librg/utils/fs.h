@@ -1,5 +1,5 @@
-#ifndef __util_fs
-#define __util_fs
+#ifndef _util_fs
+#define _util_fs
 
 #include <uv.h>
 #include <string>
@@ -49,4 +49,4 @@ namespace librg
     }
 }
 
-#endif //__util_fs
+#endif //_util_fs

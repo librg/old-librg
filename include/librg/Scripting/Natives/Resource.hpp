@@ -1,5 +1,5 @@
-#ifndef __scripting_resource
-#define __scripting_resource
+#ifndef _scripting_resource
+#define _scripting_resource
 
 #include <librg/resources.h>
 
@@ -29,4 +29,4 @@ namespace librg
     }
 }
 
-#endif // __scripting_resource
+#endif // _scripting_resource

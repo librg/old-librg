@@ -1,5 +1,5 @@
-#ifndef __scripting_entity
-#define __scripting_entity
+#ifndef _scripting_entity
+#define _scripting_entity
 
 #include <librg/entities.h>
 
@@ -39,4 +39,4 @@ namespace librg
     }
 }
 
-#endif // __scripting_entity
+#endif // _scripting_entity

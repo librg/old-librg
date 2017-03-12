@@ -35,7 +35,7 @@ namespace librg
             bool running;
         };
 
-        extern std::unordered_map<std::string, resource_t> __resources;
+        extern std::unordered_map<std::string, resource_t> _resources;
 
         /**
          * Check if resource exists
@@ -43,7 +43,7 @@ namespace librg
          * @return state
          */
         static inline bool exists(std::string name) {
-            return (__resources.find(name) != __resources.end());
+            return (_resources.find(name) != _resources.end());
         };
 
         /**
@@ -52,7 +52,7 @@ namespace librg
          * @param resource
          */
         static inline void add(std::string name, resource_t resource) {
-            __resources.insert(std::pair<std::string, resource_t>(name, resource));
+            _resources.insert(std::pair<std::string, resource_t>(name, resource));
         };
 
         /**
@@ -61,7 +61,7 @@ namespace librg
          * @return
          */
         static inline resource_t* get(std::string name) {
-            return exists(name) ? &__resources[name] : nullptr;
+            return exists(name) ? &_resources[name] : nullptr;
         };
 
         /**

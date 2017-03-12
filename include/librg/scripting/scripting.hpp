@@ -1,5 +1,5 @@
-#ifndef __scripting
-#define __scripting
+#ifndef _scripting
+#define _scripting
 
 #include <squirrel.h>
 #include <sqrat.h>
@@ -124,4 +124,4 @@ namespace librg
     }
 }
 
-#endif // __scripting
+#endif // _scripting

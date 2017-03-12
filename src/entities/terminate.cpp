@@ -2,7 +2,7 @@
 
 void librg::entities_terminate()
 {
-    delete librg::__events;
+    delete librg::_events;
     delete librg::entities;
-    delete librg::__systems;
+    delete librg::_systems;
 }

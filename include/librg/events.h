@@ -71,7 +71,7 @@ namespace librg
             Sqrat::Array* array;
         };
 
-        extern std::unordered_map<std::string, std::vector<listener_info_t>> __events;
+        extern std::unordered_map<std::string, std::vector<listener_info_t>> _events;
 
 
         /**

@@ -1,5 +1,5 @@
-#ifndef __scripting_timer
-#define __scripting_timer
+#ifndef _scripting_timer
+#define _scripting_timer
 
 #include <uv.h>
 #include <cstdint>
@@ -13,7 +13,7 @@ namespace librg
          * after they are finished
          * @param req
          */
-        inline static void __timer_cleanup(uv_async_t* req)
+        inline static void _timer_cleanup(uv_async_t* req)
         {
             delete (Sqrat::Function*)req->data;
             uv_close((uv_handle_t*) req, NULL);
@@ -24,7 +24,7 @@ namespace librg
          * when interval iterations is triggered
          * @param req
          */
-        inline static void __timer_interval_callback(uv_timer_t* req)
+        inline static void _timer_interval_callback(uv_timer_t* req)
         {
             ((Sqrat::Function*)req->data)->Execute();
         }
@@ -41,7 +41,7 @@ namespace librg
             timer_req->data = new Sqrat::Function(callback);
 
             uv_timer_init(uv_default_loop(), timer_req);
-            uv_timer_start(timer_req, __timer_interval_callback, miliseconds, miliseconds);
+            uv_timer_start(timer_req, _timer_interval_callback, miliseconds, miliseconds);
 
             return reinterpret_cast<std::uintptr_t>(timer_req);
         }
@@ -55,7 +55,7 @@ namespace librg
             uv_timer_t* timer_req = reinterpret_cast<uv_timer_t*>(req);
             uv_timer_stop(timer_req);
             uv_async_t* async = new uv_async_t;
-            uv_async_init(uv_default_loop(), async, __timer_cleanup);
+            uv_async_init(uv_default_loop(), async, _timer_cleanup);
             async->data = timer_req->data;
             uv_async_send(async);
         }
@@ -72,4 +72,4 @@ namespace librg
     }
 }
 
-#endif // __scripting_timer
+#endif // _scripting_timer

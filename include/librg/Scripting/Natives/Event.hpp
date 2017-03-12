@@ -1,5 +1,5 @@
-#ifndef __scripting_event
-#define __scripting_event
+#ifndef _scripting_event
+#define _scripting_event
 
 #include <librg/events.h>
 
@@ -59,4 +59,4 @@ namespace librg
     }
 }
 
-#endif // __scripting_event
+#endif // _scripting_event

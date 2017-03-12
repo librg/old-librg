@@ -2,10 +2,10 @@
 
 bool librg::events::remove(std::string name, size_t handler)
 {
-    if (__events.find(name) == __events.end()) return false;
+    if (_events.find(name) == _events.end()) return false;
 
     try {
-        __events[name].erase(__events[name].begin()+handler);
+        _events[name].erase(_events[name].begin()+handler);
     }
     catch(std::exception ex) {
         // TODO(zaklaus): Print error message here! YES!

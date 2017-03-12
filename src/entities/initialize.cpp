@@ -1,12 +1,12 @@
 #include <librg/entities.h>
 
-entityx::EventManager*  librg::__events;
+entityx::EventManager*  librg::_events;
 entityx::EntityManager* librg::entities;
-entityx::SystemManager* librg::__systems;
+entityx::SystemManager* librg::_systems;
 
 void librg::entities_initialize()
 {
-    librg::__events  = new entityx::EventManager();
-    librg::entities  = new entityx::EntityManager(*librg::__events);
-    librg::__systems = new entityx::SystemManager(*librg::entities, *librg::__events);
+    librg::_events  = new entityx::EventManager();
+    librg::entities  = new entityx::EntityManager(*librg::_events);
+    librg::_systems = new entityx::SystemManager(*librg::entities, *librg::_events);
 }

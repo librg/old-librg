@@ -1,5 +1,5 @@
-#ifndef __scripting_registry
-#define __scripting_registry
+#ifndef _scripting_registry
+#define _scripting_registry
 
 #include "natives/event.hpp"
 #include "natives/entity.hpp"
@@ -25,4 +25,4 @@ namespace librg
     }
 }
 
-#endif // __scripting_registry
+#endif // _scripting_registry

@@ -5,9 +5,9 @@
 
 namespace librg
 {
-    extern entityx::EventManager*   __events;
+    extern entityx::EventManager*   _events;
     extern entityx::EntityManager*  entities;
-    extern entityx::SystemManager* __systems;
+    extern entityx::SystemManager* _systems;
 
     void entities_initialize();
     void entities_terminate();

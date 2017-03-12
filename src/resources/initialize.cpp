@@ -6,7 +6,7 @@
 
 using namespace librg;
 
-std::unordered_map<std::string, resources::resource_t> resources::__resources;
+std::unordered_map<std::string, resources::resource_t> resources::_resources;
 
 // TODO(inlife): move to config.xml!
 std::vector<std::string> resourcesList = {

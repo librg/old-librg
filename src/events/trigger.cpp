@@ -45,8 +45,8 @@ void _cleanup_event(uv_async_t* req)
 
 void librg::events::trigger(std::string name, dispatch_params_t params)
 {
-    if (__events.find(name) != __events.end()) {
-        for (auto handler : __events[name]) {
+    if (_events.find(name) != _events.end()) {
+        for (auto handler : _events[name]) {
             uv_async_t* async = new uv_async_t;
 
             // NOTE:

@@ -1,5 +1,5 @@
-#ifndef __scripting_system
-#define __scripting_system
+#ifndef _scripting_system
+#define _scripting_system
 
 namespace librg
 {
@@ -16,4 +16,4 @@ namespace librg
     }
 }
 
-#endif // __scripting_system
+#endif // _scripting_system
