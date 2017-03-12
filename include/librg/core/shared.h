@@ -24,6 +24,12 @@
 #ifndef core_shared_h
 #define core_shared_h
 
+#ifdef _MSC_VER
+#define _CRT_SECURE_NO_WARNINGS
+#pragma warning(disable:4996)
+#pragma warning(disable:4244)
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>

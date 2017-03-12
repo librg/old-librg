@@ -25,7 +25,7 @@ void network::server(int port)
     }
 
     if (password.size() > 0) {
-        network::data.peer->SetIncomingPassword(password.c_str(), password.size());
+        network::data.peer->SetIncomingPassword(password.c_str(), (int)password.size());
     }
 
     network::data.peer->SetMaximumIncomingConnections(maxplayers);

@@ -79,7 +79,7 @@ void librg::resources_initialize()
             try {
                 resources::add(name, create_from_xmlstring(name, result->content, result->length));
                 resources::start(name);
-            } catch (std::exception* ex) {
+            } catch (std::exception*) {
                 core::error("There is no <meta> tag inside your %s file.", name.c_str());
             }
         });
