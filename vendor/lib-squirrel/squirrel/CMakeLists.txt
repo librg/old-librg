@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
+cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
-project(squirrel VERSION 3.0.7 LANGUAGES CXX)
+project(squirrel)
 
 add_library(squirrel STATIC
     sqapi.cpp
