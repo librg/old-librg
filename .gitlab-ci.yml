@@ -12,7 +12,7 @@ build:
   #   - apt update && apt -y install make autoconf 
   script: 
     - echo "yes" | sudo add-apt-repository ppa:george-edison55/precise-backports
-    - apt update && apt -y install cmake-data
+    - apt update && apt -y install cmake cmake-data
     - mkdir build && cd build
     - cmake ..
     - make
