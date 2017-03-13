@@ -21,7 +21,7 @@
 
 ## Brackets, braces, parens
 
-1. Each namespace definition should have `{` on the next line
+1. Each namespace definition should have `{` on the next line, except occasions of single-lined/inline methods/functions
 2. Each function/method definition should have `{` on the next line
 3. Each for/if/while/etc contruction should have `{` on the same line
 4. Each for/if/while/etc contruction should have `(` with space after (`if (a == 15`)
