@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include <librg/utils/fs.h>
 #include <librg/core/shared.h>
 
