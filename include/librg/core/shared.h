@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string>
 #include <ctime>
+#include <stdarg.h>
 #include <functional>
 
 #include <MessageIdentifiers.h>

@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
+cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
-project(sq VERSION 3.0.7 LANGUAGES C)
+project(sq)
 
 add_executable(sq sq.c)
 
