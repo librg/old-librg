@@ -12,12 +12,12 @@ namespace librg
          * init packet. Its the place where we should decide
          * was or was not he banned, and does he have access to our server
          */
-        static inline void OnClientConnectAttempt(RakNet::Packet* packet)
+        static inline void server_new_incoming_connection(RakNet::Packet* packet)
         {
             unsigned short id = packet->systemAddress.systemIndex;
             std::string    ip = packet->systemAddress.ToString( true, ':' );
 
-            core::log("OnClientConnectAttempt id: %d, address: %s", id, ip.c_str());
+            core::log("server_new_incoming_connection id: %d, address: %s", id, ip.c_str());
         }
 
         /**
@@ -30,7 +30,7 @@ namespace librg
          * @param string Client name
          * @param string Client serial
          */
-        static inline void OnClientConnect(RakNet::Packet* packet)
+        static inline void server_connect(RakNet::Packet* packet)
         {
             RakNet::BitStream bsOutput;
             RakNet::BitStream bsInput(packet->data, packet->length, false);
@@ -48,7 +48,7 @@ namespace librg
 
                 data.peer->Send(&bsOutput, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
 
-                core::log("OnClientConnect: refsued ip: %s, reason: incompatible game version.", packet->systemAddress.ToString(true, ':'));
+                core::log("server_connect: refsued ip: %s, reason: incompatible game version.", packet->systemAddress.ToString(true, ':'));
                 return;
             }
 
@@ -60,7 +60,7 @@ namespace librg
 
                 data.peer->Send(&bsOutput, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
 
-                core::log("OnClientConnect: refsued ip: %s, reason: incompatible build version.", packet->systemAddress.ToString(true, ':'));
+                core::log("server_connect: refsued ip: %s, reason: incompatible build version.", packet->systemAddress.ToString(true, ':'));
                 return;
             }
 
@@ -84,14 +84,14 @@ namespace librg
             //     array->Append(packet);
             //     return array;
             // }));
-            core::log("OnClientConnect: id: %d name: %s serial: %s", packet->systemAddress.systemIndex, nickName.C_String(), serial.C_String());
+            core::log("server_connect: id: %d name: %s serial: %s", packet->systemAddress.systemIndex, nickName.C_String(), serial.C_String());
             return;
         }
 
         /**
          * On client disconnect
          */
-        static inline void OnClientDisconnect(RakNet::Packet* packet)
+        static inline void server_disconnect(RakNet::Packet* packet)
         {
             // Event::Manager::Instance()->Dispatch("OnClientDisconnect", EVENT_PARAM(new OnClientConnectData{ packet }, [=](HSQUIRRELVM vm){
             //     auto array = new Sqrat::Array(vm);
@@ -99,7 +99,7 @@ namespace librg
             //     return array;
             // }));
 
-            core::log("OnClientDisconnect: id: %d", packet->systemAddress.systemIndex);
+            core::log("server_disconnect: id: %d", packet->systemAddress.systemIndex);
         }
     }
 }

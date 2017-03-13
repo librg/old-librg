@@ -40,6 +40,12 @@ void initialize()
     uv_timer_start(idler, idle_loop, 0, 1);
 }
 
+void core::client_terminate()
+{
+    delete idler;
+    delete timer_req;
+}
+
 void core::client_tick(uv_loop_t* loop)
 {
     if (!loop) {

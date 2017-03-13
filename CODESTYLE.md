@@ -2,7 +2,14 @@
 
 (and other stuff)
 
-**Main rule:** You required to use `cmake`
+## General
+
+1. You required to use `cmake`
+2. File extensions: .h for header files, .cpp for cpp files, .hpp for inline header-only cpp code
+3. Use only 4 spaces for identation (not tabs, setup your code editor properly)
+4. Newline should be present in the end of each file
+5. Files should be saved only in utf-8 encoding
+6. Strings should not have trailing spaces
 
 ## Naming convention
 
