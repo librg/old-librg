@@ -24,11 +24,11 @@ namespace librg
         }
 
         static inline void client_no_free_incoming_connections(RakNet::Packet* packet) {
-            core::log("A connection is incoming.");
+            core::log("The server is full.");
         }
 
         static inline void client_disconnect_notification(RakNet::Packet* packet) {
-            core::log("The server is full.");
+            core::log("disconnected.");
         }
 
         static inline void client_connection_lost(RakNet::Packet* packet) {
