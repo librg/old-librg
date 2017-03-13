@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
+cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
-project(squirrel-lang VERSION 3.0.7)
+project(squirrel-lang)
 
 option(SQUIRREL_BUILD_CONSOLE "Build squirrel console executable" OFF)
 option(SQUIRREL_USE_DOUBLE "Use double precision for SQFloat" OFF)
