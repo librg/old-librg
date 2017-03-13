@@ -1,57 +1,84 @@
-EventManager::Instance()->Dispatch(
-    new Event::PlayerConnect("inlife", 12412412)
-)
+struct event_t {
+    std::function<Sqrat::Array*(event_t*)> encode;
+    std::function<event_t*(Sqrat::Array*)> decode;
+};
 
-EventManager::Instance()->DispatchLocal(
-    new Event::GameStarted()
-);
+struct event_player_connect_t {
+    std::string username;
 
-EventManager::Instance()->AddListener("Event::PlayerConnect", [](void* event) {
-    Event::PlayerConnect * myevent = (Event::PlayerConnect *)event;
-    Core::Log("new user: %s", myevent->param1);
-});
+    std::function<Sqrat::Array*(event_t*)> encode;
+    std::function<event_t*(Sqrat::Array*)> decode;
+};
 
-///
-/// framework
-///
+class IEvent {
+    virtual Sqrat::Array* encode() = 0;
+    virtual Sqrat::Array* decode() = 0;
+}
 
-
-native.onevent("Event::PlayerConnect", function(event) {
-    triggerEventHandler("onPlayerConnect", event.param1, event.param2);
-});
-
-native.trigger("Event::PlayerConnect", param1, param2);
-
-///
-/// defining
-///
-namespace Event {
-
-class PlayerConnect : Generic
+class PlayerConnectEvent : IEvent
 {
-    std::string param1;
-    int param2;
-    float param3;
+public:
+    PlayerConnectEvent(std::string name) : username(name) {}
+    ~PlayerConnectEvent() = default;
 
-    PlayerConnect(std::string param1, int param2)
-    {
-        this->param1 = param1;
-        this->param2 = param2;
-        this->param3 = 15.0f;
+    std::string username;
+}
+
+
+uint64_t event_player_connect_encode(std::string, ) {
+
+}
+
+struct handler_t {
+    std::function<void(event_t*)> callback_cpp;
+    Sqrat::Function callback_sq;
+};
+
+vm.Func("player_connect", event_player_connect_encode);
+
+
+
+
+void trigger(std::string name, event_t* event, int mode = mode_both, void* vm = null)
+{
+    // if handler exists in map<name, vector<handler>>
+    // iterate each vector element
+    auto handler = eventmap[name][i];
+
+    if (handler.callback_cpp && (mode == events::mode_cpp || mode == events::mode_both)) {
+        handler.callback_cpp(event);
     }
 
-    inline void call(Sqrat::Function callback)
-    {
-        callback->Execute(param1, param2, param3);
-    }
-
-    inline static void trigger(HSQUIRREL vm)
-    {
-        // extract
-        std::string param1 = vm.gimmestackplz();
-        std::string param2 = vm.gimmestackplz();
-        std::string param3 = vm.gimmestackplz();
-
-        Manager::Instance()->Trigger(new this(param1, param2))
+    if (handler.callback_sq && (mode == events::mode_sq || mode == events::mode_both)) {
+        handler.callback_sq->Execute(event->encode(event));
     }
 }
+
+
+
+//////
+///cpp
+
+events::add("onPlayerConnect", [] (IEvent* evt) -> {
+    auto event = (PlayerConnectEvent*) evt;
+
+    printf("hello %s", event->username);
+    printf("hello %s", event->username);
+});
+
+events::trigger("onPlayerConnect", new PlayerConnectEvent("marko_polo"));
+events::trigger("onPlayerConnect", new PlayerConnectEvent("marko_polo"), events::mode_cpp);
+events::trigger("onPlayerConnect", new PlayerConnectEvent("marko_polo"), events::mode_sq);
+events::trigger("onPlayerConnect", new PlayerConnectEvent("marko_polo"), events::mode_both);
+events::trigger("onPlayerConnect", new PlayerConnectEvent("marko_polo"), events::mode_sq, vm);
+
+
+
+///////
+////sq
+
+natives.events.add("onPlayerConnect", function(data) {
+    print(format("hello %s", data[0]));
+});
+
+natives.events.trigger("onPlayerConnect", natives.events.create("player_connect", ["marko_polo"]));

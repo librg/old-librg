@@ -2,17 +2,13 @@
 #define core_shared_h
 
 #include <librg/core/other.h>
+#include <librg/core/constants.h>
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
 #include <ctime>
-
-#include <librg/entities.h>
-#include <librg/events.h>
-#include <librg/network.h>
-#include <librg/resources.h>
-#include <librg/core/contants.h>
+#include <functional>
 
 #include <MessageIdentifiers.h>
 

@@ -1,3 +1,4 @@
+#include <librg/network.h>
 #include <librg/core/shared.h>
 
 using namespace librg;
