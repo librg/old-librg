@@ -10,7 +10,7 @@
 #include <sqstdstring.h>
 
 #include <librg/core/shared.h>
-#include "Registry.hpp"
+#include "registry.hpp"
 
 namespace librg
 {
