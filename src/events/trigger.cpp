@@ -54,7 +54,9 @@ void librg::events::trigger(std::string name, dispatch_params_t params)
             // and its called from cpp side
             if (!params.array && handler.blob) {
                 // trigger callback to create sq function parameter (array)
-                params.array = params.arproc(((Sqrat::Function*)handler.blob)->GetVM());
+                Sqrat::Array *array = new Sqrat::Array(((Sqrat::Function*)handler.blob)->GetVM());
+                params.arproc(array);
+                params.array = array;
             }
 
             auto data = new dispatch_data_t { handler, params.event, params.array };

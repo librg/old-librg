@@ -17,13 +17,11 @@ namespace librg
 
     namespace events
     {
-        inline static void* GenericNoResponse(const void*, Sqrat::Array*) {
+        inline static void* GenericNoProxy(const void*, Sqrat::Array*) {
             return nullptr;
         }
 
-        inline static Sqrat::Array* GenericNoArray(HSQUIRRELVM vm) {
-            return nullptr;
-        }
+        inline static void GenericNoArray(Sqrat::Array *array) { }
 
 
         #define EVENT_GENERIC(name)     void name##(const void* data, void* blob)
@@ -37,8 +35,8 @@ namespace librg
 
         using callback_generic  = std::function<void(const void*, void*)>;
         using callback_script   = std::function<void(const void*, Sqrat::Function*)>;
-        using callback_response = std::function<void*(const void*, Sqrat::Array*)>;
-        using callback_array    = std::function<Sqrat::Array*(HSQUIRRELVM vm)>;
+        using callback_proxy = std::function<void*(const void*, Sqrat::Array*)>;
+        using callback_array    = std::function<void(Sqrat::Array *array)>;
 
 
         struct script_event_t {
@@ -56,7 +54,7 @@ namespace librg
 
         struct listener_info_t {
             callback_generic callback;
-            callback_response responder;
+            callback_proxy responder;
             void* blob;
         };
 
@@ -82,7 +80,7 @@ namespace librg
          * @param callback  Callback that would be executed.
          * @param blob      Internal data for the listener. (Optional)
          */
-        size_t add(std::string name, callback_generic callback, callback_response responder, void *blob = nullptr);
+        size_t add(std::string name, callback_generic callback, callback_proxy proxy, void *blob = nullptr);
 
         /**
          * Public API method for triggering server event.
