@@ -1,46 +1,22 @@
-/**
- * Random number setting current game platform id
- * to prevent connections from different games/mods, in future
- */
-#ifndef NETWORK_PLATFORM_ID
-#define NETWORK_PLATFORM_ID 1
-#endif
-
-/**
- * Version of protocol, should be changed if major, incompatible changes are introduced
- */
-#ifndef NETWORK_PROTOCOL_VERSION
-#define NETWORK_PROTOCOL_VERSION 1
-#endif
-
-/**
- * version of build. server owner can decide,
- * should clients should be refused or allowed joining the game
- */
-#ifndef NETWORK_BUILD_VERSION
-#define NETWORK_BUILD_VERSION 1
-#endif
-
 #ifndef core_shared_h
 #define core_shared_h
 
-#ifdef _MSC_VER
-#define _CRT_SECURE_NO_WARNINGS
-#pragma warning(disable:4996)
-#pragma warning(disable:4244)
-#pragma warning(disable:4312)
-#pragma warning(disable:4577)
-// #pragma warning(disable:4477)
-// #pragma warning(disable:4334)
-#endif
+#include <librg/core/other.h>
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
 #include <ctime>
 
-#include "MessageIdentifiers.h"
+#include <librg/entities.h>
+#include <librg/events.h>
+#include <librg/network.h>
+#include <librg/resources.h>
+#include <librg/core/contants.h>
 
+#include <MessageIdentifiers.h>
+
+// TODO(inlife): refactor
 namespace MessageID
 {
     enum MainIDS {
@@ -53,19 +29,63 @@ namespace MessageID
     };
 };
 
-#include <librg/entities.h>
-#include <librg/events.h>
-#include <librg/network.h>
-#include <librg/resources.h>
-
 namespace librg
 {
     namespace core
     {
-        static uint64_t counter = 0;
+        enum rgmode {
+            mode_server,
+            mode_client,
+        };
+
+        /**
+         * Polling method
+         * used only to get data from network
+         */
+        void poll();
+
+        /**
+         * Ticker
+         * Used to iterate all main tickers
+         * And user subscribed one
+         */
+        void tick();
+
+        /**
+         * Set curretn tick callback
+         * @param callback [description]
+         */
+        void set_tick_cb(std::function<void(double)> callback);
+
+        /**
+         * Set a mode for (server/client)
+         * @param mode default is server
+         */
+        void set_mode(rgmode mode);
+
+        /**
+         * Get current mode
+         * @return
+         */
+        rgmode get_mode();
+
+        /**
+         * Check if current execution mode is server
+         */
+        static inline bool is_server() {
+            return get_mode() == mode_server;
+        }
+
+        /**
+         * Check if current execution mode is client
+         */
+        static inline bool is_client() {
+            return get_mode() == mode_client;
+        }
 
         /**
          * WARNING: UGLY
+         * TODO(inlife): refactor
          */
         static inline void error(const char* format, ...)
         {
@@ -89,6 +109,7 @@ namespace librg
 
         /**
          * WARNING: UGLY
+         * TODO(inlife): refactor
          */
         static inline void log(const char* format, ...)
         {
@@ -109,14 +130,6 @@ namespace librg
             // TODO(inlife): move to async trigger -> callback
             printf("[SERVER][%s] - %s\n", buf, message);
         }
-
-        /**
-         * [set_tick_cb description]
-         * @param callback [description]
-         */
-        void set_tick_cb(std::function<void(double)> callback);
-        void tick();
-        void poll();
     }
 }
 

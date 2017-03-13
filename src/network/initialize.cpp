@@ -1,5 +1,6 @@
 #include <librg/network.h>
 #include <librg/network/connection.hpp>
+#include <librg/core/shared.h>
 
 using namespace librg;
 
@@ -18,7 +19,13 @@ void librg::network_initialize()
     network::handlers[ID_DISCONNECTION_NOTIFICATION] = network::OnClientDisconnect;
     network::handlers[MessageID::CONNECTION_INIT]    = network::OnClientConnect;
 
-    network::server(27010);
+    if (core::is_server()) {
+        network::server(27010);
+    }
+
+    if (core::is_client()) {
+        core::log("hello client");
+    }
 }
 
 /**

@@ -62,6 +62,10 @@ resources::resource_t create_from_xmlstring(std::string name, const char* buffer
  */
 void librg::resources_initialize()
 {
+    if (core::is_client()) {
+        return;
+    }
+
     core::log("starting resources");
 
     // try to create resources folder

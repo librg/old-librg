@@ -1,5 +1,3 @@
-#define RGSERVER
-
 #include <clocale>
 #include <uv.h>
 
