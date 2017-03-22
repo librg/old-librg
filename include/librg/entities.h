@@ -4,6 +4,7 @@
 #include <entityx/entityx.h>
 #include <entityx/Entity.h>
 #include <entityx/System.h>
+#include <entityx/deps/Dependencies.h>
 
 namespace librg
 {
