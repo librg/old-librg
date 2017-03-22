@@ -41,7 +41,7 @@ namespace librg
         /**
          * Public API method for cleaning up the quad-tree.
          */
-        void clean();
+        void clear();
 
         /**
          * Public API method for querying a list of entities that should be
