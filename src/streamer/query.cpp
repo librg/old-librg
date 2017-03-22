@@ -5,10 +5,10 @@ void librg::streamer::qtree_t::query(std::vector<entityx::Entity> &visible, aabb
 {
     if (!boundary.intersects(range)) return;
 
-    for (int i = 0; i < entities.size(); i++) {
-        auto position = entities[i].component<transform_t>()->position;
+    for (auto &entity : entities) {
+        auto position = entity.component<transform_t>()->position;
         if (range.contains(position)) {
-            visible.push_back(entities[i]);
+            visible.push_back(entity);
         }
     }
 
