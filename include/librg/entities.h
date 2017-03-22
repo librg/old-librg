@@ -2,6 +2,8 @@
 #define entities_h
 
 #include <entityx/entityx.h>
+#include <entityx/Entity.h>
+#include <entityx/System.h>
 
 namespace librg
 {
