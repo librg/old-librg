@@ -48,7 +48,7 @@ namespace librg
          * streamed.
          * @param entity An entity to be queried against.
          */
-        auto query(entityx::Entity entity) -> std::vector<entityx::Entity>;
+        std::vector<entityx::Entity> query(entityx::Entity entity);
 
 
     }

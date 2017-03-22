@@ -19,8 +19,7 @@ void librg::streamer::qtree_t::query(std::vector<entityx::Entity> &visible, aabb
     }
 }
 
-auto librg::streamer::query(entityx::Entity entity)
-     -> std::vector<entityx::Entity>
+std::vector<entityx::Entity> librg::streamer::query(entityx::Entity entity)
 {
     auto visible = std::vector<entityx::Entity>();
 
