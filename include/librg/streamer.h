@@ -43,19 +43,18 @@ namespace librg
         void clear();
 
         /**
+         * Public API method for cleaning up the quad-tree and
+         * setting up a new boundary.
+         * @param bounds A tree world boundary.
+         */
+        void clear(aabb_t bounds);
+
+        /**
          * Public API method for querying a list of entities that should be
          * streamed.
          * @param entity An entity to be queried against.
          */
         std::vector<entityx::Entity> query(entityx::Entity entity);
-
-        /**
-         * Public API method for setting initial tree boundary.
-         * @param dim A dimensions to use.
-         */
-        inline static void set_tree_boundary(aabb_t bounds) {
-            _root.boundary = bounds;
-        }
     }
 }
 
