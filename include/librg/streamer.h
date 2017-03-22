@@ -7,17 +7,16 @@
 
 namespace librg
 {
-    void streamer_initialize();
+    void streamer_initialize(aabb_t bounds);
     static inline void streamer_terminate() {};
 
     namespace streamer
     {
         constexpr int MAX_NODES = 4;
-        constexpr float MAX_TREE_SIZE = 32*1024;
         using namespace vectorial;
 
         struct qtree_t {
-            qtree_t() : boundary(MAX_TREE_SIZE) {}
+            qtree_t() {}
             qtree_t(aabb_t boundary) : boundary(boundary) {}
 
             void subdivide();
@@ -50,7 +49,13 @@ namespace librg
          */
         std::vector<entityx::Entity> query(entityx::Entity entity);
 
-
+        /**
+         * Public API method for setting initial tree boundary.
+         * @param dim A dimensions to use.
+         */
+        inline static void set_tree_boundary(aabb_t bounds) {
+            _root.boundary = bounds;
+        }
     }
 }
 
