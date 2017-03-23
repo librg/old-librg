@@ -3,12 +3,12 @@
 void librg::streamer::qtree_t::query(std::vector<Entity> &visible,
                                     aabb_t range, ComponentHandle<streamable_t> streamable)
 {
-    if (!boundary.intersects(range)) return;
+    if (!boundary.intersects_2d(range)) return;
     std::vector<Entity> ignoredEntities = streamable->ignoredEntities;
 
     for (auto &entity : entities) {
         auto position = entity.component<transform_t>()->position;
-        if (   range.contains(position)
+        if (   range.contains_2d(position)
             && std::find(ignoredEntities.begin(),
                          ignoredEntities.end(),
                          entity) == ignoredEntities.end()

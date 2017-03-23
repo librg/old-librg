@@ -10,29 +10,47 @@ namespace librg
     using namespace vectorial;
 
     struct aabb_t {
-        aabb_t() : halfdim(0) {}
-        aabb_t(float halfdim) : halfdim(halfdim) {}
-        aabb_t(vec3f center, float halfdim)
+        aabb_t() {}
+        aabb_t(vec3f halfdim) : halfdim(halfdim) {}
+        aabb_t(vec3f center, vec3f halfdim)
             : center(center), halfdim(halfdim) {}
 
-        bool contains(vec3f point)
+        bool contains_2d(vec3f point)
         {
-            return(center.x() - halfdim <= point.x()
-                && center.x() + halfdim >= point.x()
-                && center.y() - halfdim <= point.y()
-                && center.y() + halfdim >= point.y());
+            return(center.x() - halfdim.x() <= point.x()
+                && center.x() + halfdim.x() >= point.x()
+                && center.y() - halfdim.y() <= point.y()
+                && center.y() + halfdim.y() >= point.y());
         }
 
-        bool intersects(aabb_t rhs)
+        bool contains_3d(vec3f point)
         {
-            if (std::abs(center.x() - rhs.center.x()) > (halfdim + rhs.halfdim)) return false;
-            if (std::abs(center.y() - rhs.center.y()) > (halfdim + rhs.halfdim)) return false;
-            if (std::abs(center.z() - rhs.center.z()) > (halfdim + rhs.halfdim)) return false;
+            return(center.x() - halfdim.x() <= point.x()
+                && center.x() + halfdim.x() >= point.x()
+                && center.y() - halfdim.y() <= point.y()
+                && center.y() + halfdim.y() >= point.y()
+                && center.z() - halfdim.z() <= point.z()
+                && center.z() + halfdim.z() >= point.z());
+        }
+
+        bool intersects_2d(aabb_t rhs)
+        {
+            if (std::abs(center.x() - rhs.center.x()) > (halfdim.x() + rhs.halfdim.x())) return false;
+            if (std::abs(center.y() - rhs.center.y()) > (halfdim.y() + rhs.halfdim.y())) return false;
 
             return true;
         }
 
-        float halfdim;
+        bool intersects_3d(aabb_t rhs)
+        {
+            if (std::abs(center.x() - rhs.center.x()) > (halfdim.x() + rhs.halfdim.x())) return false;
+            if (std::abs(center.y() - rhs.center.y()) > (halfdim.y() + rhs.halfdim.y())) return false;
+            if (std::abs(center.z() - rhs.center.z()) > (halfdim.z() + rhs.halfdim.z())) return false;
+
+            return true;
+        }
+
+        vec3f halfdim;
         vec3f center;
     };
 }

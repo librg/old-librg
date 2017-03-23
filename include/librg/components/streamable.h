@@ -7,7 +7,7 @@
 namespace librg
 {
     struct streamable_t {
-        float queryRange;
+        vec3f queryRange;
         std::vector<Entity> ignoredEntities;
     };
 }
