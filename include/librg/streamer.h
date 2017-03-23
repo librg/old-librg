@@ -4,6 +4,7 @@
 #include <librg/entities.h>
 #include <vectorial/vectorial.h>
 #include <librg/utils/aabb.h>
+#include <librg/components/streamable.h>
 
 namespace librg
 {
@@ -22,10 +23,11 @@ namespace librg
             void subdivide();
             void create_child(aabb_t boundary);
             bool insert(entityx::Entity entity);
-            void query(std::vector<entityx::Entity> &visible, aabb_t range);
+            void query(std::vector<entityx::Entity> &visible, aabb_t range, entityx::ComponentHandle<streamable_t> streamable);
 
             aabb_t boundary;
             std::vector<entityx::Entity> entities;
+            std::vector<entityx::Entity> blacklistedEntities;
             std::vector<qtree_t> trees;
         };
 

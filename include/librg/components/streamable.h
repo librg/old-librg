@@ -8,8 +8,7 @@ namespace librg
 {
     struct streamable_t {
         float queryRange;
-
-        // TODO(zaklaus): Add blacklist vector for filtering out unwanted entities.
+        std::vector<entityx::Entity> ignoredEntities;
     };
 }
 
