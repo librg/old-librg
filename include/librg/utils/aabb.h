@@ -25,8 +25,11 @@ namespace librg
 
         bool intersects(aabb_t rhs)
         {
-            // TODO(zaklaus): Implement AABB intersection check.
-            return false;
+            if (std::abs(center.x() - rhs.center.x()) > (halfdim + rhs.halfdim)) return false;
+            if (std::abs(center.y() - rhs.center.y()) > (halfdim + rhs.halfdim)) return false;
+            if (std::abs(center.z() - rhs.center.z()) > (halfdim + rhs.halfdim)) return false;
+
+            return true;
         }
 
         float halfdim;
