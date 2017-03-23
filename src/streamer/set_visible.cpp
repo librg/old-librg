@@ -28,7 +28,9 @@ bool librg::streamer::set_visible(Entity entity, bool state)
 
 bool librg::streamer::set_visible_for(Entity entity, Entity target, bool state)
 {
-    auto &ignoredEntities = target.component<streamable_t>()->ignoredEntities;
+    auto streamable = target.component<streamable_t>();
+    if (!streamable) return false;
 
+    auto &ignoredEntities = streamable->ignoredEntities;
     return _set_visible_for(ignoredEntities, entity, state);
 }
