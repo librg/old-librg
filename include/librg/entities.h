@@ -6,6 +6,8 @@
 #include <entityx/System.h>
 #include <entityx/deps/Dependencies.h>
 
+using namespace entityx;
+
 namespace librg
 {
     extern entityx::EventManager*   _events;

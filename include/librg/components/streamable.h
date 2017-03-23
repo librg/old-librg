@@ -8,7 +8,7 @@ namespace librg
 {
     struct streamable_t {
         float queryRange;
-        std::vector<entityx::Entity> ignoredEntities;
+        std::vector<Entity> ignoredEntities;
     };
 }
 

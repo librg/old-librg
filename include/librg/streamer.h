@@ -22,12 +22,12 @@ namespace librg
 
             void subdivide();
             void create_child(aabb_t boundary);
-            bool insert(entityx::Entity entity);
-            void query(std::vector<entityx::Entity> &visible, aabb_t range, entityx::ComponentHandle<streamable_t> streamable);
+            bool insert(Entity entity);
+            void query(std::vector<Entity> &visible, aabb_t range, ComponentHandle<streamable_t> streamable);
 
             aabb_t boundary;
-            std::vector<entityx::Entity> entities;
-            std::vector<entityx::Entity> blacklistedEntities;
+            std::vector<Entity> entities;
+            std::vector<Entity> blacklistedEntities;
             std::vector<qtree_t> trees;
         };
 
@@ -37,7 +37,7 @@ namespace librg
          * Public API method for inserting an entity to the quad tree.
          * @param entity An entity to insert.
          */
-        bool insert(entityx::Entity entity);
+        bool insert(Entity entity);
 
         /**
          * Public API method for cleaning up the quad-tree.
@@ -56,7 +56,27 @@ namespace librg
          * streamed.
          * @param entity An entity to be queried against.
          */
-        std::vector<entityx::Entity> query(entityx::Entity entity);
+        std::vector<Entity> query(Entity entity);
+
+        /**
+         * Public API method for setting the global visibility of the entity.
+         * @param  entity An entity to deal with.
+         * @param  state  A visibility state.
+         * @return        Returns zero if no change has happened, one otherwise.
+         */
+        bool set_visible(Entity entity, bool state);
+
+        /**
+         * Public API method for setting visibility of the entity for a specific
+         * entity target.
+         *
+         * Only works if the target entity has a streamable component.
+         *
+         * @param  entity An entity to deal with.
+         * @param  state  A visibility state.
+         * @return        Returns zero if no change has happened, one otherwise.
+         */
+        bool set_visible_for(Entity entity, Entity target, bool state);
     }
 }
 
