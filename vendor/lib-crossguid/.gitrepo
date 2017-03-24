@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/graeme-hill/crossguid.git
+	branch = master
+	commit = fef89a4174a7bf8cd99fa9154864ce9e8e3bf989
+	parent = 5e57530324a7d920463944c6aaebf4ce4178a9bf
+	cmdver = 0.3.1
