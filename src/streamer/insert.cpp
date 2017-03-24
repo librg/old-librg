@@ -4,7 +4,7 @@
 bool librg::streamer::qtree_t::insert(entityx::Entity entity)
 {
     entityx::ComponentHandle<transform_t> transform = entity.component<transform_t>();
-    if (!transform) false;
+    if (!transform) return false;
 
     vectorial::vec3f point = transform->position;
 
