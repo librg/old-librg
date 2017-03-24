@@ -72,11 +72,12 @@ namespace librg
          *
          * Only works if the target entity has a streamable component.
          *
-         * @param  entity An entity to deal with.
+         * @param  target An entity target we relate entity state with. 
+         * @param  entity An entity we set states for.
          * @param  state  A visibility state.
          * @return        Returns zero if no change has happened, one otherwise.
          */
-        bool set_visible_for(Entity entity, Entity target, bool state);
+        bool set_visible_for(Entity target, Entity entity, bool state);
     }
 }
 

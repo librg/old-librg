@@ -26,7 +26,7 @@ bool librg::streamer::set_visible(Entity entity, bool state)
     return _set_visible_for(_root.blacklistedEntities, entity, state);
 }
 
-bool librg::streamer::set_visible_for(Entity entity, Entity target, bool state)
+bool librg::streamer::set_visible_for(Entity target, Entity entity, bool state)
 {
     auto streamable = target.component<streamable_t>();
     if (!streamable) return false;
