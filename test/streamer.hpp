@@ -77,5 +77,49 @@ void streamer_test()
             auto queue = librg::streamer::query(newEntity);
             validate(queue.size() <= 32000);
         });
+
+        librg::streamer::clear();
+
+        it("should be able to blacklist 1 entity globally", [entity](vald_t validate) {
+            auto badEntity = librg::entities->create();
+            badEntity.assign<librg::streamable_t>(vectorial::vec3f(100));
+            badEntity.assign<librg::transform_t>();
+            librg::streamer::set_visible(badEntity, false);
+
+            auto goodEntity = librg::entities->create();
+            goodEntity.assign<librg::streamable_t>(vectorial::vec3f(100));
+            goodEntity.assign<librg::transform_t>();
+
+            librg::streamer::insert(badEntity);
+            librg::streamer::insert(goodEntity);
+
+            auto queue = librg::streamer::query(entity);
+            validate(queue.size() == 1);
+        });
+
+        librg::streamer::clear();
+
+        it("should be able to ignore 1 entity for target entity", [entity](vald_t validate) {
+            auto badEntity = librg::entities->create();
+            badEntity.assign<librg::streamable_t>(vectorial::vec3f(100));
+            badEntity.assign<librg::transform_t>();
+            librg::streamer::set_visible(badEntity, false);
+
+            auto goodEntity = librg::entities->create();
+            goodEntity.assign<librg::streamable_t>(vectorial::vec3f(100));
+            goodEntity.assign<librg::transform_t>();
+
+            auto targetEntity = librg::entities->create();
+            targetEntity.assign<librg::streamable_t>(vectorial::vec3f(100));
+            targetEntity.assign<librg::transform_t>();
+
+            librg::streamer::insert(badEntity);
+            librg::streamer::insert(goodEntity);
+
+            librg::streamer::set_visible_for(targetEntity, badEntity, false);
+
+            auto queue = librg::streamer::query(targetEntity);
+            validate(queue.size() == 1);
+        });
     });
 }

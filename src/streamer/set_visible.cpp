@@ -5,14 +5,14 @@ bool _set_visible_for(std::vector<Entity> &entities, Entity entity, bool state)
     auto &b = entities;
     auto query = std::find(b.begin(), b.end(), entity);
     if (query == b.end()) {
-        if (state) {
+        if (!state) {
             b.push_back(entity);
             return true;
         } else {
             return false;
         }
     } else {
-        if (!state) {
+        if (state) {
             b.erase(query);
             return true;
         } else {

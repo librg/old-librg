@@ -1,3 +1,4 @@
 ﻿  main.cpp
   set NOMINMAX as preprocessor macro, undefining min/max 
+f:\reguider\vendor\lib-sqrat\include\sqrat\sqratOverloadMethods.h(115): warning C4244: 'initializing': conversion from 'SQInteger' to 'int', possible loss of data
   rgtest.vcxproj -> F:\reguider\build\Release\rgtest.exe
