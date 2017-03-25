@@ -9,7 +9,7 @@
 namespace librg
 {
     void streamer_initialize(float width, float height);
-    static inline void streamer_terminate() {};
+    void streamer_terminate();
 
     namespace streamer
     {
