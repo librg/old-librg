@@ -36,12 +36,20 @@
 // // Server::Event::Test, as soon as the major linux distros get more recent GCC version, since 4.x.x doesn't support C++1z at all.
 // //
 
+#include <clocale>
 #include "utils/fs.hpp"
 #include "utils/aabb.hpp"
 #include "streamer.hpp"
+#include "events.hpp"
 
 int main()
 {
+    #ifdef WIN32
+        // Set our locale to the C locale, as Unicode output only functions in this locale
+        std::setlocale(LC_ALL, "C");
+        SetConsoleOutputCP(CP_UTF8);
+    #endif
+
     motd();
 
     {
@@ -49,6 +57,7 @@ int main()
         aabb_test();
 
         streamer_test();
+        events_test();
     }
 
     return results();
