@@ -3,8 +3,6 @@
 
 #include <librg/entities.h>
 
-using namespace Sqrat;
-
 namespace librg
 {
     namespace scripting
@@ -12,7 +10,7 @@ namespace librg
         /**
          * Public API method for creating an entity.
          */
-        inline static uint64_t entity_create(Function callback)
+        inline static uint64_t entity_create(Sqrat::Function callback)
         {
             entityx::Entity entity = librg::entities->create();
             return entity.id().id();
@@ -31,7 +29,7 @@ namespace librg
          * Registry method
          * @param table
          */
-        inline static void entity_install(Table& table)
+        inline static void entity_install(Sqrat::Table& table)
         {
             table.Func("entityCreate",  &entity_create);
             table.Func("entityDestroy", &entity_destroy);
