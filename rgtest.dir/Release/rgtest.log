@@ -1,0 +1,3 @@
+﻿  main.cpp
+  set NOMINMAX as preprocessor macro, undefining min/max 
+  rgtest.vcxproj -> F:\reguider\build\Release\rgtest.exe
