@@ -4,6 +4,7 @@
 #include <librg/network.h>
 #include <librg/components/client.h>
 #include <librg/components/streamable.h>
+#include <librg/components/transform.h>
 #include <librg/core/shared.h>
 
 namespace librg
@@ -75,6 +76,7 @@ namespace librg
 
             auto entity = entities->create();
             entity.assign<streamable_t>();
+            entity.assign<transform_t>();
             entity.assign<client_t>(packet->systemAddress, nickName.C_String(), serial.C_String());
             network::clients.insert(std::make_pair(packet->guid, entity));
 
