@@ -29,6 +29,12 @@ void librg::network::update()
 
         for (auto entity : queue) {
             uint64_t guid = entity.id().id();
+            packet.Write((uint64_t) guid);
+
+            auto streamable = entity.component<streamable_t>();
+            auto transform  = entity.component<transform_t>();
+
+            packet.Write((uint8_t) streamable.type);
 
             if (last_snapshot.erase(guid) == 0) {
                 // entity create
@@ -41,7 +47,6 @@ void librg::network::update()
                 packet.Write((bool) false);
             }
 
-            auto transform = entity.component<transform_t>();
             packet.Write(transform);
 
             next_snapshot->insert(std::make_pair(guid, true));

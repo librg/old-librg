@@ -14,29 +14,41 @@ namespace librg
             RakNet::BitStream data(packet->data, packet->length, false);
             data.IgnoreBytes(sizeof(RakNet::MessageID));
 
-            uint16_t query_size = 0;
+            uint16_t query_size = 0, remove_size = 0;
             data.Read(query_size);
 
             core::log("amount of objects: %d", query_size);
 
-            /**
-             * This data-packet is used to validate
-             * game mod compability, and add client to server list
-             *
-             * Data template
-             * @param int NETWORK_PLATFORM_ID
-             * @param int NETWORK_PROTOCOL_VERSION
-             * @param int NETWORK_BUILD_VERSION
-             * @param string Client Name
-             */
-            // RakNet::BitStream data;
-            // data.Write((RakNet::MessageID)MessageID::CONNECTION_INIT);
-            // data.Write(NETWORK_PLATFORM_ID);
-            // data.Write(NETWORK_PROTOCOL_VERSION);
-            // data.Write(NETWORK_BUILD_VERSION);
-            // data.Write("Test Player");
-            // data.Write("4555ASDASD4555ASDASD4555");
-            // network::data.peer->Send(&data, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
+            for (int i = 0; i < query_size; ++i) {
+                uint64_t guid = 0;
+                uint8_t type  = 0;
+                bool create   = false;
+
+                data.Read(guid);
+                data.Read(create);
+                data.Read(type);
+
+                // entities
+                // TODO: figure out a better way
+                // to store client-side entity objects
+
+                if (create) {
+                    core::log("creating entity");
+                }
+                else {
+                    core::log("updating entity");
+                }
+            }
+
+            data.Read(remove_size);
+
+            core::log("amount of objects to remove: %d", query_size);
+
+            for (int i = 0; i < query_size; ++i) {
+                core::log("removing entity");
+            }
+
+            return;
         }
     }
 }
