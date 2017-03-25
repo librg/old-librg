@@ -2,6 +2,7 @@
 #define librg_network_server_connection_hpp
 
 #include <librg/network.h>
+#include <librg/streamer.h>
 #include <librg/components/client.h>
 #include <librg/components/streamable.h>
 #include <librg/components/transform.h>
@@ -106,6 +107,7 @@ namespace librg
             // }));
 
             if (clients.find(packet->guid) != clients.end()) {
+                streamer::remove(clients[packet->guid]);
                 clients[packet->guid].destroy();
                 clients.erase(packet->guid);
             }

@@ -26,6 +26,7 @@ namespace librg
             void subdivide();
             void create_child(aabb_t boundary);
             bool insert(Entity entity);
+            bool remove(Entity entity);
             void clear();
             void query(std::vector<Entity> &visible, aabb_t range, ComponentHandle<streamable_t> streamable, Entity caller);
 
@@ -42,6 +43,13 @@ namespace librg
          * @param entity An entity to insert.
          */
         bool insert(Entity entity);
+
+        /**
+         * [remove description]
+         * @param  entity [description]
+         * @return        [description]
+         */
+        bool remove(Entity entity);
 
         /**
          * Public API method for cleaning up the quad-tree.

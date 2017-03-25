@@ -1,4 +1,4 @@
-#include <librg/core/server.h>
+﻿#include <librg/core/server.h>
 
 using namespace librg::core;
 
@@ -107,7 +107,7 @@ int librg::core::server(int argc, char * argv[])
     // singal handling
     uv_signal_t sig;
     uv_signal_init(uv_default_loop(), &sig);
-    uv_signal_start(&sig, signal_handler, SIGINT);
+   // uv_signal_start(&sig, signal_handler, SIGINT);
 
     // terminal window
     uv_tty_init(uv_default_loop(), &tty, 0, 1);
