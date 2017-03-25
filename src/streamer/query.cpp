@@ -1,7 +1,9 @@
 #include <librg/streamer.h>
 
 void librg::streamer::qtree_t::query(std::vector<Entity> &visible,
-                                    aabb_t range, ComponentHandle<streamable_t> streamable)
+                                    aabb_t range,
+                                    ComponentHandle<streamable_t> streamable,
+                                    Entity caller)
 {
     if (!boundary.intersects_2d(range)) return;
     std::vector<Entity> ignoredEntities = streamable->ignoredEntities;
@@ -14,7 +16,8 @@ void librg::streamer::qtree_t::query(std::vector<Entity> &visible,
                          entity) == ignoredEntities.end()
             && std::find(blacklistedEntities.begin(),
                          blacklistedEntities.end(),
-                         entity) == blacklistedEntities.end()) {
+                         entity) == blacklistedEntities.end()
+            && entity != caller) {
             visible.push_back(entity);
         }
     }
@@ -22,7 +25,7 @@ void librg::streamer::qtree_t::query(std::vector<Entity> &visible,
     if (trees.size() == 0) return;
 
     for (auto &tree : trees) {
-        tree.query(visible, range, streamable);
+        tree.query(visible, range, streamable, caller);
     }
 }
 
@@ -34,12 +37,13 @@ std::vector<Entity> librg::streamer::query(Entity entity)
     if (!streamable) return visible;
 
     auto transform  = entity.component<transform_t>();
+    if (!transform) return visible;
 
     auto qrange   = streamable->queryRange;
     auto position = transform->position;
     auto range    = aabb_t(position, qrange);
 
-    _root.query(visible, range, streamable);
+    _root.query(visible, range, streamable, entity);
 
     return visible;
 }

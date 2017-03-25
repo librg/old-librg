@@ -8,7 +8,7 @@ namespace librg
     using namespace vectorial;
 
     struct transform_t {
-        transform_t() {}
+        transform_t() = default;
         transform_t(vec3f position, vec3f rotation, vec3f scale)
         : position(position), rotation(rotation), scale(scale) {}
 

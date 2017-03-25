@@ -5,20 +5,56 @@
 
 void streamer_test()
 {
-    TEST("streamer.h");
-    {
+    describe("streamer.h", [](case_t it) {
+
         librg::entities_initialize();
-        librg::streamer_initialize(librg::aabb_t(vectorial::vec3f(1000,1000,1000)));
+        librg::streamer_initialize(1000, 1000);
 
         auto entity = librg::entities->create();
+        entity.assign<librg::streamable_t>(vectorial::vec3f(1000));
+        entity.assign<librg::transform_t>();
 
-        IT("should be able to return queue") {
+        it("should be able to return queue", [entity](vald_t validate) {
 
             auto queue = librg::streamer::query(entity);
 
-            EXPECT(queue.size() == 0);
-        }
+            validate(queue.size() == 0);
+        });
 
-        librg::streamer_terminate();
-    }
+        it("should be able to return exactly 1 entity", [entity](vald_t validate) {
+
+            auto friendly = librg::entities->create();
+            friendly.assign<librg::streamable_t>(vectorial::vec3f(1000));
+            auto ft = librg::transform_t();
+            ft.position = vectorial::vec3f(30,20,10);
+            friendly.assign<librg::transform_t>(ft);
+
+            librg::streamer::insert(friendly);
+            librg::streamer::insert(entity);
+
+            auto queue = librg::streamer::query(entity);
+
+            validate(queue.size() == 1);
+        });
+
+        librg::streamer::clear();
+
+        it("should be able to return exactly 666 entities", [entity](vald_t validate) {
+            for (int i = 0; i < 666; i++) {
+                auto enemy = librg::entities->create();
+                enemy.assign<librg::streamable_t>(vectorial::vec3f(300));
+                auto ft = librg::transform_t();
+                ft.position = vectorial::vec3f(i,20,10);
+                enemy.assign<librg::transform_t>(ft);
+
+                librg::streamer::insert(enemy);
+            }
+
+            auto queue = librg::streamer::query(entity);
+
+            validate(queue.size() == 666);
+        });
+
+        // librg::streamer_terminate();
+    });
 }
