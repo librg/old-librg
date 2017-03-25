@@ -44,7 +44,7 @@ void streamer_test()
                 auto enemy = librg::entities->create();
                 enemy.assign<librg::streamable_t>(vectorial::vec3f(300));
                 auto ft = librg::transform_t();
-                ft.position = vectorial::vec3f(i,20,10);
+                ft.position = vectorial::vec3f((float)i,20,10);
                 enemy.assign<librg::transform_t>(ft);
 
                 librg::streamer::insert(enemy);
@@ -53,6 +53,25 @@ void streamer_test()
             auto queue = librg::streamer::query(entity);
 
             validate(queue.size() == 666);
+        });
+
+        it("should be able to return less than 32k entities", [entity](vald_t validate) {
+            auto newEntity = librg::entities->create();
+            newEntity.assign<librg::streamable_t>(vectorial::vec3f(30000));
+            newEntity.assign<librg::transform_t>();
+            for (int i = 0; i < 48000; i++) {
+                auto enemy = librg::entities->create();
+                enemy.assign<librg::streamable_t>(vectorial::vec3f(300));
+                auto ft = librg::transform_t();
+                ft.position = vectorial::vec3f((float)i,20,10);
+                enemy.assign<librg::transform_t>(ft);
+
+                librg::streamer::insert(enemy);
+            }
+
+            auto queue = librg::streamer::query(entity);
+
+            validate(queue.size() <= 32000);
         });
 
         // librg::streamer_terminate();
