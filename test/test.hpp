@@ -5,28 +5,53 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <functional>
+#include <string>
 
-static int gTotal  = 0;
-static int gPassed = 0;
+/**
+ * Glorious testing suite
+ * (ported from sq)
+ */
+static int __passed = 0;
+static int __total  = 0;
 
-#define TEST_STRINGIFY(name) #name
-#define TEST(name) printf("Category: %s\n", name);
-#define IT(req) printf("- It %s\t", req); ++gTotal;
-#define EXPECT(cond) if(cond) { printf("%s", "[PASS]"); ++gPassed; } else { printf("%s", "[FAIL]"); } puts(" ");
+using vald_t = std::function<void(bool)>;
+using cscb_t = std::function<void(vald_t)>;
+using case_t = std::function<void(std::string, cscb_t)>;
+using desc_t = std::function<void(case_t)>;
+
+static inline void describe(std::string ent, desc_t descinner) {
+    printf("\n  Testing %s:\n", ent.c_str());
+
+    descinner([ent](std::string condition, cscb_t callback) {
+        try {
+            callback([ent, condition](bool result) {
+                if (result) {
+                    printf("    \x1B[32m[✓]\x1B[0m %s %s - passed\n", ent.c_str(), condition.c_str()); __passed++;
+                }
+                else {
+                    printf("    \x1B[31m[✗]\x1B[0m %s %s - failed\n", ent.c_str(), condition.c_str());
+                }
+
+                __total++;
+            });
+
+        }
+        catch (std::exception) {
+            printf("  \x1B[31m[✗]\x1B[0m %s %s - failed (exception)\n", ent.c_str(), condition.c_str()); __total++;
+        }
+    });
+}
 
 static inline void motd()
 {
-    puts("ReGuider Unit Testing utility.\n");
+    puts("Starting librg unit testing...");
 }
 
 static inline int results()
 {
-    puts("\n== TEST RESULTS ==");
-    printf("Tests passed:\t%d\n", gPassed);
-    printf("Tests failed:\t%d\n", gTotal-gPassed);
-    printf("Total tests:\t%d\n",  gTotal);
-
-    return gTotal - gPassed;
+    printf("\nTotal passed %d/%d, total failed %d.\n", __passed, __total, __total - __passed);
+    return __total - __passed;
 }
 
 #endif // librg_test

@@ -37,9 +37,9 @@
 // //
 
 #include "utils/fs.hpp"
-#include "utils/aabb.hpp"
+// #include "utils/aabb.hpp"
 
-#include "streamer.hpp"
+// #include "streamer.hpp"
 
 int main()
 {
@@ -47,9 +47,9 @@ int main()
 
     {
         fs_test();
-        aabb_test();
+        // aabb_test();
 
-        streamer_test();
+        // streamer_test();
     }
 
     return results();

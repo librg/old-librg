@@ -2,12 +2,25 @@
 #include <librg/utils/fs.h>
 
 void fs_test() {
-    TEST("utils::fs");
-    {
-        IT("should create folder") {
-            int result = librg::fs::mkdir("testdir");
+    describe("utils/fs.h", [](case_t it) {
+        using namespace librg;
 
-            EXPECT(result == 0 || result == UV_EEXIST);
-        }
-    }
+        it("should create folder", [](vald_t validate) {
+            int result = fs::mkdir("testdir");
+
+            validate(result == 0 || result == UV_EEXIST);
+        });
+
+        // it("should be able to read file content async", [](vald_t validate) {
+        //     fs::read("", [validate](fs::result_t* res) {
+        //         validate(true);
+        //     });
+        // });
+
+        it("should be able to read file content", [](vald_t validate) {
+            // validate(false);
+            validate(true);
+            // validate(false);
+        });
+    });
 }
