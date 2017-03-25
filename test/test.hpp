@@ -1,5 +1,8 @@
 // Basic framework test suite.
 
+#ifndef librg_test
+#define librg_test
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -25,3 +28,5 @@ static inline int results()
 
     return gTotal - gPassed;
 }
+
+#endif // librg_test

@@ -36,12 +36,17 @@
 // // Server::Event::Test, as soon as the major linux distros get more recent GCC version, since 4.x.x doesn't support C++1z at all.
 // //
 
+#include "utils/fs.hpp"
+#include "streamer.hpp"
+
 int main()
 {
-    // motd();
-    // {
-    //     Server::Entity::Test::RunTest();
-    // }
-    // return results();
-    return 0;
+    motd();
+
+    {
+        fs_test();
+        streamer_test();
+    }
+
+    return results();
 }
