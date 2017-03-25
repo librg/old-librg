@@ -4,6 +4,7 @@
 // TODO(zaklaus): Probably move to a better place!
 
 #include <vectorial/vectorial.h>
+#include <complex> // std::abs
 
 namespace librg
 {

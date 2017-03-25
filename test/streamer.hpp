@@ -7,6 +7,7 @@ void streamer_test()
 {
     TEST("streamer.h");
     {
+        librg::entities_initialize();
         librg::streamer_initialize(librg::aabb_t(vectorial::vec3f(1000,1000,1000)));
 
         auto entity = librg::entities->create();
