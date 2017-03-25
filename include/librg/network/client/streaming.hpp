@@ -11,6 +11,14 @@ namespace librg
         static inline void client_streamer_entity_sync(RakNet::Packet* packet) {
             core::log("received sync packet");
 
+            RakNet::BitStream data(packet->data, packet->length, false);
+            data.IgnoreBytes(sizeof(RakNet::MessageID));
+
+            uint16_t query_size = 0;
+            data.Read(query_size);
+
+            core::log("amount of objects: %d", query_size);
+
             /**
              * This data-packet is used to validate
              * game mod compability, and add client to server list

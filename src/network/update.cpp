@@ -24,7 +24,7 @@ void librg::network::update()
 
         RakNet::BitStream packet;
 
-        packet.Write((RakNet::MessageID) MessageID::ENTITY_SYNC_PACKET);
+        packet.Write(static_cast<RakNet::MessageID>(MessageID::ENTITY_SYNC_PACKET));
         packet.Write(static_cast<uint16_t>(queue.size()));
 
         for (auto entity : queue) {

@@ -103,6 +103,11 @@ namespace librg
             //     return array;
             // }));
 
+            if (clients.find(packet->guid) != clients.end()) {
+                clients[packet->guid].destroy();
+                clients.erase(packet->guid);
+            }
+
             core::log("server_disconnect: id: %d", packet->systemAddress.systemIndex);
         }
     }
