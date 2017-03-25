@@ -11,7 +11,7 @@ namespace librg
 
     struct aabb_t {
         aabb_t() {}
-        aabb_t(vec3f halfdim) : halfdim(halfdim) {}
+        aabb_t(vec3f halfdim) : halfdim(halfdim), center(0.f) {}
         aabb_t(vec3f center, vec3f halfdim)
             : center(center), halfdim(halfdim) {}
 

@@ -7,6 +7,8 @@
 namespace librg
 {
     struct streamable_t {
+        streamable_t() {}
+        streamable_t(vec3f queryRange): queryRange(queryRange), ignoredEntities() {}
         vec3f queryRange;
         std::vector<Entity> ignoredEntities;
     };

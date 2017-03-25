@@ -8,7 +8,7 @@
 
 namespace librg
 {
-    void streamer_initialize(aabb_t bounds);
+    void streamer_initialize(float width, float height);
     static inline void streamer_terminate() {};
 
     namespace streamer
@@ -18,12 +18,15 @@ namespace librg
 
         struct qtree_t {
             qtree_t() {}
-            qtree_t(aabb_t boundary) : boundary(boundary) {}
+            qtree_t(aabb_t boundary) : boundary(boundary),
+                                       entities(),
+                                       blacklistedEntities(),
+                                       trees() {}
 
             void subdivide();
             void create_child(aabb_t boundary);
             bool insert(Entity entity);
-            void query(std::vector<Entity> &visible, aabb_t range, ComponentHandle<streamable_t> streamable);
+            void query(std::vector<Entity> &visible, aabb_t range, ComponentHandle<streamable_t> streamable, Entity caller);
 
             aabb_t boundary;
             std::vector<Entity> entities;
@@ -72,7 +75,7 @@ namespace librg
          *
          * Only works if the target entity has a streamable component.
          *
-         * @param  target An entity target we relate entity state with. 
+         * @param  target An entity target we relate entity state with.
          * @param  entity An entity we set states for.
          * @param  state  A visibility state.
          * @return        Returns zero if no change has happened, one otherwise.
