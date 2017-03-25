@@ -1,149 +1,149 @@
-// Copyright (c) 2014 Paolo Fragomeni and other libuv-http Contributors
+// // Copyright (c) 2014 Paolo Fragomeni and other libuv-http Contributors
 
-#include <librg/utils/http.h>
+// #include <librg/utils/http.h>
 
-namespace http {
-
-
-    int Client::complete(http_parser* parser, Listener cb) {
-        Context* context = reinterpret_cast<Context*>(parser->data);
-
-        Response res;
-        res.body = context->body.str();
-        res.parser = *parser;
-
-        cb(res);
-        return 0;
-    }
+// namespace http {
 
 
-    void Client::on_connect(uv_connect_t* req, int status) {
+//     int Client::complete(http_parser* parser, Listener cb) {
+//         Context* context = reinterpret_cast<Context*>(parser->data);
 
-        Context* context = reinterpret_cast<Context*>(req->handle->data);
-        static http_parser_settings settings;
-        attachEvents(this, settings);
+//         Response res;
+//         res.body = context->body.str();
+//         res.parser = *parser;
 
-        if (status == -1) {
-            // @TODO
-            // Error Callback
-            uv_close((uv_handle_t*)req->handle, free_context);
-            return;
-        }
+//         cb(res);
+//         return 0;
+//     }
 
-        static function<void(
-            uv_stream_t* tcp, ssize_t nread, const uv_buf_t* buf)> read;
 
-        read = [&](uv_stream_t* tcp, ssize_t nread, const uv_buf_t* buf) {
+//     void Client::on_connect(uv_connect_t* req, int status) {
 
-            Context* context = static_cast<Context*>(tcp->data);
+//         Context* context = reinterpret_cast<Context*>(req->handle->data);
+//         static http_parser_settings settings;
+//         attachEvents(this, settings);
 
-            if (nread >= 0) {
-                auto parsed = (ssize_t) http_parser_execute(
-                    &context->parser, &settings, buf->base, nread);
+//         if (status == -1) {
+//             // @TODO
+//             // Error Callback
+//             uv_close((uv_handle_t*)req->handle, free_context);
+//             return;
+//         }
 
-                if (parsed < nread) {
-                    uv_close((uv_handle_t*) &context->handle, free_context);
-                }
-                if (parsed != nread) {
-                    // @TODO
-                    // Error Callback
-                }
-            }
-            else {
-                if (nread != UV_EOF) {
-                    return; // maybe do something interesting here...
-                }
-                uv_close((uv_handle_t*) &context->handle, free_context);
-            }
-            free(buf->base);
-        };
+//         static function<void(
+//             uv_stream_t* tcp, ssize_t nread, const uv_buf_t* buf)> read;
 
-        uv_buf_t reqbuf;
-        std::string reqstr =
-            opts.method + " " + opts.url + " HTTP/1.1" + CRLF +
-            //
-            // @TODO
-            // Add user's headers here
-            //
-            "Connection: keep-alive" + CRLF + CRLF;
+//         read = [&](uv_stream_t* tcp, ssize_t nread, const uv_buf_t* buf) {
 
-        reqbuf.base = (char*) reqstr.c_str();
-        reqbuf.len = reqstr.size();
+//             Context* context = static_cast<Context*>(tcp->data);
 
-        uv_read_start(
-            req->handle,
-            [](uv_handle_t* handle, size_t suggested_size, uv_buf_t* buf) {
-                *buf = uv_buf_init((char*) malloc(suggested_size), suggested_size);
-            }, 
-            [](uv_stream_t* tcp, ssize_t nread, const uv_buf_t* buf) {
-                read(tcp, nread, buf);
-            });
+//             if (nread >= 0) {
+//                 auto parsed = (ssize_t) http_parser_execute(
+//                     &context->parser, &settings, buf->base, nread);
 
-        uv_write(
-            &context->write_req,
-            req->handle,
-            &reqbuf,
-            1,
-            NULL);
-    }
+//                 if (parsed < nread) {
+//                     uv_close((uv_handle_t*) &context->handle, free_context);
+//                 }
+//                 if (parsed != nread) {
+//                     // @TODO
+//                     // Error Callback
+//                 }
+//             }
+//             else {
+//                 if (nread != UV_EOF) {
+//                     return; // maybe do something interesting here...
+//                 }
+//                 uv_close((uv_handle_t*) &context->handle, free_context);
+//             }
+//             free(buf->base);
+//         };
 
-    void Client::connect() {
+//         uv_buf_t reqbuf;
+//         std::string reqstr =
+//             opts.method + " " + opts.url + " HTTP/1.1" + CRLF +
+//             //
+//             // @TODO
+//             // Add user's headers here
+//             //
+//             "Connection: keep-alive" + CRLF + CRLF;
 
-        struct addrinfo ai;
-        ai.ai_family = PF_INET;
-        ai.ai_socktype = SOCK_STREAM;
-        ai.ai_protocol = IPPROTO_TCP;
-        ai.ai_flags = 0;
+//         reqbuf.base = (char*) reqstr.c_str();
+//         reqbuf.len = reqstr.size();
 
-        UV_LOOP = uv_default_loop();
+//         uv_read_start(
+//             req->handle,
+//             [](uv_handle_t* handle, size_t suggested_size, uv_buf_t* buf) {
+//                 *buf = uv_buf_init((char*) malloc(suggested_size), suggested_size);
+//             }, 
+//             [](uv_stream_t* tcp, ssize_t nread, const uv_buf_t* buf) {
+//                 read(tcp, nread, buf);
+//             });
 
-        static function<void(
-            uv_getaddrinfo_t* req, int status, struct addrinfo* res)> on_resolved;
+//         uv_write(
+//             &context->write_req,
+//             req->handle,
+//             &reqbuf,
+//             1,
+//             NULL);
+//     }
 
-        static function<void(uv_connect_t* req, int status)> on_before_connect;
+//     void Client::connect() {
 
-        on_before_connect = [&](uv_connect_t* req, int status) {
+//         struct addrinfo ai;
+//         ai.ai_family = PF_INET;
+//         ai.ai_socktype = SOCK_STREAM;
+//         ai.ai_protocol = IPPROTO_TCP;
+//         ai.ai_flags = 0;
 
-            // @TODO
-            // Populate address and time info for logging / stats etc.
+//         UV_LOOP = uv_default_loop();
 
-            on_connect(req, status);
-        };
+//         static function<void(
+//             uv_getaddrinfo_t* req, int status, struct addrinfo* res)> on_resolved;
 
-        on_resolved = [&](uv_getaddrinfo_t* req, int status, struct addrinfo* res) {
+//         static function<void(uv_connect_t* req, int status)> on_before_connect;
 
-            char addr[17] = { '\0' };
+//         on_before_connect = [&](uv_connect_t* req, int status) {
 
-            uv_ip4_name((struct sockaddr_in*) res->ai_addr, addr, 16);
-            uv_freeaddrinfo(res);
+//             // @TODO
+//             // Populate address and time info for logging / stats etc.
 
-            struct sockaddr_in dest;
-            uv_ip4_addr(addr, 8000, &dest);
+//             on_connect(req, status);
+//         };
 
-            Context* context = new Context();
+//         on_resolved = [&](uv_getaddrinfo_t* req, int status, struct addrinfo* res) {
 
-            context->handle.data = context;
-            http_parser_init(&context->parser, HTTP_RESPONSE);
-            context->parser.data = context;
+//             char addr[17] = { '\0' };
 
-            uv_tcp_init(UV_LOOP, &context->handle);
-            //uv_tcp_keepalive(&context->handle, 1, 60);
+//             uv_ip4_name((struct sockaddr_in*) res->ai_addr, addr, 16);
+//             uv_freeaddrinfo(res);
 
-            uv_tcp_connect(
-                &context->connect_req,
-                &context->handle,
-                (const struct sockaddr*) &dest,
-                [](uv_connect_t* req, int status) {
-                    on_before_connect(req, status);
-                });
-        };
+//             struct sockaddr_in dest;
+//             uv_ip4_addr(addr, 8000, &dest);
 
-        auto cb = [](uv_getaddrinfo_t* req, int status, struct addrinfo* res) {
-            on_resolved(req, status, res);
-        };
+//             Context* context = new Context();
 
-        uv_getaddrinfo(UV_LOOP, &addr_req, cb, "localhost", "8000", &ai);
-        uv_run(UV_LOOP, UV_RUN_DEFAULT);
-    }
+//             context->handle.data = context;
+//             http_parser_init(&context->parser, HTTP_RESPONSE);
+//             context->parser.data = context;
 
-} // namespace http
+//             uv_tcp_init(UV_LOOP, &context->handle);
+//             //uv_tcp_keepalive(&context->handle, 1, 60);
+
+//             uv_tcp_connect(
+//                 &context->connect_req,
+//                 &context->handle,
+//                 (const struct sockaddr*) &dest,
+//                 [](uv_connect_t* req, int status) {
+//                     on_before_connect(req, status);
+//                 });
+//         };
+
+//         auto cb = [](uv_getaddrinfo_t* req, int status, struct addrinfo* res) {
+//             on_resolved(req, status, res);
+//         };
+
+//         uv_getaddrinfo(UV_LOOP, &addr_req, cb, "localhost", "8000", &ai);
+//         uv_run(UV_LOOP, UV_RUN_DEFAULT);
+//     }
+
+// } // namespace http

@@ -1,5 +1,4 @@
 #include <librg/core/server.h>
-#include <librg/utils/http.h>
 
 using namespace librg::core;
 
@@ -92,19 +91,6 @@ int librg::core::server(int argc, char * argv[])
     SetConsoleOutputCP(CP_UTF8);
 #endif
     // Server::Core::Log("\033[2J\033[H\033[1B\033[1C\033[42;37m%s");
-
-
-    http::Server server([](http::Request &req, http::Response &res) {
-
-        res.setStatus(200);
-        res.setHeader("Content-Type", "text/plain");
-        res.setHeader("Connection", "keep-alive");
-
-        res << req.method << " hello m8 " << req.url << http::endl;
-
-    });
-
-    server.listen("0.0.0.0", 7779);
 
     // define main timed loop (network send)
     // start after 1 sec, each 15 ms
