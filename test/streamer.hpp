@@ -56,5 +56,6 @@ void streamer_test()
         }
 
         librg::streamer_terminate();
+        librg::entities_terminate();
     }
 }
