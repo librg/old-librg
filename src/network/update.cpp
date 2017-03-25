@@ -34,7 +34,7 @@ void librg::network::update()
             auto streamable = entity.component<streamable_t>();
             auto transform  = entity.component<transform_t>();
 
-            packet.Write((uint8_t) streamable.type);
+            packet.Write((uint8_t) streamable->type);
 
             if (last_snapshot.erase(guid) == 0) {
                 // entity create
