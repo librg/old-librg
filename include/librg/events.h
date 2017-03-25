@@ -1,5 +1,5 @@
-#ifndef events_h
-#define events_h
+#ifndef librg_events_h
+#define librg_events_h
 
 #include <map>
 #include <vector>
@@ -35,7 +35,7 @@ namespace librg
 
         using callback_generic  = std::function<void(const void*, void*)>;
         using callback_script   = std::function<void(const void*, Sqrat::Function*)>;
-        using callback_proxy = std::function<void*(const void*, Sqrat::Array*)>;
+        using callback_proxy    = std::function<void*(const void*, Sqrat::Array*)>;
         using callback_array    = std::function<void(Sqrat::Array *array)>;
 
 
@@ -102,4 +102,4 @@ namespace librg
     }
 }
 
-#endif // events_h
+#endif // librg_events_h

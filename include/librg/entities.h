@@ -1,5 +1,5 @@
-#ifndef entities_h
-#define entities_h
+#ifndef librg_entities_h
+#define librg_entities_h
 
 #include <entityx/entityx.h>
 #include <entityx/Entity.h>
@@ -18,4 +18,4 @@ namespace librg
     void entities_terminate();
 }
 
-#endif // entities_h
+#endif // librg_entities_h

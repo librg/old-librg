@@ -1,5 +1,5 @@
-#ifndef streamable_h
-#define streamable_h
+#ifndef librg_components_streamable_h
+#define librg_components_streamable_h
 
 #include <librg/entities.h>
 #include <librg/components/transform.h>
@@ -12,4 +12,4 @@ namespace librg
     };
 }
 
-#endif // streamable_h
+#endif // librg_components_streamable_h

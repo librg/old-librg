@@ -3,6 +3,7 @@
 
 #include <librg/network/server/connection.hpp>
 #include <librg/network/client/connection.hpp>
+#include <librg/network/client/streaming.hpp>
 
 using namespace librg;
 
@@ -31,7 +32,8 @@ void librg::network_initialize()
         network::handlers[ID_DISCONNECTION_NOTIFICATION]        = network::client_disconnect_notification;
         network::handlers[ID_CONNECTION_LOST]                   = network::client_connection_lost;
         network::handlers[ID_CONNECTION_REQUEST_ACCEPTED]       = network::client_connection_request_accepted;
-        network::handlers[MessageID::CONNECTION_ACCEPTED]       = network::cleint_connection_success;
+        network::handlers[MessageID::CONNECTION_ACCEPTED]       = network::client_connection_success;
+        network::handlers[MessageID::ENTITY_SYNC_PACKET]        = network::client_streamer_entity_sync;
     }
 
     if (core::is_server()) {
@@ -56,4 +58,4 @@ network::data_t network::data;
 /**
  * Storage for current clients
  */
-std::map<RakNet::RakNetGUID, network::client_t> network::clients;
+std::map<RakNet::RakNetGUID, entityx::Entity> network::clients;

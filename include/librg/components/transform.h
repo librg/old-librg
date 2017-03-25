@@ -1,5 +1,5 @@
-#ifndef transform_h
-#define transform_h
+#ifndef librg_components_transform_h
+#define librg_components_transform_h
 
 #include <vectorial/vectorial.h>
 
@@ -18,4 +18,4 @@ namespace librg
     };
 }
 
-#endif // transform_h
+#endif // librg_components_transform_h

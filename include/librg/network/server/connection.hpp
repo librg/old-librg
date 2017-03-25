@@ -1,6 +1,9 @@
-#define network_connection_hpp
+#ifndef librg_network_server_connection_hpp
+#define librg_network_server_connection_hpp
 
 #include <librg/network.h>
+#include <librg/components/client.h>
+#include <librg/components/streamable.h>
 #include <librg/core/shared.h>
 
 namespace librg
@@ -70,9 +73,10 @@ namespace librg
             RakNet::RakString serial;
             bsInput.Read(serial);
 
-            network::clients.insert(std::make_pair(
-                packet->guid, network::client_t(packet->systemAddress, nickName.C_String(), serial.C_String())
-            ));
+            auto entity = entities->create();
+            entity.assign<streamable_t>();
+            entity.assign<client_t>(packet->systemAddress, nickName.C_String(), serial.C_String());
+            network::clients.insert(std::make_pair(packet->guid, entity));
 
             // send success
             bsOutput.Write(static_cast<RakNet::MessageID>(MessageID::CONNECTION_ACCEPTED));
@@ -103,3 +107,5 @@ namespace librg
         }
     }
 }
+
+#endif // librg_network_server_connection_hpp

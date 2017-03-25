@@ -1,4 +1,5 @@
-#define network_connection_hpp
+#ifndef librg_network_client_connection_hpp
+#define librg_network_client_connection_hpp
 
 #include <librg/network.h>
 #include <librg/core/shared.h>
@@ -59,8 +60,10 @@ namespace librg
             network::data.peer->Send(&data, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
         }
 
-        static inline void cleint_connection_success(RakNet::Packet* packet) {
+        static inline void client_connection_success(RakNet::Packet* packet) {
             core::log("Connection succeeded, we are now on the server");
         }
     }
 }
+
+#endif // librg_network_client_connection_hpp

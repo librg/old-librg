@@ -1,5 +1,5 @@
-#ifndef resources_h
-#define resources_h
+#ifndef librg_resources_h
+#define librg_resources_h
 
 #include <uv.h>
 #include <vector>
@@ -93,4 +93,4 @@ namespace librg
     }
 }
 
-#endif // resources_h
+#endif // librg_resources_h

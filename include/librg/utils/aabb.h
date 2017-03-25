@@ -1,5 +1,5 @@
-#ifndef aabb_h
-#define aabb_h
+#ifndef librg_utils_aabb_h
+#define librg_utils_aabb_h
 
 // TODO(zaklaus): Probably move to a better place!
 
@@ -55,4 +55,4 @@ namespace librg
     };
 }
 
-#endif // aabb_h
+#endif // librg_utils_aabb_h

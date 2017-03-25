@@ -16,13 +16,12 @@
 // TODO(inlife): refactor
 namespace MessageID
 {
-    enum MainIDS {
+    enum messages {
         CONNECTION_INIT = ID_USER_PACKET_ENUM + 1,
         CONNECTION_REFUSED,
         CONNECTION_ACCEPTED,
         CONNECTION_DISCONNECTED,
-        PLAYER_SYNC_ONFOOT,
-        PLAYER_EVENT_CREATE,
+        ENTITY_SYNC_PACKET,
     };
 };
 

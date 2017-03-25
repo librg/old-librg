@@ -1,5 +1,5 @@
-#ifndef streamer_h
-#define streamer_h
+#ifndef librg_streamer_h
+#define librg_streamer_h
 
 #include <librg/entities.h>
 #include <vectorial/vectorial.h>
@@ -81,4 +81,4 @@ namespace librg
     }
 }
 
-#endif // streamer_h
+#endif // librg_streamer_h
