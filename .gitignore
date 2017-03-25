@@ -26,3 +26,5 @@ build-win/*
 .DS_Store
 Thumbs.db
 build
+
+x64/*
