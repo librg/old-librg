@@ -9,6 +9,8 @@ external/*
 !external/rpavlik-cmake-modules-fe2273
 !external/CMakeLists.txt
 !external/depedencies.txt
+x64/*
+*.dir/*
 
 # building stuff
 build-mac/*
@@ -26,5 +28,3 @@ build-win/*
 .DS_Store
 Thumbs.db
 build
-
-x64/*
