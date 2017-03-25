@@ -26,6 +26,7 @@ namespace librg
             void subdivide();
             void create_child(aabb_t boundary);
             bool insert(Entity entity);
+            void clear();
             void query(std::vector<Entity> &visible, aabb_t range, ComponentHandle<streamable_t> streamable, Entity caller);
 
             aabb_t boundary;
