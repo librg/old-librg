@@ -17,7 +17,7 @@ void librg::network::update()
         core::log("sending updates to uid: %d", playerEntity.id().index());
         // copy last to local last, alias next snapshot as last and clear it
         auto next_snapshot = &client.last_snapshot;
-        auto last_snaphot  = client.last_snapshot;
+        auto last_snapshot =  client.last_snapshot;
 
         next_snapshot->clear();
         auto queue = streamer::query(playerEntity);
@@ -30,37 +30,26 @@ void librg::network::update()
         for (auto entity : queue) {
             uint64_t guid = entity.id().id();
 
-            if (last_snaphot.erase(guid) == 0) {
+            if (last_snapshot.erase(guid) == 0) {
                 // entity create
                 packet.Write((bool) true);
-                auto transform = entity.component<transform_t>();
-                packet.Write(transform);
 
                 // TODO add rest compoenents
             }
             else {
                 // entity update
                 packet.Write((bool) false);
-                auto transform = entity.component<transform_t>();
-                packet.Write(transform);
-
-                // packet.Write((float) transform->position.x());
-                // packet.Write((float) transform->position.y());
-                // packet.Write((float) transform->position.z());
-                // packet.Write((float) transform->rotation.x());
-                // packet.Write((float) transform->rotation.y());
-                // packet.Write((float) transform->rotation.z());
-                // packet.Write((float) transform->scale.x());
-                // packet.Write((float) transform->scale.y());
-                // packet.Write((float) transform->scale.z());
             }
+
+            auto transform = entity.component<transform_t>();
+            packet.Write(transform);
 
             next_snapshot->insert(std::make_pair(guid, true));
         }
 
-        packet.Write(static_cast<uint16_t>(last_snaphot.size()));
+        packet.Write(static_cast<uint16_t>(last_snapshot.size()));
 
-        for (auto pair : last_snaphot) {
+        for (auto pair : last_snapshot) {
             // remove entity
             packet.Write((uint64_t) pair.first);
         }
@@ -74,3 +63,14 @@ void librg::network::update()
         streamer::insert(entity);
     });
 }
+
+
+// packet.Write((float) transform->position.x());
+// packet.Write((float) transform->position.y());
+// packet.Write((float) transform->position.z());
+// packet.Write((float) transform->rotation.x());
+// packet.Write((float) transform->rotation.y());
+// packet.Write((float) transform->rotation.z());
+// packet.Write((float) transform->scale.x());
+// packet.Write((float) transform->scale.y());
+// packet.Write((float) transform->scale.z());
