@@ -68,5 +68,9 @@ void librg::network::update()
         data.peer->Send(&packet, HIGH_PRIORITY, RELIABLE_ORDERED, 0, client.address, false);
     });
 
-    // recalculate tree
+    streamer::clear();
+
+    entities->each<streamable_t>([](Entity entity, streamable_t& streamable) {
+        streamer::insert(entity);
+    });
 }
