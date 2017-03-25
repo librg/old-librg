@@ -3,6 +3,7 @@
 void librg::streamer::qtree_t::clear()
 {
     entities.clear();
+    blacklistedEntities.clear();
 
     for (auto &tree : trees) {
         tree.clear();
