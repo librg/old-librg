@@ -1,4 +1,4 @@
-#include <librg/events.h>
+﻿#include <librg/events.h>
 
 using namespace librg::events;
 
@@ -43,7 +43,7 @@ void _cleanup_event(uv_async_t* req)
     uv_close((uv_handle_t*)req, NULL);
 }
 
-void librg::events::trigger(std::string name, dispatch_params_t params)
+void librg::events::trigger(std::string name, dispatch_params_t params, bool direct)
 {
     if (_events.find(name) != _events.end()) {
         for (auto handler : _events[name]) {
@@ -61,15 +61,22 @@ void librg::events::trigger(std::string name, dispatch_params_t params)
 
             auto data = new dispatch_data_t { handler, params.event, params.array };
 
-            uv_async_init(uv_default_loop(), async, _callback);
-            async->data = (void*)data;
-            uv_async_send(async);
+            if (!direct) {
+                uv_async_init(uv_default_loop(), async, _callback);
+                async->data = (void*)data;
+                uv_async_send(async);
+            } else {
+                void *par = data->info.responder(data->event, data->array);
+                data->info.callback(par, data->info.blob);
+            }
         }
     }
 
-    // NOTE(zaklaus): Destroy the event data once we're done with the calls.
-    uv_async_t* async = new uv_async_t;
-    uv_async_init(uv_default_loop(), async, _cleanup_event);
-    async->data = (void *)new dispatch_cleanup_stack_t{ params.event, params.array };
-    uv_async_send(async);
+    if (!direct) {
+        // NOTE(zaklaus): Destroy the event data once we're done with the calls.
+        uv_async_t* async = new uv_async_t;
+        uv_async_init(uv_default_loop(), async, _cleanup_event);
+        async->data = (void *)new dispatch_cleanup_stack_t{ params.event, params.array };
+        uv_async_send(async);
+    }
 }

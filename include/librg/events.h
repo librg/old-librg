@@ -89,8 +89,9 @@ namespace librg
          *
          * @param eventName   Name of the event to call.
          * @param event       Event data to be passed.
+         * @param direct      If true, executes the callback in the same tick.
          */
-        void trigger(std::string name, dispatch_params_t params);
+        void trigger(std::string name, dispatch_params_t params, bool direct=false);
 
         /**
          * [remove description]
