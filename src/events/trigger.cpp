@@ -43,40 +43,58 @@ void _cleanup_event(uv_async_t* req)
     uv_close((uv_handle_t*)req, NULL);
 }
 
-void librg::events::trigger(std::string name, dispatch_params_t params, bool direct)
+void _trigger(std::unordered_map<std::string, std::vector<listener_info_t>>::iterator it, dispatch_params_t params, bool direct)
 {
-    if (_events.find(name) != _events.end()) {
-        for (auto handler : _events[name]) {
-            uv_async_t* async = new uv_async_t;
+    dispatch_data_t* data = 0;
+    for (auto handler : it->second) {
+        uv_async_t* async;
+        // NOTE:
+        // happens only if its a sq listener
+        // and its called from cpp side
+        if (!params.array && handler.blob) {
+            // trigger callback to create sq function parameter (array)
+            Sqrat::Array *array = new Sqrat::Array(((Sqrat::Function*)handler.blob)->GetVM());
+            params.arproc(array);
+            params.array = array;
+        }
 
-            // NOTE:
-            // happens only if its a sq listener
-            // and its called from cpp side
-            if (!params.array && handler.blob) {
-                // trigger callback to create sq function parameter (array)
-                Sqrat::Array *array = new Sqrat::Array(((Sqrat::Function*)handler.blob)->GetVM());
-                params.arproc(array);
-                params.array = array;
-            }
+        data = new dispatch_data_t { handler, params.event, params.array };
 
-            auto data = new dispatch_data_t { handler, params.event, params.array };
-
-            if (!direct) {
-                uv_async_init(uv_default_loop(), async, _callback);
-                async->data = (void*)data;
-                uv_async_send(async);
-            } else {
-                void *par = data->info.responder(data->event, data->array);
-                data->info.callback(par, data->info.blob);
-            }
+        if (!direct) {
+            async = new uv_async_t;
+            uv_async_init(uv_default_loop(), async, _callback);
+            async->data = (void*)data;
+            uv_async_send(async);
+        } else {
+            void *par = data->info.responder(data->event, data->array);
+            data->info.callback(par, data->info.blob);
         }
     }
 
-    if (!direct) {
-        // NOTE(zaklaus): Destroy the event data once we're done with the calls.
-        uv_async_t* async = new uv_async_t;
-        uv_async_init(uv_default_loop(), async, _cleanup_event);
-        async->data = (void *)new dispatch_cleanup_stack_t{ params.event, params.array };
-        uv_async_send(async);
+    if (data) {
+        if (!direct) {
+            // NOTE(zaklaus): Destroy the event data once we're done with the calls.
+            uv_async_t* async = new uv_async_t;
+            uv_async_init(uv_default_loop(), async, _cleanup_event);
+            async->data = (void *)new dispatch_cleanup_stack_t{ params.event, params.array };
+            uv_async_send(async);
+        } else {
+            delete data;
+        }
+    }
+}
+
+void librg::events::trigger(std::string name, dispatch_params_t params, bool direct)
+{
+    auto it = _events.find(name);
+    if (it != _events.end()) {
+        _trigger(it, params, direct);
+    }
+}
+
+void librg::events::trigger(events_it eventId, dispatch_params_t params, bool direct)
+{
+    if (eventId != _events.end()) {
+        _trigger(eventId, params, direct);
     }
 }

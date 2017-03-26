@@ -71,6 +71,8 @@ namespace librg
 
         extern std::unordered_map<std::string, std::vector<listener_info_t>> _events;
 
+        using events_it = std::unordered_map<std::string, std::vector<listener_info_t>>::iterator;
+
 
         /**
          * Public API method for adding event handler.
@@ -80,18 +82,29 @@ namespace librg
          * @param callback  Callback that would be executed.
          * @param blob      Internal data for the listener. (Optional)
          */
-        size_t add(std::string name, callback_generic callback, callback_proxy proxy, void *blob = nullptr);
+        events_it add(std::string name, callback_generic callback, callback_proxy proxy, void *blob = nullptr);
 
         /**
          * Public API method for triggering server event.
          * This method passes custom event data to the callback.
-         * This method calls all registered handlers under specified event name.
+         * This method calls all registered handlers under a specified event name.
          *
          * @param eventName   Name of the event to call.
          * @param event       Event data to be passed.
          * @param direct      If true, executes the callback in the same tick.
          */
         void trigger(std::string name, dispatch_params_t params, bool direct=false);
+
+        /**
+         * Public API method for triggering server event.
+         * This method passes custom event data to the callback.
+         * This method calls all registered handlers under a specified event id.
+         *
+         * @param eventName   Name of the event to call.
+         * @param event       Event data to be passed.
+         * @param direct      If true, executes the callback in the same tick.
+         */
+        void trigger(events_it eventId, dispatch_params_t params, bool direct=false);
 
         /**
          * [remove description]

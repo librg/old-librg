@@ -34,18 +34,20 @@ void events_test()
 
         librg::events_initialize();
 
-        it("should be able to register an event", [](vald_t validate) {
-            auto done = librg::events::add("testEvent", test_event_cb, test_event_proxy);
+        auto eventId = librg::events::_events.end();
 
-            validate(done != -1);
+        it("should be able to register an event", [&eventId](vald_t validate) {
+            eventId = librg::events::add("testEvent", test_event_cb, test_event_proxy);
+
+            validate(eventId != librg::events::_events.end());
         });
 
-        it("should be able to trigger an event", [](vald_t validate) {
+        it("should be able to trigger an event", [eventId](vald_t validate) {
             int adder = 10;
             int mult  = 2;
             auto testData = new test_event_t { adder, mult };
 
-            librg::events::trigger("testEvent", EVENT_PARAM(testData, [=](Sqrat::Array *array) {
+            librg::events::trigger(eventId, EVENT_PARAM(testData, [=](Sqrat::Array *array) {
                 array->Append(adder);
                 array->Append(mult);
             }), true);
