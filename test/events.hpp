@@ -42,12 +42,27 @@ void events_test()
             validate(eventId != librg::events::_events.end());
         });
 
-        it("should be able to trigger an event", [eventId](vald_t validate) {
+        it("should be able to trigger an event using direct reference", [eventId](vald_t validate) {
+            number = 5;
             int adder = 10;
             int mult  = 2;
             auto testData = new test_event_t { adder, mult };
 
             librg::events::trigger(eventId, EVENT_PARAM(testData, [=](Sqrat::Array *array) {
+                array->Append(adder);
+                array->Append(mult);
+            }), true);
+
+            validate(number == 25);
+        });
+
+        it("should be able to trigger an event using string lookup", [eventId](vald_t validate) {
+            number = 5;
+            int adder = 10;
+            int mult  = 2;
+            auto testData = new test_event_t { adder, mult };
+
+            librg::events::trigger("testEvent", EVENT_PARAM(testData, [=](Sqrat::Array *array) {
                 array->Append(adder);
                 array->Append(mult);
             }), true);
