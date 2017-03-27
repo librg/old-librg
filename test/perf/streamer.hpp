@@ -15,11 +15,12 @@ namespace performance
             entity.assign<librg::transform_t>();
 
             test("insertion and deletion of 48k entities", [entity]() {
+                srand(0xDEADBEEF);
                 for (int i = 0; i < 48000; i++) {
                     auto enemy = librg::entities->create();
                     enemy.assign<librg::streamable_t>(vectorial::vec3f(300));
                     auto ft = librg::transform_t();
-                    ft.position = vectorial::vec3f(i,i,10);
+                    ft.position = vectorial::vec3f((float)(2000 - rand() % 4000),(float)(2000 - rand() % 4000),10);
                     enemy.assign<librg::transform_t>(ft);
 
                     librg::streamer::insert(enemy);
