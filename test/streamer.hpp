@@ -1,13 +1,8 @@
 #include "test.hpp"
 #include <librg/streamer.h>
-#include <librg/utils/aabb.h>
-#include <vectorial/vectorial.h>
-#include <chrono>
 
 void streamer_test()
 {
-    using namespace std::chrono;
-
     describe("streamer.h", [](case_t it) {
 
         librg::entities_initialize();
@@ -65,7 +60,6 @@ void streamer_test()
             newEntity.assign<librg::streamable_t>(vectorial::vec3f(30000));
             newEntity.assign<librg::transform_t>();
             for (int i = 0; i < 48000; i++) {
-                srand(i);
                 auto enemy = librg::entities->create();
                 enemy.assign<librg::streamable_t>(vectorial::vec3f(300));
                 auto ft = librg::transform_t();
