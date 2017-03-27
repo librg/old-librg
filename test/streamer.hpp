@@ -109,6 +109,7 @@ void streamer_test()
 
             librg::streamer::insert(badEntity);
             librg::streamer::insert(goodEntity);
+            librg::streamer::insert(targetEntity);
 
             librg::streamer::set_visible_for(targetEntity, badEntity, false);
 
