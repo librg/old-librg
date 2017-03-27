@@ -3,6 +3,8 @@
 
 #include <librg/streamer.h>
 
+// TODO(zaklaus): ADD DOCS !!!
+
 namespace librg
 {
     namespace scripting
