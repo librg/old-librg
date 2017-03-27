@@ -13,7 +13,7 @@
 namespace librg
 {
     void events_initialize();
-    static inline void events_terminate() {};
+    void events_terminate();
 
     namespace events
     {

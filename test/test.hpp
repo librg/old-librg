@@ -7,6 +7,9 @@
 #include <stdlib.h>
 #include <functional>
 #include <string>
+#include <chrono>
+
+using namespace std::chrono;
 
 /**
  * Glorious testing suite
@@ -15,10 +18,15 @@
 static int __passed = 0;
 static int __total  = 0;
 
+constexpr int PERFORMANCE_TEST_DURATION = 2500;
+
 using vald_t = std::function<void(bool)>;
 using cscb_t = std::function<void(vald_t)>;
+using cfcb_t = std::function<void()>;
 using case_t = std::function<void(std::string, cscb_t)>;
+using perc_t = std::function<void(std::string, cfcb_t)>;
 using desc_t = std::function<void(case_t)>;
+using perf_t = std::function<void(perc_t)>;
 
 static inline void describe(std::string ent, desc_t descinner) {
     printf("\n  Testing %s:\n", ent.c_str());
@@ -27,10 +35,10 @@ static inline void describe(std::string ent, desc_t descinner) {
         try {
             callback([ent, condition](bool result) {
                 if (result) {
-                    printf("    \x1B[32m[✓]\x1B[0m %s %s - passed\n", ent.c_str(), condition.c_str()); __passed++;
+                    printf("    \x1B[32m[✓]\x1B[0m %s It %s - passed\n", ent.c_str(), condition.c_str()); __passed++;
                 }
                 else {
-                    printf("    \x1B[31m[✗]\x1B[0m %s %s - failed\n", ent.c_str(), condition.c_str());
+                    printf("    \x1B[31m[✗]\x1B[0m %s It %s - failed\n", ent.c_str(), condition.c_str());
                 }
 
                 __total++;
@@ -38,8 +46,39 @@ static inline void describe(std::string ent, desc_t descinner) {
 
         }
         catch (std::exception) {
-            printf("  \x1B[31m[✗]\x1B[0m %s %s - failed (exception)\n", ent.c_str(), condition.c_str()); __total++;
+            printf("  \x1B[31m[✗]\x1B[0m %s It %s - failed (exception)\n", ent.c_str(), condition.c_str()); __total++;
         }
+    });
+}
+
+static inline void benchmark(std::string ent, perf_t perfinner) {
+    printf("\n  Testing %s:\n", ent.c_str());
+
+    perfinner([ent](std::string condition, cfcb_t callback) {
+        milliseconds startms = duration_cast< milliseconds >(
+            system_clock::now().time_since_epoch()
+        );
+
+        milliseconds totalms(0);
+        int totalticks = 0;
+
+        while (duration_cast<milliseconds>(system_clock::now().time_since_epoch()) - startms < milliseconds(PERFORMANCE_TEST_DURATION)) {
+            milliseconds beginms = duration_cast< milliseconds >(
+                system_clock::now().time_since_epoch()
+            );
+            {
+                callback();
+            }
+            milliseconds endms = duration_cast< milliseconds >(
+                system_clock::now().time_since_epoch()
+            );
+
+            totalms += endms - beginms;
+            ++totalticks;
+        }
+
+        auto durationms = totalms / (double)totalticks;
+        printf("    \x1B[32m[✓]\x1B[0m %s Measure %s - took %f time.\n", ent.c_str(), condition.c_str(), durationms);
     });
 }
 
