@@ -7,6 +7,6 @@ entityx::SystemManager* librg::_systems;
 void librg::entities_initialize()
 {
     librg::_events  = new entityx::EventManager();
-    librg::entities  = new entityx::EntityManager(*librg::_events);
+    librg::entities = new entityx::EntityManager(*librg::_events);
     librg::_systems = new entityx::SystemManager(*librg::entities, *librg::_events);
 }
