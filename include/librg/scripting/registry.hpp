@@ -6,6 +6,7 @@
 #include "natives/system.hpp"
 #include "natives/timer.hpp"
 #include "natives/resource.hpp"
+#include "natives/streamer.hpp"
 
 namespace librg
 {
@@ -21,6 +22,7 @@ namespace librg
             system_install(native);
             timer_install(native);
             resource_install(native);
+            streamer_install(native);
         }
     }
 }
