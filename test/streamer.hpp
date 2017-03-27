@@ -114,7 +114,7 @@ void streamer_test()
             librg::streamer::set_visible_for(targetEntity, badEntity, false);
 
             auto queue = librg::streamer::query(targetEntity);
-            auto biggerQueue = librg::streamer::query(badEntity);
+            auto biggerQueue = librg::streamer::query(goodEntity);
             validate(queue.size() == 1 && biggerQueue.size() == 2);
         });
     });
