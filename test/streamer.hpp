@@ -97,7 +97,7 @@ void streamer_test()
             auto badEntity = librg::entities->create();
             badEntity.assign<librg::streamable_t>(vectorial::vec3f(100));
             badEntity.assign<librg::transform_t>();
-            librg::streamer::set_visible(badEntity, false);
+            //librg::streamer::set_visible(badEntity, false);
 
             auto goodEntity = librg::entities->create();
             goodEntity.assign<librg::streamable_t>(vectorial::vec3f(100));
