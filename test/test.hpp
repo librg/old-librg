@@ -78,7 +78,7 @@ static inline void benchmark(std::string ent, perf_t perfinner) {
         }
 
         auto durationms = totalms / (double)totalticks;
-        printf("    \x1B[32m[✓]\x1B[0m %s Measure %s - took %f ms.\n", ent.c_str(), condition.c_str(), durationms);
+        printf("    \x1B[32m[✓]\x1B[0m %s Measure %s - took %f ms.\n", ent.c_str(), condition.c_str(), durationms.count());
     });
 }
 
