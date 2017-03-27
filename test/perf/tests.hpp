@@ -2,6 +2,7 @@
 #define librg_perf_tests
 
 #include "events.hpp"
+#include "streamer.hpp"
 
 namespace performance
 {
@@ -9,6 +10,7 @@ namespace performance
     {
         printf("%s\n", "\nRunning performance tests.");
         events_test();
+        streamer_test();
     }
 }
 #endif // librg_perf_tests
