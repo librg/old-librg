@@ -18,7 +18,7 @@ using namespace std::chrono;
 static int __passed = 0;
 static int __total  = 0;
 
-constexpr int PERFORMANCE_TEST_DURATION = 2500;
+constexpr int PERFORMANCE_TEST_DURATION = 5000;
 
 using vald_t = std::function<void(bool)>;
 using cscb_t = std::function<void(vald_t)>;
