@@ -13,8 +13,10 @@ build:
   script:
     - apt update && apt -y install cmake
     - mkdir build && cd build
-    - cmake ..
-    - make
+    - cmake -DCMAKE_BUILD_TYPE=Debug ..
+    - make -j2
+    - cmake -DCMAKE_BUILD_TYPE=Release ..
+    - make -j2
   artifacts:
     paths:
       - build
