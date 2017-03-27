@@ -1,5 +1,5 @@
-#ifndef _perf_tests
-#define _perf_tests
+#ifndef librg_perf_tests
+#define librg_perf_tests
 
 #include "events.hpp"
 
@@ -11,4 +11,4 @@ namespace performance
         events_test();
     }
 }
-#endif // _perf_tests
+#endif // librg_perf_tests

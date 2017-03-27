@@ -1,6 +1,4 @@
-#include "test.hpp"
 #include <librg/events.h>
-
 #include <string>
 
 namespace performance

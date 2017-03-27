@@ -1,4 +1,6 @@
 #include <clocale>
+
+#include "test.hpp"
 #include "unit/tests.hpp"
 #include "perf/tests.hpp"
 
@@ -12,7 +14,7 @@ int main()
 
     motd();
     {
-        run_unit_tests();
+        unit::run_tests();
         performance::run_tests();
     }
 
