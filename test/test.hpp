@@ -31,14 +31,14 @@ using perf_t = std::function<void(perc_t)>;
 static inline void describe(std::string ent, desc_t descinner) {
     printf("\n  Testing %s:\n", ent.c_str());
 
-    descinner([ent](std::string condition, cscb_t callback) {
+    descinner([](std::string condition, cscb_t callback) {
         try {
-            callback([ent, condition](bool result) {
+            callback([condition](bool result) {
                 if (result) {
-                    printf("    \x1B[32m[✓]\x1B[0m %s It %s - passed\n", ent.c_str(), condition.c_str()); __passed++;
+                    printf("    \x1B[32m[✓]\x1B[0m It %s - passed\n", condition.c_str()); __passed++;
                 }
                 else {
-                    printf("    \x1B[31m[✗]\x1B[0m %s It %s - failed\n", ent.c_str(), condition.c_str());
+                    printf("    \x1B[31m[✗]\x1B[0m It %s - failed\n", condition.c_str());
                 }
 
                 __total++;
@@ -46,7 +46,7 @@ static inline void describe(std::string ent, desc_t descinner) {
 
         }
         catch (std::exception) {
-            printf("  \x1B[31m[✗]\x1B[0m %s It %s - failed (exception)\n", ent.c_str(), condition.c_str()); __total++;
+            printf("  \x1B[31m[✗]\x1B[0m It %s - failed (exception)\n", condition.c_str()); __total++;
         }
     });
 }
@@ -54,7 +54,7 @@ static inline void describe(std::string ent, desc_t descinner) {
 static inline void benchmark(std::string ent, perf_t perfinner) {
     printf("\n  Testing %s:\n", ent.c_str());
 
-    perfinner([ent](std::string condition, cfcb_t callback) {
+    perfinner([](std::string condition, cfcb_t callback) {
         milliseconds startms = duration_cast< milliseconds >(
             system_clock::now().time_since_epoch()
         );
@@ -78,7 +78,7 @@ static inline void benchmark(std::string ent, perf_t perfinner) {
         }
 
         auto durationms = totalms / (double)totalticks;
-        printf("    \x1B[32m[✓]\x1B[0m %s Measure %s - took %f ms.\n", ent.c_str(), condition.c_str(), durationms.count());
+        printf("    \x1B[32m[✓]\x1B[0m Measure %s - took %f ms.\n", condition.c_str(), durationms.count());
     });
 }
 
