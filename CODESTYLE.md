@@ -4,12 +4,12 @@
 
 ## General
 
-1. You required to use `cmake`
-2. File extensions: .h for header files, .cpp for cpp files, .hpp for inline header-only cpp code
-3. Use only 4 spaces for identation (not tabs, setup your code editor properly)
-4. Newline should be present in the end of each file
+1. You are required to use `cmake`
+2. File extensions: .h for header files, .cpp for source files, .hpp for inline header-only cpp code
+3. Use only 4 spaces for indentation (not tabs, setup your code editor properly)
+4. Newline should be presented in the end of each file
 5. Files should be saved only in utf-8 encoding
-6. Strings should not have trailing spaces
+6. Strings should not have any trailing spaces
 
 ## Naming convention
 
@@ -17,7 +17,7 @@
 1. Use lowercase for variables, structs, method/function names, namespaces
 2. If name of any item from list above consists of 2 or more words, use `_` to distinguish them. (snake_case)
 3. Structs and other type representations should have `_t` postfix after actual name
-4. Classes should have camel cased name with leading capital letter (PascalCase) `ExampleName`
+4. Classes should be PascalCase.
 
 ## Brackets, braces, parens
 
@@ -45,9 +45,9 @@ bool hello  = false;
 
 ## Code and Library
 
-0. Each header file should have include-guard with `#ifndef filename_h` and closing `#endif // filename_h`
-1. Each included header from library should be located in file its supposed to be used
-2. If library uses namepsaces, you should not use `using namepsace somelib;`
+0. Each header file should have include-guard with `#ifndef librg_filename_h` and closing `#endif // librg_filename_h`
+1. Each included header from library should be located in file it's supposed to be used
+2. If library uses namespaces, you should not use `using namespace somelib;` unless being isolated and encouraged
 3. Keyword `auto` should be used in most of the cases, in local functions/methods
 4. Long repeating types should be defined via `using` or `typedef` (first one is much more preferable)
 5. All private (or intended to be private) members should have single underscore symbol `_`
