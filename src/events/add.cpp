@@ -12,10 +12,7 @@ events_it librg::events::add(std::string name, callback_generic callback, callba
         _events[name].push_back(info);
     } else {
         std::vector<listener_info_t> newlist = { info };
-        _events.insert(std::make_pair(name, newlist));
-
-        // TODO(zaklaus): Figure this one out later.
-        return _events.find(name);
+        it = _events.insert(_events.begin(), std::make_pair(name, newlist));
     }
 
     return it;
