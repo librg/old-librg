@@ -38,10 +38,6 @@ void librg::network_initialize()
         network::handlers[network::ENTITY_SYNC_PACKET]          = network::client_streamer_entity_sync;
     }
 
-    if (core::is_server()) {
-        network::server(27010);
-    }
-
     // if (core::is_client()) {
     //     core::log("hello client");
     // }
