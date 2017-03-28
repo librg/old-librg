@@ -1,4 +1,4 @@
-﻿#include <librg/core/server.h>
+#include <librg/core/server.h>
 
 using namespace librg::core;
 
@@ -95,7 +95,7 @@ int librg::core::server(int argc, char * argv[])
     // define main timed loop (network send)
     // start after 1 sec, each 15 ms
     uv_timer_init(uv_default_loop(), &timer_req);
-    uv_timer_start(&timer_req, s_timed_loop, 250, 1000);
+    uv_timer_start(&timer_req, s_timed_loop, 250, 16);
 
     uv_timer_init(uv_default_loop(), &idler);
     uv_timer_start(&idler, s_idle_loop, 0, 1);

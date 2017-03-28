@@ -14,7 +14,7 @@ using namespace librg;
 void librg::network::update()
 {
     entities->each<client_t>([](Entity playerEntity, client_t& client) {
-        core::log("sending updates to uid: %d", playerEntity.id().index());
+        // core::log("sending updates to uid: %d", playerEntity.id().index());
         // copy last to local last, alias next snapshot as last and clear it
         auto next_snapshot = &client.last_snapshot;
         auto last_snapshot =  client.last_snapshot;
@@ -24,8 +24,8 @@ void librg::network::update()
 
         RakNet::BitStream packet;
 
-        packet.Write(static_cast<RakNet::MessageID>(MessageID::ENTITY_SYNC_PACKET));
-        packet.Write(static_cast<uint16_t>(queue.size()));
+        packet.Write((RakNet::MessageID) network::ENTITY_SYNC_PACKET);
+        packet.Write((uint16_t) queue.size());
 
         for (auto entity : queue) {
             uint64_t guid = entity.id().id();
@@ -33,8 +33,6 @@ void librg::network::update()
 
             auto streamable = entity.component<streamable_t>();
             auto transform  = entity.component<transform_t>();
-
-            packet.Write((uint8_t) streamable->type);
 
             if (last_snapshot.erase(guid) == 0) {
                 // entity create
@@ -47,12 +45,15 @@ void librg::network::update()
                 packet.Write((bool) false);
             }
 
-            packet.Write(transform);
+            packet.Write((uint8_t) streamable->type);
+            packet.Write(transform->position.value);
+            packet.Write(transform->rotation.value);
+            packet.Write(transform->scale.value);
 
             next_snapshot->insert(std::make_pair(guid, true));
         }
 
-        packet.Write(static_cast<uint16_t>(last_snapshot.size()));
+        packet.Write((uint16_t) last_snapshot.size());
 
         for (auto pair : last_snapshot) {
             // remove entity

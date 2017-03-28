@@ -40,6 +40,8 @@ namespace librg
         {
             core::log("Sending name, and serial");
 
+            network::data.address = packet->systemAddress;
+
             /**
              * This data-packet is used to validate
              * game mod compability, and add client to server list
@@ -51,7 +53,7 @@ namespace librg
              * @param string Client Name
              */
             RakNet::BitStream data;
-            data.Write((RakNet::MessageID)MessageID::CONNECTION_INIT);
+            data.Write((RakNet::MessageID)CONNECTION_INIT);
             data.Write(NETWORK_PLATFORM_ID);
             data.Write(NETWORK_PROTOCOL_VERSION);
             data.Write(NETWORK_BUILD_VERSION);

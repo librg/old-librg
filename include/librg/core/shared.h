@@ -11,19 +11,6 @@
 #include <stdarg.h>
 #include <functional>
 
-#include <MessageIdentifiers.h>
-
-// TODO(inlife): refactor
-namespace MessageID
-{
-    enum messages {
-        CONNECTION_INIT = ID_USER_PACKET_ENUM + 1,
-        CONNECTION_REFUSED,
-        CONNECTION_ACCEPTED,
-        CONNECTION_DISCONNECTED,
-        ENTITY_SYNC_PACKET,
-    };
-};
 
 namespace librg
 {

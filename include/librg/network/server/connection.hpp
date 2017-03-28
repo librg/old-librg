@@ -37,21 +37,21 @@ namespace librg
          */
         static inline void server_connect(RakNet::Packet* packet)
         {
-            RakNet::BitStream bsOutput;
-            RakNet::BitStream bsInput(packet->data, packet->length, false);
-            bsInput.IgnoreBytes(sizeof(RakNet::MessageID));
+            RakNet::BitStream output;
+            RakNet::BitStream input(packet->data, packet->length, false);
+            input.IgnoreBytes(sizeof(RakNet::MessageID));
 
             int protocolVersion = -1, buildVersion = -1, platformId = -1;
-            bsInput.Read(platformId);
-            bsInput.Read(protocolVersion);
-            bsInput.Read(buildVersion);
+            input.Read(platformId);
+            input.Read(protocolVersion);
+            input.Read(buildVersion);
 
             // incompatible protocol version - force immidiate disconnect
             if (protocolVersion != NETWORK_PROTOCOL_VERSION || platformId != NETWORK_PLATFORM_ID) {
-                bsOutput.Write(static_cast<RakNet::MessageID>(MessageID::CONNECTION_REFUSED));
-                bsOutput.Write("Incompatible game version.");
+                output.Write(static_cast<RakNet::MessageID>(CONNECTION_REFUSED));
+                output.Write("Incompatible game version.");
 
-                data.peer->Send(&bsOutput, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
+                data.peer->Send(&output, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
 
                 core::log("server_connect: refsued ip: %s, reason: incompatible game version.", packet->systemAddress.ToString(true, ':'));
                 return;
@@ -60,30 +60,35 @@ namespace librg
             // let server owner to decide, to kick or not to kick
             if (buildVersion != NETWORK_BUILD_VERSION) {
                 // TODO(inlife): add check for server parameters to decide, should be connection refused or allowed
-                bsOutput.Write(static_cast<RakNet::MessageID>(MessageID::CONNECTION_REFUSED));
-                bsOutput.Write("Incompatible build version.");
+                output.Write(static_cast<RakNet::MessageID>(CONNECTION_REFUSED));
+                output.Write("Incompatible build version.");
 
-                data.peer->Send(&bsOutput, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
+                data.peer->Send(&output, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
 
                 core::log("server_connect: refsued ip: %s, reason: incompatible build version.", packet->systemAddress.ToString(true, ':'));
                 return;
             }
 
             RakNet::RakString nickName;
-            bsInput.Read(nickName);
+            input.Read(nickName);
 
             RakNet::RakString serial;
-            bsInput.Read(serial);
+            input.Read(serial);
 
-            auto entity = entities->create();
-            entity.assign<streamable_t>();
-            entity.assign<transform_t>();
-            entity.assign<client_t>(packet->systemAddress, nickName.C_String(), serial.C_String());
-            network::clients.insert(std::make_pair(packet->guid, entity));
+            // for (int i = 0; i < 5; ++i) {
+                auto entity = entities->create();
+                entity.assign<streamable_t>();
+                entity.assign<transform_t>();
+
+                // if (i == 1) {
+                    entity.assign<client_t>(packet->systemAddress, nickName.C_String(), serial.C_String());
+                    network::clients.insert(std::make_pair(packet->guid, entity));
+                // }
+            // }
 
             // send success
-            bsOutput.Write(static_cast<RakNet::MessageID>(MessageID::CONNECTION_ACCEPTED));
-            data.peer->Send(&bsOutput, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
+            output.Write(static_cast<RakNet::MessageID>(CONNECTION_ACCEPTED));
+            data.peer->Send(&output, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
 
             // Game::Manager::Instance()->Trigger(1, packet);
             // Event::Manager::Instance()->Dispatch("OnClientConnect", EVENT_PARAM(new OnClientConnectData{ packet }, [=](HSQUIRRELVM vm){

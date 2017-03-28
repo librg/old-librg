@@ -1,8 +1,9 @@
 #ifndef librg_streamer_h
 #define librg_streamer_h
 
-#include <librg/entities.h>
 #include <vectorial/vectorial.h>
+
+#include <librg/entities.h>
 #include <librg/utils/aabb.h>
 #include <librg/components/streamable.h>
 
@@ -90,6 +91,34 @@ namespace librg
          * @return        Returns zero if no change has happened, one otherwise.
          */
         bool set_visible_for(Entity target, Entity entity, bool state);
+    }
+
+    namespace streamer_callbacks
+    {
+        using callback_t = std::function<void(uint64_t, uint8_t, Entity, void *)>;
+
+        enum actions {
+            create,
+            update,
+            remove,
+            interpolate,
+        };
+
+        /**
+         * Public Client API method
+         * should be used to register handler
+         * for entities which were just created and first-time synced
+         * from the server (for current stream-zone)
+         * @param callback
+         */
+        void set(actions action, callback_t callback);
+
+        /**
+         * Private method
+         */
+        void trigger(actions action, uint64_t, uint8_t, Entity, void *);
+
+        extern std::unordered_map<uint64_t, Entity> client_cache;
     }
 }
 

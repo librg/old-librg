@@ -8,6 +8,7 @@
 
 #include <BitStream.h>
 #include <RakPeerInterface.h>
+#include <MessageIdentifiers.h>
 
 #include <librg/components/client.h>
 #include <librg/entities.h>
@@ -20,12 +21,24 @@ namespace librg
     namespace network
     {
         const short int PACKET_LIMIT = 256;
-        using handler_t = std::array<std::function<void(RakNet::Packet* packet)>, PACKET_LIMIT>;
 
-        struct data_t
-        {
+        using bitstream_t = RakNet::BitStream;
+        using packet_t    = RakNet::Packet;
+        using handler_t   = std::array<std::function<void(packet_t* packet)>, PACKET_LIMIT>;
+        using message_t   = std::function<void(bitstream_t* message)>;
+
+        struct data_t {
+            RakNet::SystemAddress address;
             RakNet::RakPeerInterface* peer;
             RakNet::SocketDescriptor socket_descriptor;
+        };
+
+        enum messageid {
+            CONNECTION_INIT = ID_USER_PACKET_ENUM + 1,
+            CONNECTION_REFUSED,
+            CONNECTION_ACCEPTED,
+            CONNECTION_DISCONNECTED,
+            ENTITY_SYNC_PACKET,
         };
 
         /**
@@ -52,6 +65,14 @@ namespace librg
          * (recieves new data from clients)
          */
         void receive();
+
+        /**
+         * Send message from the client to server
+         * or from server to all clients
+         * @param messageid
+         * @param message_t
+         */
+        void msg(messageid id, message_t callback);
 
         extern data_t data;
         extern std::map<RakNet::RakNetGUID, entityx::Entity> clients;

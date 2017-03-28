@@ -4,6 +4,7 @@
 #include <librg/network/server/connection.hpp>
 #include <librg/network/client/connection.hpp>
 #include <librg/network/client/streaming.hpp>
+#include <librg/network/server/streaming.hpp>
 
 using namespace librg;
 
@@ -17,10 +18,11 @@ void librg::network_initialize()
     }
 
     if (core::is_server()) {
-        network::handlers[ID_NEW_INCOMING_CONNECTION]    = network::server_new_incoming_connection;
-        network::handlers[ID_CONNECTION_LOST]            = network::server_disconnect;
-        network::handlers[ID_DISCONNECTION_NOTIFICATION] = network::server_disconnect;
-        network::handlers[MessageID::CONNECTION_INIT]    = network::server_connect;
+        network::handlers[ID_NEW_INCOMING_CONNECTION]           = network::server_new_incoming_connection;
+        network::handlers[ID_CONNECTION_LOST]                   = network::server_disconnect;
+        network::handlers[ID_DISCONNECTION_NOTIFICATION]        = network::server_disconnect;
+        network::handlers[network::CONNECTION_INIT]             = network::server_connect;
+        network::handlers[network::ENTITY_SYNC_PACKET]          = network::server_streamer_entity_sync;
     }
 
     if (core::is_client()) {
@@ -32,8 +34,8 @@ void librg::network_initialize()
         network::handlers[ID_DISCONNECTION_NOTIFICATION]        = network::client_disconnect_notification;
         network::handlers[ID_CONNECTION_LOST]                   = network::client_connection_lost;
         network::handlers[ID_CONNECTION_REQUEST_ACCEPTED]       = network::client_connection_request_accepted;
-        network::handlers[MessageID::CONNECTION_ACCEPTED]       = network::client_connection_success;
-        network::handlers[MessageID::ENTITY_SYNC_PACKET]        = network::client_streamer_entity_sync;
+        network::handlers[network::CONNECTION_ACCEPTED]         = network::client_connection_success;
+        network::handlers[network::ENTITY_SYNC_PACKET]          = network::client_streamer_entity_sync;
     }
 
     if (core::is_server()) {
