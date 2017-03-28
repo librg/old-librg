@@ -42,6 +42,12 @@ namespace unit
                 validate(eventId != librg::events::_events.end());
             });
 
+            it("should be able to register a second event", [&eventId](vald_t validate) {
+                librg::events::add("testEventNotUsed", test_event_cb, test_event_proxy);
+
+                validate(eventId != librg::events::_events.end());
+            });
+
             it("should be able to trigger an event using direct reference", [eventId](vald_t validate) {
                 number = 5;
                 int adder = 10;
