@@ -22,10 +22,39 @@ namespace librg
             librg::streamer::set_visible_for(target, entity, state);
         }
 
+        inline static void streamer_set_query_range(uint64_t index, Sqrat::Array range)
+        {
+            auto entity = librg::entities->get((Entity::Id)index);
+            auto streamer = entity.component<streamable_t>();
+
+            if (streamer) {
+                auto x = range.GetValue<float>(0);
+                auto y = range.GetValue<float>(1);
+                auto z = range.GetValue<float>(2);
+
+                streamer->queryRange = vectorial::vec3f(*x,*y,*z);
+            }
+        }
+
+        // TODO: How to get VM handle here? It is required by Sqrat::Array...
+        inline static int streamer_get_query_range(uint64_t index)
+        {
+            auto entity = librg::entities->get((Entity::Id)index);
+            auto streamer = entity.component<streamable_t>();
+
+            if (streamer) {
+                auto range = streamer->queryRange;
+            }
+
+            return -1;
+        }
+
         inline static void streamer_install(Sqrat::Table& table)
         {
             table.Func("streamerSetVisible", &streamer_set_visible);
             table.Func("streamerSetVisibleFor", &streamer_set_visible_for);
+            table.Func("streamerSetQueryRange", &streamer_set_query_range);
+            table.Func("streamerGetQueryRange", &streamer_get_query_range);
         }
     }
 }

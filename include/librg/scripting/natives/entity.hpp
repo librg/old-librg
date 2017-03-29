@@ -10,7 +10,7 @@ namespace librg
         /**
          * Public API method for creating an entity.
          */
-        inline static uint64_t entity_create(Sqrat::Function callback)
+        inline static uint64_t entity_create()
         {
             entityx::Entity entity = librg::entities->create();
             return entity.id().id();
