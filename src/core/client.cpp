@@ -1,4 +1,4 @@
-﻿#include <librg/core/client.h>
+#include <librg/core/client.h>
 
 using namespace librg;
 
@@ -38,6 +38,7 @@ void c_initialize()
 
     uv_timer_init(uv_default_loop(), idler);
     uv_timer_start(idler, c_idle_loop, 0, 1);
+
     initialized = true;
 }
 
