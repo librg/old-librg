@@ -79,6 +79,8 @@ include_directories(
 
 file(GLOB_RECURSE LIBRG_FILES
   "${PROJECT_SOURCE_DIR}/src/*.cpp"
+  "${PROJECT_SOURCE_DIR}/include/*.h"
+  "${PROJECT_SOURCE_DIR}/include/*.hpp"
 )
 
 ###
@@ -87,6 +89,23 @@ file(GLOB_RECURSE LIBRG_FILES
 add_library(librg STATIC
     ${LIBRG_FILES}
 )
+
+macro(GroupSources curdir)
+    file(GLOB children RELATIVE ${PROJECT_SOURCE_DIR}/${curdir} ${PROJECT_SOURCE_DIR}/${curdir}/*)
+    foreach (child ${children})
+        if(IS_DIRECTORY ${PROJECT_SOURCE_DIR}/${curdir}/${child})
+            GroupSources(${curdir}/${child})
+        else()
+            string(REPLACE "/" "\\" groupname ${curdir})
+            source_group(${groupname} FILES ${PROJECT_SOURCE_DIR}/${curdir}/${child})
+        endif()
+    endforeach()
+endmacro()
+
+if(MSVC)
+    GroupSources(src)
+    GroupSources(include)
+endif()
 
 ###
 # Linking libraries
