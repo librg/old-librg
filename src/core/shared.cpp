@@ -21,7 +21,9 @@ void core::tick() {
         callback(0.016); //delta =  get current time - lasttime
     }
 
-    network::update();
+    if (current_mode == core::mode_server) {
+        network::update();
+    }
 }
 
 /**

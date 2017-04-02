@@ -1,4 +1,4 @@
-#include <librg/core/client.h>
+﻿#include <librg/core/client.h>
 
 using namespace librg;
 
@@ -14,6 +14,7 @@ uv_timer_t* timer_req;
 void c_timed_loop(uv_timer_t* handle)
 {
     core::tick();
+    core::poll();
 }
 
 /**
