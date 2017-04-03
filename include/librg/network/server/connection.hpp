@@ -93,7 +93,9 @@ namespace librg
             output.Write(static_cast<RakNet::MessageID>(CONNECTION_ACCEPTED));
             data.peer->Send(&output, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
 
-            events::trigger("onClientConnect", EVENT_PARAM((void*)entity.id().id(), [entity](Sqrat::Array *array) {
+            auto store = new uint64_t[1] {entity.id().id()};
+
+            events::trigger("onClientConnect", EVENT_PARAM((void*)store, [entity](Sqrat::Array *array) {
                 array->Append(entity.id().id());
             }));
 
@@ -121,10 +123,11 @@ namespace librg
             if (clients.find(packet->guid) != clients.end()) {
                 streamer::remove(clients[packet->guid]);
 
-                auto entity = clients[packet->guid].id().id();
+                auto entity = clients[packet->guid];
+                auto store = new uint64_t[1]{ entity.id().id() };
 
-                events::trigger("onClientDisconnect", EVENT_PARAM((void*)entity, [=](Sqrat::Array *array) {
-                    array->Append(entity);
+                events::trigger("onClientDisconnect", EVENT_PARAM((void*)store, [=](Sqrat::Array *array) {
+                    array->Append(entity.id().id());
                 }), true);
 
                 clients[packet->guid].destroy();

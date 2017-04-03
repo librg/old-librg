@@ -9,13 +9,13 @@ namespace librg
 {
     namespace scripting
     {
-        inline static transform_create(uint64_t index)
+        inline static void transform_create(uint64_t index)
         {
             auto entity = librg::entities->get((Entity::id)index);
             entity.assign<transform_t>();
         }
 
-        inline static transform_get_position(uint64_t index)
+        inline static Sqrat::Array transform_get_position(uint64_t index)
         {
             auto entity = librg::entities->get((Entity::id)index);
             auto transform = entity.component<transform_t>();
