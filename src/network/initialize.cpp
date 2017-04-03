@@ -45,6 +45,11 @@ void librg::network_initialize()
 network::handler_t network::handlers;
 
 /**
+ * Storage for user handlers
+ */
+network::user_handler_t network::userHandlers;
+
+/**
  * Storage for network data
  */
 network::data_t network::data;

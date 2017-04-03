@@ -2,7 +2,7 @@
 //
 #include <librg/network.h>
 
-void librg::network::add(int messageId, librg::network::callback_t callback)
+void librg::network::add(int messageId, librg::network::user_callback_t callback)
 {
-    handlers[messageId] = callback;
+    userHandlers[messageId] = callback;
 }

@@ -17,7 +17,14 @@ void librg::network::receive()
 
     RakNet::MessageID id = packet->data[0];
 
-    if (network::handlers[id]) {
+    if (id == GUEST_PACKET_ENUM) {
+        bitstream_t stream(packet->data, packet->length, false);
+        stream.IgnoreBytes(sizeof(RakNet::MessageID));
+        
+        stream.Read(id);
+        network::userHandlers[id](&stream, packet);
+    }
+    else if (network::handlers[id]) {
         network::handlers[id](packet);
     }
 

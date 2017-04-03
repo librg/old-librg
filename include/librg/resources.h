@@ -10,8 +10,6 @@
 #include <squirrel.h>
 #include <librg/core/shared.h>
 
-// #include "resources/resource.h"
-
 namespace librg
 {
     void resources_initialize();

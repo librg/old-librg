@@ -11,6 +11,6 @@ using namespace librg;
  */
 void librg::network::msg(int id, network::message_t callback)
 {
-    network::bitstream_t message; message.Write((RakNet::MessageID) id); callback(&message);
+    network::bitstream_t message; message.Write((RakNet::MessageID) GUEST_PACKET_ENUM);  message.Write((RakNet::MessageID) id); callback(&message);
     network::data.peer->Send(&message, HIGH_PRIORITY, RELIABLE_ORDERED, 0, network::data.address, false);
 }
