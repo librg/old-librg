@@ -1,3 +1,5 @@
+﻿// Copyright ReGuider Team, 2016-2017
+//
 #include <librg/entities.h>
 
 entityx::EventManager*  librg::_events;

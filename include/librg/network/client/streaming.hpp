@@ -1,3 +1,5 @@
+﻿// Copyright ReGuider Team, 2016-2017
+//
 #ifndef librg_network_client_streaming_hpp
 #define librg_network_client_streaming_hpp
 

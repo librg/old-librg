@@ -1,3 +1,5 @@
+﻿// Copyright ReGuider Team, 2016-2017
+//
 #include <librg/events.h>
 
 bool librg::events::remove(std::string name, size_t handler)

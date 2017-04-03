@@ -1,3 +1,5 @@
+﻿// Copyright ReGuider Team, 2016-2017
+//
 #ifndef _scripting
 #define _scripting
 

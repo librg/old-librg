@@ -1,3 +1,5 @@
+﻿// Copyright ReGuider Team, 2016-2017
+//
 #ifndef librg_utils_aabb_h
 #define librg_utils_aabb_h
 

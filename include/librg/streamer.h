@@ -1,3 +1,5 @@
+﻿// Copyright ReGuider Team, 2016-2017
+//
 #ifndef librg_streamer_h
 #define librg_streamer_h
 

@@ -1,4 +1,6 @@
-﻿#include <unordered_map>
+﻿// Copyright ReGuider Team, 2016-2017
+//
+#include <unordered_map>
 
 #include <librg/network.h>
 #include <librg/entities.h>

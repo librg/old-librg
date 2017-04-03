@@ -1,3 +1,5 @@
+﻿// Copyright ReGuider Team, 2016-2017
+//
 #ifdef _MSC_VER
 #define _CRT_SECURE_NO_WARNINGS
 #pragma warning(disable:4996)

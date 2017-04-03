@@ -1,3 +1,5 @@
+﻿// Copyright ReGuider Team, 2016-2017
+//
 #include <string.h>
 
 #include <librg/utils/fs.h>

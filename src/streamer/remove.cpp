@@ -1,3 +1,5 @@
+﻿// Copyright ReGuider Team, 2016-2017
+//
 #include <librg/streamer.h>
 
 bool librg::streamer::qtree_t::remove(Entity entity)

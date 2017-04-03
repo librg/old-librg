@@ -1,8 +1,10 @@
+﻿// Copyright ReGuider Team, 2016-2017
+//
 #ifndef librg_network_h
 #define librg_network_h
 
 #include <map>
-#include <array>
+#include <unordered_map>
 #include <string>
 #include <functional>
 
@@ -20,11 +22,10 @@ namespace librg
 
     namespace network
     {
-        const short int PACKET_LIMIT = 256;
-
         using bitstream_t = RakNet::BitStream;
         using packet_t    = RakNet::Packet;
-        using handler_t   = std::array<std::function<void(packet_t* packet)>, PACKET_LIMIT>;
+        using callback_t  = std::function<void(packet_t* packet)>;
+        using handler_t   = std::unordered_map<int, callback_t> ;
         using message_t   = std::function<void(bitstream_t* message)>;
 
         struct data_t {
@@ -38,7 +39,8 @@ namespace librg
             CONNECTION_REFUSED,
             CONNECTION_ACCEPTED,
             CONNECTION_DISCONNECTED,
-            ENTITY_SYNC_PACKET,
+            ENTITY_SYNC_PACKET, 
+            GUEST_PACKET_ENUM,
         };
 
         /**
@@ -72,7 +74,14 @@ namespace librg
          * @param messageid
          * @param message_t
          */
-        void msg(messageid id, message_t callback);
+        void msg(int id, message_t callback);
+
+        /**
+        * Register custom network event handler.
+        * @param messageid
+        * @param callback_t 
+        */
+        void add(int messageid, callback_t callback);
 
         extern data_t data;
         extern std::map<RakNet::RakNetGUID, entityx::Entity> clients;

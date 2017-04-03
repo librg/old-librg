@@ -1,3 +1,5 @@
+﻿// Copyright ReGuider Team, 2016-2017
+//
 #ifndef librg_network_server_connection_hpp
 #define librg_network_server_connection_hpp
 
@@ -7,6 +9,7 @@
 #include <librg/components/streamable.h>
 #include <librg/components/transform.h>
 #include <librg/core/shared.h>
+#include <librg/events.h>
 
 namespace librg
 {
@@ -90,6 +93,10 @@ namespace librg
             output.Write(static_cast<RakNet::MessageID>(CONNECTION_ACCEPTED));
             data.peer->Send(&output, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
 
+            events::trigger("onClientConnect", EVENT_PARAM((void*)entity.id().id(), [entity](Sqrat::Array *array) {
+                array->Append(entity.id().id());
+            }));
+
             // Game::Manager::Instance()->Trigger(1, packet);
             // Event::Manager::Instance()->Dispatch("OnClientConnect", EVENT_PARAM(new OnClientConnectData{ packet }, [=](HSQUIRRELVM vm){
             //     auto array = new Sqrat::Array(vm);
@@ -113,6 +120,13 @@ namespace librg
 
             if (clients.find(packet->guid) != clients.end()) {
                 streamer::remove(clients[packet->guid]);
+
+                auto entity = clients[packet->guid].id().id();
+
+                events::trigger("onClientDisconnect", EVENT_PARAM((void*)entity, [=](Sqrat::Array *array) {
+                    array->Append(entity);
+                }), true);
+
                 clients[packet->guid].destroy();
                 clients.erase(packet->guid);
             }

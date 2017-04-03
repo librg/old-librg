@@ -1,4 +1,6 @@
-﻿#include <librg/core/client.h>
+﻿// Copyright ReGuider Team, 2016-2017
+//
+#include <librg/core/client.h>
 
 using namespace librg;
 

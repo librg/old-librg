@@ -1,4 +1,4 @@
-// Copyright (c) 2014 Paolo Fragomeni and other libuv-http Contributors
+﻿// Copyright (c) 2014 Paolo Fragomeni and other libuv-http Contributors
 
 #ifndef NODEUV_HTTP_H
 #define NODEUV_HTTP_H

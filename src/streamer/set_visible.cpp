@@ -1,3 +1,5 @@
+﻿// Copyright ReGuider Team, 2016-2017
+//
 #include <librg/streamer.h>
 
 bool _set_visible_for(std::vector<Entity> &entities, Entity entity, bool state)

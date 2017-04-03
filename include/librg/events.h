@@ -1,3 +1,5 @@
+﻿// Copyright ReGuider Team, 2016-2017
+//
 #ifndef librg_events_h
 #define librg_events_h
 
@@ -28,7 +30,7 @@ namespace librg
         #define EVENT_RESPONSE(name)    void* name##(const void* data, Sqrat::Array* array)
         #define EVENT_ARRAY(name)       Sqrat::Array* name##(HSQUIRRELVM vm)
 
-        #define EVENT_PARAM(data,cb)    { data, nullptr, cb }
+        #define EVENT_PARAM(data,cb)    librg::events::dispatch_params_t { data, nullptr, cb }
         #define EVENT_PARAM_SQ(cb)      { nullptr, nullptr, cb }
         #define EVENT_PARAM_CPP(data)   { data, nullptr, librg::events::GenericNoArray }
         #define EVENT_PARAM_SQ_INTERNAL(array) { nullptr, array, librg::events::GenericNoArray }

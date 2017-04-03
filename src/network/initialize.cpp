@@ -1,3 +1,5 @@
+﻿// Copyright ReGuider Team, 2016-2017
+//
 #include <librg/network.h>
 #include <librg/core/shared.h>
 
@@ -12,17 +14,11 @@ void librg::network_initialize()
 {
     network::data.peer = RakNet::RakPeerInterface::GetInstance();
 
-    // reset all registry to nulls
-    for (int i = 0; i < network::PACKET_LIMIT; ++i) {
-        network::handlers[i] = nullptr;
-    }
-
     if (core::is_server()) {
         network::handlers[ID_NEW_INCOMING_CONNECTION]           = network::server_new_incoming_connection;
         network::handlers[ID_CONNECTION_LOST]                   = network::server_disconnect;
         network::handlers[ID_DISCONNECTION_NOTIFICATION]        = network::server_disconnect;
         network::handlers[network::CONNECTION_INIT]             = network::server_connect;
-        network::handlers[network::ENTITY_SYNC_PACKET]          = network::server_streamer_entity_sync;
     }
 
     if (core::is_client()) {

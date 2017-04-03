@@ -1,4 +1,6 @@
-﻿#include <librg/events.h>
+﻿// Copyright ReGuider Team, 2016-2017
+//
+#include <librg/events.h>
 
 using namespace librg::events;
 

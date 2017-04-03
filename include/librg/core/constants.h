@@ -1,3 +1,5 @@
+﻿// Copyright ReGuider Team, 2016-2017
+//
 /**
  * Random number setting current game platform id
  * to prevent connections from different games/mods, in future
