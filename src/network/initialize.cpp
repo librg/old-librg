@@ -3,10 +3,9 @@
 #include <librg/network.h>
 #include <librg/core/shared.h>
 
-#include <librg/network/server/connection.hpp>
-#include <librg/network/client/connection.hpp>
-#include <librg/network/client/streaming.hpp>
-#include <librg/network/server/streaming.hpp>
+#include <librg/network/server/connection.h>
+#include <librg/network/client/connection.h>
+#include <librg/network/client/streaming.h>
 
 using namespace librg;
 
