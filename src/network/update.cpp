@@ -36,11 +36,13 @@ void librg::network::update()
             auto streamable = entity.component<streamable_t>();
             auto transform  = entity.component<transform_t>();
 
+            bool isNew = false;
+
             if (last_snapshot.erase(guid) == 0) {
                 // entity create
                 packet.Write((bool) true);
 
-                // TODO add rest compoenents
+                isNew = true;
             }
             else {
                 // entity update
@@ -52,6 +54,10 @@ void librg::network::update()
             packet.Write(transform->rotation.value);
             packet.Write(transform->scale.value);
 
+            if (isNew && syncCallbacks[core::rgmode::mode_server]) {
+                syncCallbacks[core::rgmode::mode_server](&packet, entity, streamable->type);
+            }
+            
             next_snapshot->insert(std::make_pair(guid, true));
         }
 

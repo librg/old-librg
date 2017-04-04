@@ -50,6 +50,10 @@ namespace librg
                     transform->rotation.value = rotation;
                     transform->scale.value = scale;
 
+                    if (syncCallbacks[core::rgmode::mode_client]) {
+                        syncCallbacks[core::rgmode::mode_client](&data, entity, type);
+                    }
+
                     streamer_callbacks::client_cache.insert(std::make_pair(guid, entity));
                     streamer_callbacks::trigger(streamer_callbacks::create, guid, type, entity, (void *)packet);
                 }

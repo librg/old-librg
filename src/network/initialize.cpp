@@ -33,10 +33,6 @@ void librg::network_initialize()
         network::handlers[network::CONNECTION_ACCEPTED]         = network::client_connection_success;
         network::handlers[network::ENTITY_SYNC_PACKET]          = network::client_streamer_entity_sync;
     }
-
-    // if (core::is_client()) {
-    //     core::log("hello client");
-    // }
 }
 
 /**
@@ -58,3 +54,8 @@ network::data_t network::data;
  * Storage for current clients
  */
 std::map<RakNet::RakNetGUID, entityx::Entity> network::clients;
+
+/**
+ * Storage for sync callbacks
+ */
+network::sync_callback_t network::syncCallbacks[2];

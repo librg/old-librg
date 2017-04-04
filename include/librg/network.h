@@ -15,6 +15,7 @@
 
 #include <librg/components/client.h>
 #include <librg/entities.h>
+#include <librg/core/shared.h>
 
 namespace librg
 {
@@ -31,6 +32,7 @@ namespace librg
         using handler_t            = std::array<callback_t, MAX_MESSAGES>;
         using user_handler_t       = std::unordered_map<int, user_callback_t>;
         using message_t            = std::function<void(bitstream_t* message)>;
+        using sync_callback_t      = std::function<void(bitstream_t* bitstream, Entity entity, int type)>;
 
         struct data_t {
             RakNet::SystemAddress address;
@@ -87,10 +89,14 @@ namespace librg
         */
         void add(int messageid, user_callback_t callback);
 
+        // TODO: docs
+        void set_sync_cb(core::rgmode mode, sync_callback_t callback);
+
         extern data_t data;
         extern std::map<RakNet::RakNetGUID, entityx::Entity> clients;
         extern handler_t handlers;
         extern user_handler_t userHandlers;
+        extern sync_callback_t syncCallbacks[2];
     }
 }
 
