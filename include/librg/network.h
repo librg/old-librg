@@ -17,6 +17,8 @@
 #include <librg/entities.h>
 #include <librg/core/shared.h>
 
+#include <librg/network/http/client.h>
+
 namespace librg
 {
     void network_initialize();

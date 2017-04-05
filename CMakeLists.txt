@@ -133,7 +133,7 @@ endif()
 
 target_include_directories(librg PUBLIC
     vendor/lib-raknet/Source
-    vendor/squirrel/include
+    vendor/lib-squirrel/include
     vendor/lib-libuv-cmake/libuv/include
     vendor/lib-sqrat/include
     vendor/lib-tinyxml2
