@@ -1,13 +1,13 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
-#include <librg/network/server/connection.h>
+#include <librg/core.h>
+#include <librg/events.h>
 #include <librg/network.h>
 #include <librg/streamer.h>
 #include <librg/components/client.h>
 #include <librg/components/streamable.h>
 #include <librg/components/transform.h>
-#include <librg/core/shared.h>
-#include <librg/events.h>
+#include <librg/network/server/connection.h>
 
 /**
 * Client just send us first connection

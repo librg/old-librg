@@ -56,4 +56,4 @@ bool hello  = false;
 
 1. All public methods and variables should have multiline jsdoc-like comments
 2. Methods should have inline comments in places, where they can give a good description for what is happening or can improve readability
-3. You are recommended to put comment with copyright notice in the beginning of the each file
+3. You are required to put comment with copyright notice in the beginning of the each file

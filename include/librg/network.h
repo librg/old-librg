@@ -1,22 +1,15 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_network_h
 #define librg_network_h
-
-#include <map>
-#include <array>
-#include <unordered_map>
-#include <string>
-#include <functional>
 
 #include <BitStream.h>
 #include <RakPeerInterface.h>
 #include <MessageIdentifiers.h>
 
-#include <librg/components/client.h>
+#include <librg/core.h>
 #include <librg/entities.h>
-#include <librg/core/shared.h>
-
+#include <librg/components/client.h>
 #include <librg/network/http/client.h>
 
 namespace librg
@@ -47,7 +40,7 @@ namespace librg
             CONNECTION_REFUSED,
             CONNECTION_ACCEPTED,
             CONNECTION_DISCONNECTED,
-            ENTITY_SYNC_PACKET, 
+            ENTITY_SYNC_PACKET,
             GUEST_PACKET_ENUM,
         };
 
@@ -85,10 +78,10 @@ namespace librg
         void msg(int id, message_t callback);
 
         /**
-        * Register custom network event handler.
-        * @param messageid
-        * @param callback_t 
-        */
+         * Register custom network event handler.
+         * @param messageid
+         * @param callback_t
+         */
         void add(int messageid, user_callback_t callback);
 
         // TODO: docs

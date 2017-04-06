@@ -1,11 +1,11 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #include <unordered_map>
 
-#include <librg/network.h>
+#include <librg/core.h>
 #include <librg/entities.h>
+#include <librg/network.h>
 #include <librg/streamer.h>
-#include <librg/core/shared.h>
 
 using namespace librg;
 
@@ -57,7 +57,7 @@ void librg::network::update()
             if (isNew && syncCallbacks[core::rgmode::mode_server]) {
                 syncCallbacks[core::rgmode::mode_server](&packet, entity, streamable->type);
             }
-            
+
             next_snapshot->insert(std::make_pair(guid, true));
         }
 

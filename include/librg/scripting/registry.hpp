@@ -1,14 +1,14 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #ifndef _scripting_registry
 #define _scripting_registry
 
-#include "natives/event.hpp"
-#include "natives/entity.hpp"
-#include "natives/system.hpp"
-#include "natives/timer.hpp"
-#include "natives/resource.hpp"
-#include "natives/streamer.hpp"
+#include <librg/scripting/natives/event.hpp>
+#include <librg/scripting/natives/entity.hpp>
+#include <librg/scripting/natives/system.hpp>
+#include <librg/scripting/natives/timer.hpp>
+#include <librg/scripting/natives/resource.hpp>
+#include <librg/scripting/natives/streamer.hpp>
 //#include "natives/transform.hpp"
 
 namespace librg

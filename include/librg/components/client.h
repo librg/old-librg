@@ -1,12 +1,13 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_components_client_h
 #define librg_components_client_h
 
 #include <string>
 #include <unordered_map>
-#include <RakPeerInterface.h>
+
 #include <BitStream.h>
+#include <RakPeerInterface.h>
 
 namespace librg
 {

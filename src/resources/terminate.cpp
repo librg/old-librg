@@ -1,6 +1,6 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
-#include <librg/core/shared.h>
+#include <librg/core.h>
 #include <librg/resources.h>
 
 using namespace librg;

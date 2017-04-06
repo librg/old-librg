@@ -1,8 +1,7 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
+#include <librg/core.h>
 #include <librg/network.h>
-#include <librg/core/shared.h>
-
 #include <librg/network/server/connection.h>
 #include <librg/network/client/connection.h>
 #include <librg/network/client/streaming.h>

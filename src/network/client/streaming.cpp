@@ -1,10 +1,11 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
-#include <librg/network/client/streaming.h>
-#include <librg/network.h>
 #include <vectorial/vectorial.h>
+
+#include <librg/core.h>
+#include <librg/network.h>
 #include <librg/streamer.h>
-#include <librg/core/shared.h>
+#include <librg/network/client/streaming.h>
 
 void librg::network::client_streamer_entity_sync(RakNet::Packet* packet) {
 

@@ -7,7 +7,7 @@ namespace performance
         benchmark("streamer.h", [](perc_t test) {
 
             librg::entities_initialize();
-            librg::streamer_initialize(4000, 4000);
+            librg::streamer_initialize();
             librg::streamer::clear();
 
             auto entity = librg::entities->create();

@@ -7,7 +7,7 @@ namespace unit
         describe("streamer.h", [](case_t it) {
 
             librg::entities_initialize();
-            librg::streamer_initialize(4000, 4000);
+            librg::streamer_initialize();
 
             auto entity = librg::entities->create();
             entity.assign<librg::streamable_t>(vectorial::vec3f(1000));

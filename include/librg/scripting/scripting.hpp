@@ -1,4 +1,4 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #ifndef _scripting
 #define _scripting
@@ -11,8 +11,8 @@
 #include <sqstdsystem.h>
 #include <sqstdstring.h>
 
-#include <librg/core/shared.h>
-#include "registry.hpp"
+#include <librg/core.h>
+#include <librg/scripting/registry.hpp>
 
 namespace librg
 {

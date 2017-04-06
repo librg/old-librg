@@ -1,16 +1,12 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_events_h
 #define librg_events_h
 
-#include <map>
-#include <vector>
-#include <string>
-#include <functional>
-#include <unordered_map>
-
 #include <uv.h>
 #include <sqrat.h>
+
+#include <librg/core.h>
 
 namespace librg
 {

@@ -1,28 +1,32 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
-#ifndef core_shared_h
-#define core_shared_h
-
-#include <librg/core/other.h>
-#include <librg/core/constants.h>
+#ifndef librg_core_h
+#define librg_core_h
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string>
-#include <ctime>
 #include <stdarg.h>
-#include <functional>
 
+#include <ctime>
+#include <string>
+#include <map>
+#include <array>
+#include <vector>
+#include <unordered_map>
+#include <functional>
 
 namespace librg
 {
+    void core_initialize();
+    void core_terminate();
+
+    enum rgmode {
+        mode_server,
+        mode_client,
+    };
+
     namespace core
     {
-        enum rgmode {
-            mode_server,
-            mode_client,
-        };
-
         /**
          * Polling method
          * used only to get data from network
@@ -118,4 +122,4 @@ namespace librg
     }
 }
 
-#endif // core_shared_h
+#endif // librg_core_h

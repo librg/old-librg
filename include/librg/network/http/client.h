@@ -1,21 +1,15 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_network_http_client_h
 #define librg_network_http_client_h
-
-#include <map>
-#include <array>
-#include <unordered_map>
-#include <string>
-#include <functional>
 
 #include <BitStream.h>
 #include <RakPeerInterface.h>
 #include <MessageIdentifiers.h>
 
-#include <librg/components/client.h>
+#include <librg/core.h>
 #include <librg/entities.h>
-#include <librg/core/shared.h>
+#include <librg/components/client.h>
 
 namespace librg
 {
@@ -31,7 +25,7 @@ namespace librg
 
             using response_t = std::string;
             using request_callback_t = std::function<void(response_t* res)>;
-            
+
             request_t create(std::string host, std::string method, std::string uri, int port);
 
             void add_header(request_t *req, std::string head, std::string text);

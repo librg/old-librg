@@ -1,8 +1,8 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
-#include <librg/network/client/connection.h>
+#include <librg/core.h>
 #include <librg/network.h>
-#include <librg/core/shared.h>
+#include <librg/network/client/connection.h>
 
 void librg::network::client_remote_disconnect(RakNet::Packet* packet) {
     core::log("Another client has disconnected.");

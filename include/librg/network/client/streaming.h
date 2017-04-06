@@ -1,12 +1,13 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_network_client_streaming_hpp
 #define librg_network_client_streaming_hpp
 
-#include <librg/network.h>
 #include <vectorial/vectorial.h>
+
+#include <librg/core.h>
+#include <librg/network.h>
 #include <librg/streamer.h>
-#include <librg/core/shared.h>
 
 namespace librg
 {

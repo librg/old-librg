@@ -1,9 +1,10 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #include <exception>
 #include <tinyxml2.h>
+
+#include <librg/core.h>
 #include <librg/resources.h>
-#include <librg/core/shared.h>
 #include <librg/utils/fs.h>
 
 using namespace librg;

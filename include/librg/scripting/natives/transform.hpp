@@ -1,4 +1,4 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #ifndef _scripting_transform
 #define _scripting_transform
@@ -19,8 +19,6 @@ namespace librg
         {
             auto entity = librg::entities->get((Entity::id)index);
             auto transform = entity.component<transform_t>();
-
-            
         }
     }
 }

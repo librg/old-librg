@@ -1,14 +1,12 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_resources_h
 #define librg_resources_h
 
 #include <uv.h>
-#include <vector>
-#include <string>
-#include <unordered_map>
 #include <squirrel.h>
-#include <librg/core/shared.h>
+
+#include <librg/core.h>
 
 namespace librg
 {

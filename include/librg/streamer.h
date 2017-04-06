@@ -1,4 +1,4 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_streamer_h
 #define librg_streamer_h
@@ -11,7 +11,7 @@
 
 namespace librg
 {
-    void streamer_initialize(float width, float height);
+    void streamer_initialize();
     void streamer_terminate();
 
     namespace streamer
@@ -28,31 +28,36 @@ namespace librg
 
             void subdivide();
             void create_child(aabb_t boundary);
-            bool insert(Entity entity);
-            bool remove(Entity entity);
+            bool insert(entity_t entity);
+            bool remove(entity_t entity);
             void clear();
-            void query(std::vector<Entity> &visible, aabb_t range, ComponentHandle<streamable_t> streamable, Entity caller);
+            void query(std::vector<entity_t> &visible, aabb_t range, ComponentHandle<streamable_t> streamable, entity_t caller);
 
             aabb_t boundary;
-            std::vector<Entity> entities;
-            std::vector<Entity> blacklistedEntities;
+            std::vector<entity_t> entities;
+            std::vector<entity_t> blacklistedEntities;
             std::vector<qtree_t> trees;
         };
 
         extern qtree_t _root;
 
         /**
+         * Client-side streamer cache that stores current entities
+         */
+        extern std::unordered_map<uint64_t, entity_t> client_cache;
+
+        /**
          * Public API method for inserting an entity to the quad tree.
          * @param entity An entity to insert.
          */
-        bool insert(Entity entity);
+        bool insert(entity_t entity);
 
         /**
-         * [remove description]
-         * @param  entity [description]
-         * @return        [description]
+         * Public API method for removing entity from the streamer
+         * @param  entity
+         * @return
          */
-        bool remove(Entity entity);
+        bool remove(entity_t entity);
 
         /**
          * Public API method for cleaning up the quad-tree.
@@ -71,7 +76,7 @@ namespace librg
          * streamed.
          * @param entity An entity to be queried against.
          */
-        std::vector<Entity> query(Entity entity);
+        std::vector<entity_t> query(entity_t entity);
 
         /**
          * Public API method for setting the global visibility of the entity.
@@ -79,7 +84,7 @@ namespace librg
          * @param  state  A visibility state.
          * @return        Returns zero if no change has happened, one otherwise.
          */
-        bool set_visible(Entity entity, bool state);
+        bool set_visible(entity_t entity, bool state);
 
         /**
          * Public API method for setting visibility of the entity for a specific
@@ -92,35 +97,7 @@ namespace librg
          * @param  state  A visibility state.
          * @return        Returns zero if no change has happened, one otherwise.
          */
-        bool set_visible_for(Entity target, Entity entity, bool state);
-    }
-
-    namespace streamer_callbacks
-    {
-        using callback_t = std::function<void(uint64_t, uint8_t, Entity, void *)>;
-
-        enum actions {
-            create,
-            update,
-            remove,
-            interpolate,
-        };
-
-        /**
-         * Public Client API method
-         * should be used to register handler
-         * for entities which were just created and first-time synced
-         * from the server (for current stream-zone)
-         * @param callback
-         */
-        void set(actions action, callback_t callback);
-
-        /**
-         * Private method
-         */
-        void trigger(actions action, uint64_t, uint8_t, Entity, void *);
-
-        extern std::unordered_map<uint64_t, Entity> client_cache;
+        bool set_visible_for(entity_t target, entity_t entity, bool state);
     }
 }
 
