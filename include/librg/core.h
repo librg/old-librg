@@ -20,13 +20,16 @@ namespace librg
     void core_initialize();
     void core_terminate();
 
-    enum rgmode {
+    enum mode {
         mode_server,
         mode_client,
+        mode_server_manual,
+        mode_client_manual
     };
 
     namespace core
     {
+
         /**
          * Polling method
          * used only to get data from network
@@ -41,22 +44,16 @@ namespace librg
         void tick();
 
         /**
-         * Set curretn tick callback
-         * @param callback [description]
-         */
-        void set_tick_cb(std::function<void(double)> callback);
-
-        /**
          * Set a mode for (server/client)
          * @param mode default is server
          */
-        void set_mode(rgmode mode);
+        void set_mode(mode mode);
 
         /**
          * Get current mode
          * @return
          */
-        rgmode get_mode();
+        mode get_mode();
 
         /**
          * Check if current execution mode is server

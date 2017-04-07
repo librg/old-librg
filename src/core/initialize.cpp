@@ -7,7 +7,7 @@
 #include <librg/resources.h>
 #include <librg/streamer.h>
 
-void librg::core_initialize(librg::rgmode mode)
+void librg::core_initialize(librg::mode mode)
 {
     librg::entities_initialize();
     librg::events_initialize();

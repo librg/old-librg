@@ -6,6 +6,7 @@
 #include <librg/entities.h>
 #include <librg/network.h>
 #include <librg/streamer.h>
+#include <librg/callbacks.h>
 
 using namespace librg;
 
@@ -15,8 +16,10 @@ using namespace librg;
  */
 void librg::network::update()
 {
+    /**
+     * Entity packing adn sending
+     */
     entities->each<client_t>([](Entity playerEntity, client_t& client) {
-        // core::log("sending updates to uid: %d", playerEntity.id().index());
         // copy last to local last, alias next snapshot as last and clear it
         auto next_snapshot = &client.last_snapshot;
         auto last_snapshot =  client.last_snapshot;
@@ -24,11 +27,13 @@ void librg::network::update()
         next_snapshot->clear();
         auto queue = streamer::query(playerEntity);
 
-        RakNet::BitStream packet;
+        // create packet and write inital data
+        network::bitstream_t packet;
 
         packet.Write((RakNet::MessageID) network::ENTITY_SYNC_PACKET);
         packet.Write((uint16_t) queue.size());
 
+        // add entity creates and updates
         for (auto entity : queue) {
             uint64_t guid = entity.id().id();
             packet.Write((uint64_t) guid);
@@ -36,26 +41,16 @@ void librg::network::update()
             auto streamable = entity.component<streamable_t>();
             auto transform  = entity.component<transform_t>();
 
-            bool isNew = false;
+            bool creating_entity = (last_snapshot.erase(guid) == 0);
 
-            if (last_snapshot.erase(guid) == 0) {
-                // entity create
-                packet.Write((bool) true);
-
-                isNew = true;
-            }
-            else {
-                // entity update
-                packet.Write((bool) false);
-            }
-
+            packet.Write((bool) creating_entity);
             packet.Write((uint8_t) streamable->type);
             packet.Write(transform->position.value);
             packet.Write(transform->rotation.value);
             packet.Write(transform->scale.value);
 
-            if (isNew && syncCallbacks[core::rgmode::mode_server]) {
-                syncCallbacks[core::rgmode::mode_server](&packet, entity, streamable->type);
+            if (creating_entity && core::is_server()) {
+                callbacks::trigger(callbacks::sync, (callbacks::evt_t*) &callbacks::evt_sync_t(&packet, entity, streamable->type));
             }
 
             next_snapshot->insert(std::make_pair(guid, true));
@@ -63,14 +58,18 @@ void librg::network::update()
 
         packet.Write((uint16_t) last_snapshot.size());
 
+        // add entity removes
         for (auto pair : last_snapshot) {
-            // remove entity
             packet.Write((uint64_t) pair.first);
         }
 
         data.peer->Send(&packet, HIGH_PRIORITY, RELIABLE_ORDERED, 0, client.address, false);
     });
 
+    /**
+     * Rebuilding entity tree
+     * TODO(inlife): move to a separate thread and place
+     */
     streamer::clear();
 
     entities->each<streamable_t>([](Entity entity, streamable_t& streamable) {

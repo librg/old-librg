@@ -11,16 +11,65 @@ namespace librg
 {
     namespace callbacks
     {
+        /**
+         * Default event
+         * and callback type
+         */
         using evt_t = void;
         using callback_t = std::function<void(evt_t*)>;
 
-        struct evt_tick_t { uint64_t tick; double dt; };
-        struct evt_sync_t { network::bitstream_t* data, entity_t entity, int type };
-        struct evt_inter_t { entity_t entity, transform_t* data };
-        struct evt_create_t { uint64_t guid, uint8_t type, entity_t entity, network::bitstream_t* data };
-        using  evt_update_t = evt_steamer_create_t;
-        using  evt_remove_t = evt_steamer_create_t;
+        /**
+         * Tick event
+         */
+        struct evt_tick_t {
+            uint64_t tick;
+            double dt;
+        };
 
+        /**
+         * Sync event
+         */
+        struct evt_sync_t {
+            evt_sync_t(network::bitstream_t* data, entity_t entity, int type)
+                : data(data), entity(entity), type(type) {}
+
+            network::bitstream_t* data;
+            entity_t entity;
+            int type;
+        };
+
+        /**
+         * Entity interpolation event (client)
+         */
+        struct evt_inter_t {
+            entity_t entity;
+            transform_t* data;
+        };
+
+        /**
+         * Entity create event (client)
+         */
+        struct evt_create_t {
+            uint64_t guid;
+            uint8_t type;
+            entity_t entity;
+            network::bitstream_t* data;
+        };
+
+        /**
+         * Entity udpate event (client)
+         */
+        using evt_update_t = evt_steamer_create_t;
+
+        /**
+         * Entity create event (client)
+         */
+        using evt_remove_t = evt_steamer_create_t;
+
+        /**
+         * Enum with all registered
+         * event actions
+         */
         enum actions {
             tick,
             sync,

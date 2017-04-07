@@ -52,8 +52,3 @@ network::data_t network::data;
  * Storage for current clients
  */
 std::map<RakNet::RakNetGUID, entityx::Entity> network::clients;
-
-/**
- * Storage for sync callbacks
- */
-network::sync_callback_t network::syncCallbacks[2];
