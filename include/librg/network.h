@@ -88,6 +88,14 @@ namespace librg
         void msg(int id, RakNet::SystemAddress address, message_t callback);
 
         /**
+        * Send message from the server to client
+        * @param entity
+        * @param messageid
+        * @param message_t
+        */
+        void msg(int id, entity_t entity, message_t callback);
+
+        /**
          * Register custom network event handler.
          * @param messageid
          * @param callback_t
