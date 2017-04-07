@@ -4,6 +4,9 @@
 cmake_minimum_required (VERSION 2.8)
 project (ReGuider)
 
+set(RG_MAJOR_VERSION 2)
+set(RG_MINOR_VERSION 0)
+set(RG_PATCH_VERSION 1)
 
 ###
 # Predefines to block make at the root
@@ -18,6 +21,7 @@ if( CMAKE_BINARY_DIR MATCHES " " )
     message( "Your Build Directory contains spaces. If you experience problems when compiling, this can be the cause." )
 endif()
 
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 ###
 # Custom building flags
@@ -148,6 +152,17 @@ file(GLOB_RECURSE TEST_FILES "${PROJECT_SOURCE_DIR}/test/*.cpp")
 add_executable(rgtest ${TEST_FILES})
 
 target_link_libraries(rgtest librg)
+
+set_target_properties(RakNetLibStatic   PROPERTIES FOLDER librg/vendors)
+set_target_properties(squirrel          PROPERTIES FOLDER librg/vendors)
+set_target_properties(sqstdlib          PROPERTIES FOLDER librg/vendors)
+set_target_properties(tinyxml2          PROPERTIES FOLDER librg/vendors)
+set_target_properties(http_parser       PROPERTIES FOLDER librg/vendors)
+set_target_properties(entityx           PROPERTIES FOLDER librg/vendors)
+set_target_properties(uv                PROPERTIES FOLDER librg/vendors)
+set_target_properties(librg             PROPERTIES FOLDER librg)
+set_target_properties(rgtest            PROPERTIES FOLDER librg)
+
 
 # Xcode and Visual working directories
 # set_target_properties(librg PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/librg/")

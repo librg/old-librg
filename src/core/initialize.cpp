@@ -2,6 +2,10 @@
 //
 #include <uv.h>
 
+#ifdef WIN32
+#include <clocale>
+#endif
+
 #include <librg/core.h>
 #include <librg/callbacks.h>
 #include <librg/entities.h>

@@ -12,9 +12,9 @@
 #endif
 
 #if WIN32
-#include <windows.h>
+// #include <windows.h>
 inline void uv_sleep(int milis) {
-    Sleep(milis);
+    // Sleep(milis);
 }
 #else
 #include <unistd.h>
