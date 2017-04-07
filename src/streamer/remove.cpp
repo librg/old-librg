@@ -1,8 +1,8 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #include <librg/streamer.h>
 
-bool librg::streamer::qtree_t::remove(Entity entity)
+bool librg::streamer::qtree_t::remove(entity_t entity)
 {
     auto it = std::find(entities.begin(), entities.end(), entity);
     if (it != entities.end()) {
@@ -16,7 +16,11 @@ bool librg::streamer::qtree_t::remove(Entity entity)
     return true;
 }
 
-bool librg::streamer::remove(Entity entity)
+bool librg::streamer::remove(entity_t entity, bool soft_remove)
 {
+    if (!soft_remove) {
+        librg::streamer::remove_queue.push_back(entity);
+    }
+
     return _root.remove(entity);
 }

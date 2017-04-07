@@ -115,8 +115,6 @@ void librg::network::server_disconnect(RakNet::Packet* packet)
     // }));
 
     if (clients.find(packet->guid) != clients.end()) {
-        streamer::remove(clients[packet->guid]);
-
         auto entity = clients[packet->guid];
         auto store = new uint64_t[1]{ entity.id().id() };
 
@@ -124,7 +122,7 @@ void librg::network::server_disconnect(RakNet::Packet* packet)
             array->Append(entity.id().id());
         }), true);
 
-        clients[packet->guid].destroy();
+        streamer::remove(clients[packet->guid]);
         clients.erase(packet->guid);
     }
 

@@ -65,7 +65,8 @@ namespace librg
 
         /**
          * Calls a recieve update for network
-         * (recieves new data from clients)
+         * (server receives new data from clients)
+         * (client receives new data from server)
          */
         void receive();
 

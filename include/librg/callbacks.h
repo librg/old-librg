@@ -30,18 +30,6 @@ namespace librg
         };
 
         /**
-         * Sync event
-         */
-        struct evt_sync_t {
-            evt_sync_t(network::bitstream_t* data, entity_t entity, int type)
-                : data(data), entity(entity), type(type) {}
-
-            network::bitstream_t* data;
-            entity_t entity;
-            int type;
-        };
-
-        /**
          * Entity interpolation event (client)
          */
         struct evt_inter_t {
@@ -50,7 +38,7 @@ namespace librg
         };
 
         /**
-         * Entity create event (client)
+         * Entity create event
          */
         struct evt_create_t {
             uint64_t guid;
@@ -60,12 +48,12 @@ namespace librg
         };
 
         /**
-         * Entity udpate event (client)
+         * Entity udpate event
          */
         using evt_update_t = evt_create_t;
 
         /**
-         * Entity create event (client)
+         * Entity create event
          */
         using evt_remove_t = evt_create_t;
 
@@ -75,7 +63,6 @@ namespace librg
          */
         enum actions {
             tick,
-            sync,
             inter,
             create,
             update,

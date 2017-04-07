@@ -1,9 +1,23 @@
 // Copyright ReGuider Team, 2016-2017
 //
 #include <librg/streamer.h>
+#include <librg/entities.h>
 #include <librg/components/streamable.h>
 
 librg::streamer::qtree_t librg::streamer::_root;
+
+/**
+ * Storage for client cache
+ * TODO(inlife): rethink and refactor
+ */
+std::unordered_map<uint64_t, librg::entity_t> librg::streamer::client_cache;
+
+/**
+ * Storage for queue of entities marked
+ * for deletion in the next update
+ */
+std::vector<librg::entity_t> librg::streamer::remove_queue;
+
 
 void librg::streamer_initialize()
 {

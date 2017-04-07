@@ -2,6 +2,7 @@
 //
 #include <librg/core.h>
 #include <librg/network.h>
+#include <librg/entities.h>
 #include <librg/network/server/connection.h>
 #include <librg/network/client/connection.h>
 #include <librg/network/client/streaming.h>
@@ -51,4 +52,4 @@ network::data_t network::data;
 /**
  * Storage for current clients
  */
-std::map<RakNet::RakNetGUID, entityx::Entity> network::clients;
+std::map<RakNet::RakNetGUID, entity_t> network::clients;

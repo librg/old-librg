@@ -20,19 +20,21 @@ uv_tty_t tty;
 /**
  * Main polling method
  */
-void on_poll_loop(uv_timer_t* req) {
+void on_poll_loop(uv_timer_t* req)
+{
     network::receive();
 }
 
 /**
  * Main tick method
  */
-void on_tick_loop(uv_timer_t* req) {
+void on_tick_loop(uv_timer_t* req)
+{
     if (core::is_server()) {
         network::update();
     }
 
-    callbacks::evt_tick_t tick_event;
+    callbacks::evt_tick_t tick_event = { 0, 0.05 };
     callbacks::trigger(callbacks::tick, (callbacks::evt_t*) &tick_event);
 }
 
@@ -79,13 +81,13 @@ void on_console(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf)
 
 void librg::core_initialize(librg::mode mode)
 {
+    librg::core::set_mode(mode);
+
     librg::entities_initialize();
     librg::events_initialize();
     librg::network_initialize();
     librg::resources_initialize();
     librg::streamer_initialize();
-
-    librg::core::set_mode(mode);
 
 #ifdef WIN32
     // set our locale to the C locale
@@ -96,10 +98,10 @@ void librg::core_initialize(librg::mode mode)
 
     // start loops
     uv_timer_init(uv_default_loop(), &poll_loop);
-    uv_timer_start(&poll_loop, on_poll_loop, 250, 16);
+    uv_timer_start(&poll_loop, on_poll_loop, 0, 1);
 
     uv_timer_init(uv_default_loop(), &tick_loop);
-    uv_timer_start(&tick_loop, on_tick_loop, 0, 1);
+    uv_timer_start(&tick_loop, on_tick_loop, 250, 32);
 
     // singal handling
     // uv_signal_t sig;

@@ -1,4 +1,4 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #include <librg/network.h>
 
@@ -13,20 +13,20 @@ void librg::network::receive()
 {
     RakNet::Packet* packet = nullptr;
 
-    if (!(packet = network::data.peer->Receive())) return;
+    while ((packet = network::data.peer->Receive())) {
+        RakNet::MessageID id = packet->data[0];
 
-    RakNet::MessageID id = packet->data[0];
+        if (id == GUEST_PACKET_ENUM) {
+            bitstream_t stream(packet->data, packet->length, false);
+            stream.IgnoreBytes(sizeof(RakNet::MessageID));
 
-    if (id == GUEST_PACKET_ENUM) {
-        bitstream_t stream(packet->data, packet->length, false);
-        stream.IgnoreBytes(sizeof(RakNet::MessageID));
-        
-        stream.Read(id);
-        network::userHandlers[id](&stream, packet);
+            stream.Read(id);
+            network::userHandlers[id](&stream, packet);
+        }
+        else if (network::handlers[id]) {
+            network::handlers[id](packet);
+        }
+
+        network::data.peer->DeallocatePacket(packet);
     }
-    else if (network::handlers[id]) {
-        network::handlers[id](packet);
-    }
-
-    network::data.peer->DeallocatePacket(packet);
 }

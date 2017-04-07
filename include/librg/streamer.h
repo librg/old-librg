@@ -47,6 +47,11 @@ namespace librg
         extern std::unordered_map<uint64_t, entity_t> client_cache;
 
         /**
+         * Remove queue for unstreamed entities
+         */
+        extern std::vector<entity_t> remove_queue;
+
+        /**
          * Public API method for inserting an entity to the quad tree.
          * @param entity An entity to insert.
          */
@@ -55,9 +60,10 @@ namespace librg
         /**
          * Public API method for removing entity from the streamer
          * @param  entity
+         * @param  soft_remove if set to true, will not destroy entity after removing from the streamer
          * @return
          */
-        bool remove(entity_t entity);
+        bool remove(entity_t entity, bool soft_remove = false);
 
         /**
          * Public API method for cleaning up the quad-tree.
