@@ -45,27 +45,27 @@ void librg::network::client_streamer_entity_sync(RakNet::Packet* packet) {
             transform->rotation.value = rotation;
             transform->scale.value = scale;
 
-            if (syncCallbacks[core::rgmode::mode_client]) {
-                syncCallbacks[core::rgmode::mode_client](&data, entity, type);
-            }
+            // if (syncCallbacks[core::rgmode::mode_client]) {
+            //     syncCallbacks[core::rgmode::mode_client](&data, entity, type);
+            // }
 
-            streamer_callbacks::client_cache.insert(std::make_pair(guid, entity));
-            streamer_callbacks::trigger(streamer_callbacks::create, guid, type, entity, (void *)packet);
+            // streamer_callbacks::client_cache.insert(std::make_pair(guid, entity));
+            // streamer_callbacks::trigger(streamer_callbacks::create, guid, type, entity, (void *)packet);
         }
         else {
-            if (streamer_callbacks::client_cache.find(guid) != streamer_callbacks::client_cache.end()) {
-                auto entity = streamer_callbacks::client_cache[guid];
-                auto transform = entity.component<transform_t>();
+            // if (streamer_callbacks::client_cache.find(guid) != streamer_callbacks::client_cache.end()) {
+            //     auto entity = streamer_callbacks::client_cache[guid];
+            //     auto transform = entity.component<transform_t>();
 
-                transform->position.value = position;
-                transform->rotation.value = rotation;
-                transform->scale.value = scale;
+            //     transform->position.value = position;
+            //     transform->rotation.value = rotation;
+            //     transform->scale.value = scale;
 
-                streamer_callbacks::trigger(streamer_callbacks::update, guid, type, entity, (void *)packet);
-            }
-            else {
-                core::log("unexpected entity %lld on update", guid);
-            }
+            //     // streamer_callbacks::trigger(streamer_callbacks::update, guid, type, entity, (void *)packet);
+            // }
+            // else {
+            //     core::log("unexpected entity %lld on update", guid);
+            // }
         }
     }
 
@@ -75,16 +75,16 @@ void librg::network::client_streamer_entity_sync(RakNet::Packet* packet) {
         uint64_t guid = 0;
         data.Read(guid);
 
-        if (streamer_callbacks::client_cache.find(guid) != streamer_callbacks::client_cache.end()) {
-            auto entity = streamer_callbacks::client_cache[guid];
-            // entity.component
-            streamer_callbacks::trigger(streamer_callbacks::remove, guid, 0, entity, (void *)packet);
-            streamer_callbacks::client_cache.erase(guid);
-            entity.destroy();
-        }
-        else {
-            core::log("unexpected entity %lld on remove", guid);
-        }
+        // if (streamer_callbacks::client_cache.find(guid) != streamer_callbacks::client_cache.end()) {
+        //     auto entity = streamer_callbacks::client_cache[guid];
+        //     // entity.component
+        //     streamer_callbacks::trigger(streamer_callbacks::remove, guid, 0, entity, (void *)packet);
+        //     streamer_callbacks::client_cache.erase(guid);
+        //     entity.destroy();
+        // }
+        // else {
+        //     core::log("unexpected entity %lld on remove", guid);
+        // }
     }
 
     return;

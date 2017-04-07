@@ -12,7 +12,7 @@ using namespace librg;
  */
 void network::server(int port)
 {
-    core::log("initializing network...");
+    core::log("starting server at port: %d", port);
 
     // TODO(inlife): move to settings.json
     network::data.socket_descriptor = RakNet::SocketDescriptor(port, 0);
@@ -21,8 +21,8 @@ void network::server(int port)
     std::string password = "";
 
     if (network::data.peer->Startup(maxplayers, &network::data.socket_descriptor, 1) != RakNet::RAKNET_STARTED) {
-        core::log("Unable to startup server!");
-        core::log("Port might be already being used by another process!");
+        core::log("unable to startup server!");
+        core::log("port might be already being used by another process.");
         return;
     }
 

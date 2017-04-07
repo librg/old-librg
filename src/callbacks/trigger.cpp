@@ -2,7 +2,7 @@
 //
 #include <librg/callbacks.h>
 
-using namepsace librg;
+using namespace librg;
 
 void callbacks::trigger(callbacks::actions action, callbacks::evt_t* event)
 {

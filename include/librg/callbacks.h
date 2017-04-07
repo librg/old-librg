@@ -6,9 +6,12 @@
 #include <librg/core.h>
 #include <librg/network.h>
 #include <librg/entities.h>
+#include <librg/components/transform.h>
 
 namespace librg
 {
+    const uint8_t NATIVE_CALLBACKS = 16;
+
     namespace callbacks
     {
         /**
@@ -59,12 +62,12 @@ namespace librg
         /**
          * Entity udpate event (client)
          */
-        using evt_update_t = evt_steamer_create_t;
+        using evt_update_t = evt_create_t;
 
         /**
          * Entity create event (client)
          */
-        using evt_remove_t = evt_steamer_create_t;
+        using evt_remove_t = evt_create_t;
 
         /**
          * Enum with all registered
@@ -74,12 +77,12 @@ namespace librg
             tick,
             sync,
             inter,
-            steamer_create,
-            steamer_update,
-            steamer_remove,
+            create,
+            update,
+            remove,
         };
 
-        extern std::array<actions, callback_t> handlers;
+        extern std::array<callback_t, NATIVE_CALLBACKS> handlers;
 
         /**
          * Public Client API method

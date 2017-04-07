@@ -49,9 +49,20 @@ void librg::network::update()
             packet.Write(transform->rotation.value);
             packet.Write(transform->scale.value);
 
-            if (creating_entity && core::is_server()) {
-                callbacks::trigger(callbacks::sync, (callbacks::evt_t*) &callbacks::evt_sync_t(&packet, entity, streamable->type));
-            }
+            // if (creating_entity && core::is_server()) {
+            //     callbacks::trigger(callbacks::sync, (callbacks::evt_t*) &callbacks::evt_sync_t(&packet, entity, streamable->type));
+            // }
+
+            // if (creating_entity) {
+            //     callbacks::trigger(callbacks::streamer_create,
+            //         (callbacks::evt_t*) &callbacks::evt_steamer_create_t(guid, streamable->type, entity, &packet)
+            //     );
+            // }
+            // else {
+            //     callbacks::trigger(callbacks::streamer_update,
+            //         (callbacks::evt_t*) &callbacks::evt_steamer_update_t(guid, streamable->type, entity, &packet)
+            //     );
+            // }
 
             next_snapshot->insert(std::make_pair(guid, true));
         }
@@ -61,6 +72,10 @@ void librg::network::update()
         // add entity removes
         for (auto pair : last_snapshot) {
             packet.Write((uint64_t) pair.first);
+
+            // callbacks::trigger(callbacks::streamer_create,
+            //     (callbacks::evt_t*) &callbacks::evt_steamer_create_t(guid, streamable->type, entity, &packet)
+            // );
         }
 
         data.peer->Send(&packet, HIGH_PRIORITY, RELIABLE_ORDERED, 0, client.address, false);

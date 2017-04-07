@@ -2,11 +2,11 @@
 //
 #include <librg/callbacks.h>
 
-using namepsace librg;
+using namespace librg;
 
-std::array<callbaks::actions, callbacks::callback_t> callbacks::handlers[10];
+std::array<callbacks::callback_t, NATIVE_CALLBACKS> callbacks::handlers;
 
-void callbacks::set(callbacks::actions action, callbacks::callback_t* callback)
+void callbacks::set(callbacks::actions action, callbacks::callback_t callback)
 {
     callbacks::handlers[action] = callback;
 }
