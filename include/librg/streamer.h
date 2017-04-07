@@ -1,4 +1,4 @@
-// Copyright ReGuider Team, 2016-2017
+﻿// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_streamer_h
 #define librg_streamer_h
@@ -50,6 +50,8 @@ namespace librg
          * Remove queue for unstreamed entities
          */
         extern std::vector<entity_t> remove_queue;
+
+        extern std::unordered_map<entity_t, std::vector<entity_t>> entity_cache;
 
         /**
          * Public API method for inserting an entity to the quad tree.

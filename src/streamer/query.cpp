@@ -33,6 +33,10 @@ void librg::streamer::qtree_t::query(std::vector<Entity> &visible,
 
 std::vector<Entity> librg::streamer::query(Entity entity)
 {
+    if (entity_cache.find(entity) != entity_cache.end()) {
+        return entity_cache[entity];
+    }
+
     auto visible = std::vector<Entity>();
 
     auto streamable = entity.component<streamable_t>();
@@ -46,6 +50,8 @@ std::vector<Entity> librg::streamer::query(Entity entity)
     auto range    = aabb_t(position, qrange);
 
     _root.query(visible, range, streamable, entity);
+
+    entity_cache[entity] = visible;
 
     return visible;
 }

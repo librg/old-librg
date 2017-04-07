@@ -1,4 +1,4 @@
-// Copyright ReGuider Team, 2016-2017
+﻿// Copyright ReGuider Team, 2016-2017
 //
 #include <librg/streamer.h>
 
@@ -20,6 +20,11 @@ bool librg::streamer::remove(entity_t entity, bool soft_remove)
 {
     if (!soft_remove) {
         librg::streamer::remove_queue.push_back(entity);
+    }
+
+    for (auto &cached : entity_cache) {
+        auto it = std::find(cached.second.begin(), cached.second.end(), entity);
+        cached.second.erase(it);
     }
 
     return _root.remove(entity);

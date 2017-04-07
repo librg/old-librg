@@ -1,4 +1,4 @@
-// Copyright ReGuider Team, 2016-2017
+﻿// Copyright ReGuider Team, 2016-2017
 //
 #include <librg/streamer.h>
 #include <librg/entities.h>
@@ -17,6 +17,11 @@ std::unordered_map<uint64_t, librg::entity_t> librg::streamer::client_cache;
  * for deletion in the next update
  */
 std::vector<librg::entity_t> librg::streamer::remove_queue;
+
+/**
+* Storage for cached entities
+*/
+std::unordered_map<librg::entity_t, std::vector<librg::entity_t>> librg::streamer::entity_cache;
 
 
 void librg::streamer_initialize()
