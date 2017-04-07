@@ -1,4 +1,4 @@
-// Copyright ReGuider Team, 2016-2017
+﻿// Copyright ReGuider Team, 2016-2017
 //
 #include <librg/network.h>
 
@@ -21,7 +21,12 @@ void librg::network::receive()
             stream.IgnoreBytes(sizeof(RakNet::MessageID));
 
             stream.Read(id);
-            network::userHandlers[id](&stream, packet);
+            if (network::userHandlers[id]) {
+                network::userHandlers[id](&stream, packet);
+            }
+            else {
+                core::error("Unknown message: %d", id);
+            }
         }
         else if (network::handlers[id]) {
             network::handlers[id](packet);

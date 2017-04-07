@@ -1,4 +1,4 @@
-// Copyright ReGuider Team, 2016-2017
+﻿// Copyright ReGuider Team, 2016-2017
 //
 #include <unordered_map>
 
@@ -64,8 +64,9 @@ void librg::network::update()
             data.Write((uint64_t) pair.first);
 
             auto entity = entities->get(entityx::Entity::Id(pair.first));
+            auto streamable = entity.component<streamable_t>();
 
-            callbacks::evt_create_t event = { pair.first, 0, entity, &data };
+            callbacks::evt_remove_t event = { pair.first, streamable->type, entity, &data };
             callbacks::trigger(callbacks::remove, (callbacks::evt_t*) &event);
         }
 

@@ -1,4 +1,4 @@
-// Copyright ReGuider Team, 2016-2017
+﻿// Copyright ReGuider Team, 2016-2017
 //
 #include <vectorial/vectorial.h>
 
@@ -39,7 +39,8 @@ void librg::network::client_streamer_entity_sync(network::packet_t* packet) {
 
         if (create) {
             auto entity = entities->create();
-            entity.assign<streamable_t>();
+            auto streamable = entity.assign<streamable_t>();
+            streamable->type = type;
             auto transform = entity.assign<transform_t>();
 
             transform->position.value = position;
@@ -79,9 +80,10 @@ void librg::network::client_streamer_entity_sync(network::packet_t* packet) {
 
         if (streamer::client_cache.find(guid) != streamer::client_cache.end()) {
             auto entity = streamer::client_cache[guid];
+            auto streamable = entity.component<streamable_t>();
 
             // trigger remove callback
-            callbacks::evt_remove_t event = { guid, 0, entity, &data };
+            callbacks::evt_remove_t event = { guid, streamable->type, entity, &data };
             callbacks::trigger(callbacks::remove, (callbacks::evt_t*) &event);
 
             streamer::client_cache.erase(guid);

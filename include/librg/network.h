@@ -1,4 +1,4 @@
-// Copyright ReGuider Team, 2016-2017
+﻿// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_network_h
 #define librg_network_h
@@ -28,6 +28,7 @@ namespace librg
         using handler_t            = std::array<callback_t, MAX_MESSAGES>;
         using user_handler_t       = std::unordered_map<int, user_callback_t>;
         using message_t            = std::function<void(bitstream_t* message)>;
+        using guid_t               = uint64_t;
 
         struct data_t {
             RakNet::SystemAddress address;
@@ -77,6 +78,14 @@ namespace librg
          * @param message_t
          */
         void msg(int id, message_t callback);
+
+        /**
+        * Send message from the server to client
+        * @param messageid
+        * @param address
+        * @param message_t
+        */
+        void msg(int id, RakNet::SystemAddress address, message_t callback);
 
         /**
          * Register custom network event handler.
