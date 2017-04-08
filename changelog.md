@@ -1,3 +1,8 @@
+Build v2.1.2 [8. 4. 2017]
+- Range-based message sendivng
+- Small fixes for the streamer
+- Streamer entity caching
+
 Build v2.0.1 [7. 4. 2017]
 - Refactored core
 - Improved API
