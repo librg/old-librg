@@ -1,19 +1,24 @@
-// Copyright ReGuider Team, 2016-2017
+﻿// Copyright ReGuider Team, 2016-2017
 //
 #include <uv.h>
 
 #include <librg/core.h>
 #include <librg/network.h>
+#include <librg/streamer.h>
 
 using namespace librg;
 
-void core::start(std::string ip, int port)
+void core::start(config_t config)
 {
     if (core::is_server()) {
-        network::server(port);
+        if (HMM_LengthVec3(config.worldSize) != 0.f) {
+            streamer::clear(aabb_t(config.worldSize));
+        }
+
+        network::server(config.port);
     }
     else {
-        network::client(ip, port);
+        network::client(config.ip, config.port);
     }
 
     // starting loop

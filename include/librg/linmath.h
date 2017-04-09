@@ -535,7 +535,7 @@ extern "C"
 }
 #endif
 
-#ifdef HANDMADE_MATH_CPP_MODE
+#if 1 // TODO: #ifdef HANDMADE_MATH_CPP_MODE
 
 HMMDEF float HMM_Length(hmm_vec2 A);
 HMMDEF float HMM_Length(hmm_vec3 A);

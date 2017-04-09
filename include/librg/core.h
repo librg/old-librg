@@ -3,36 +3,38 @@
 #ifndef librg_core_h
 #define librg_core_h
 
-    // TODO(inlife): remove this constants from code
-    // make them runtime-level settings
+// TODO(inlife): remove this constants from code
+// make them runtime-level settings
 
-    /**
-     * Random number setting current game platform id
-     * to prevent connections from different games/mods, in future
-     */
-    #ifndef NETWORK_PLATFORM_ID
-    #define NETWORK_PLATFORM_ID 1
-    #endif
+/**
+    * Random number setting current game platform id
+    * to prevent connections from different games/mods, in future
+    */
+#ifndef NETWORK_PLATFORM_ID
+#define NETWORK_PLATFORM_ID 1
+#endif
 
-    /**
-     * Version of protocol, should be changed if major, incompatible changes are introduced
-     */
-    #ifndef NETWORK_PROTOCOL_VERSION
-    #define NETWORK_PROTOCOL_VERSION 1
-    #endif
+/**
+    * Version of protocol, should be changed if major, incompatible changes are introduced
+    */
+#ifndef NETWORK_PROTOCOL_VERSION
+#define NETWORK_PROTOCOL_VERSION 1
+#endif
 
-    /**
-     * version of build. server owner can decide,
-     * should clients should be refused or allowed joining the game
-     */
-    #ifndef NETWORK_BUILD_VERSION
-    #define NETWORK_BUILD_VERSION 1
-    #endif
+/**
+    * version of build. server owner can decide,
+    * should clients should be refused or allowed joining the game
+    */
+#ifndef NETWORK_BUILD_VERSION
+#define NETWORK_BUILD_VERSION 1
+#endif
 
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
+
+#include <librg/linmath.h>
 
 #include <ctime>
 #include <string>
@@ -56,13 +58,20 @@ namespace librg
 
     namespace core
     {
+        struct config_t {
+            std::string ip;
+            int port;
+            int maxPlayers;
+            hmm_vec3 worldSize;
+        };
+
         /**
          * Main entry point for framework
          * Starts all networking and other parts
          * @param host
          * @param port
          */
-        void start(std::string host, int port);
+        void start(config_t config);
 
         /**
          * Should be used with *_manual mode
