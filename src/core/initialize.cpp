@@ -1,6 +1,9 @@
-// Copyright ReGuider Team, 2016-2017
+﻿// Copyright ReGuider Team, 2016-2017
 //
 #include <uv.h>
+
+#define HANDMADE_MATH_IMPLEMENTATION
+#include <librg/linmath.h>
 
 #ifdef WIN32
 #include <clocale>

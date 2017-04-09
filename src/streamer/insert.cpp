@@ -8,7 +8,7 @@ bool librg::streamer::qtree_t::insert(entityx::Entity entity)
     entityx::ComponentHandle<transform_t> transform = entity.component<transform_t>();
     if (!transform) return false;
 
-    vectorial::vec3f point = transform->position;
+    hmm_vec3 point = transform->position;
 
     if (!boundary.contains_2d(point)) {
         return false;

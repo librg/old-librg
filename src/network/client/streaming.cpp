@@ -1,6 +1,5 @@
 ﻿// Copyright ReGuider Team, 2016-2017
 //
-#include <vectorial/vectorial.h>
 
 #include <librg/core.h>
 #include <librg/network.h>
@@ -32,7 +31,7 @@ void librg::network::client_streamer_entity_sync(network::packet_t* packet) {
         // to store client-side entity objects
 
         // transform_t transform;
-        simd4f position, rotation, scale;
+        hmm_vec3 position, rotation, scale;
         data.Read(position);
         data.Read(rotation);
         data.Read(scale);
@@ -43,9 +42,9 @@ void librg::network::client_streamer_entity_sync(network::packet_t* packet) {
             streamable->type = type;
             auto transform = entity.assign<transform_t>();
 
-            transform->position.value = position;
-            transform->rotation.value = rotation;
-            transform->scale.value = scale;
+            transform->position = position;
+            transform->rotation = rotation;
+            transform->scale    = scale;
 
             streamer::client_cache.insert(std::make_pair(guid, entity));
 
@@ -62,9 +61,9 @@ void librg::network::client_streamer_entity_sync(network::packet_t* packet) {
             auto entity = streamer::client_cache[guid];
             auto transform = entity.component<transform_t>();
 
-            transform->position.value = position;
-            transform->rotation.value = rotation;
-            transform->scale.value = scale;
+            transform->position = position;
+            transform->rotation = rotation;
+            transform->scale    = scale;
 
             // trigger create or update callbacks for the client
             callbacks::evt_update_t event = { guid, type, entity, &data };

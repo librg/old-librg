@@ -3,8 +3,6 @@
 #ifndef librg_streamer_h
 #define librg_streamer_h
 
-#include <vectorial/vectorial.h>
-
 #include <librg/entities.h>
 #include <librg/utils/aabb.h>
 #include <librg/components/streamable.h>
@@ -17,7 +15,6 @@ namespace librg
     namespace streamer
     {
         constexpr int MAX_NODES = 4;
-        using namespace vectorial;
 
         struct qtree_t {
             qtree_t() {}

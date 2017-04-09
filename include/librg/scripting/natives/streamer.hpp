@@ -34,7 +34,7 @@ namespace librg
                 auto y = range.GetValue<float>(1);
                 auto z = range.GetValue<float>(2);
 
-                streamer->queryRange = vectorial::vec3f(*x,*y,*z);
+                streamer->queryRange = hmm_vec3{ *x,*y,*z };
             }
         }
 

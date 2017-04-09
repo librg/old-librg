@@ -26,7 +26,7 @@ std::unordered_map<librg::entity_t, std::vector<librg::entity_t>> librg::streame
 
 void librg::streamer_initialize()
 {
-    streamer::_root.boundary = aabb_t(vectorial::vec3f(5000, 5000, 0.f)); // TODO(inlife); move to set_size method
+    streamer::_root.boundary = aabb_t(hmm_vec3{ 5000, 5000, 0.f }); // TODO(inlife); move to set_size method
 
     librg::_systems->add<entityx::deps::Dependency<streamable_t, transform_t>>();
 }

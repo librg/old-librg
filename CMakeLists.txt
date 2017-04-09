@@ -54,7 +54,6 @@ add_subdirectory(vendor/lib-squirrel)
 add_subdirectory(vendor/lib-sqrat)
 add_subdirectory(vendor/lib-tinyxml2)
 add_subdirectory(vendor/lib-http-parser)
-add_subdirectory(vendor/lib-mathfu)
 add_subdirectory(vendor/lib-entityx)
 
 # TODO: fix later for beautiful c++17 code
@@ -142,8 +141,6 @@ target_include_directories(librg PUBLIC
     vendor/lib-sqrat/include
     vendor/lib-tinyxml2
     vendor/lib-http-parser
-    vendor/lib-mathfu/dependencies/vectorial/include
-    vendor/lib-mathfu/include
     vendor/lib-entityx
     # vendor/squirrel/squirrel
 )

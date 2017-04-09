@@ -1,20 +1,19 @@
 ﻿// Copyright ReGuider Team, 2016-2017
 //
 #include <librg/streamer.h>
+#include <librg/linmath.h>
 
 void librg::streamer::qtree_t::subdivide()
 {
-    using namespace vectorial;
+    hmm_vec3 hd = HMM_DivideVec3f(boundary.halfdim, 2.f);
 
-    vec3f hd = boundary.halfdim / 2.f;
-
-    auto nwc = vec3f(boundary.center.x() - hd.x(), boundary.center.y() - hd.y(), .0f);
+    auto nwc = hmm_vec3{boundary.center.X - hd.X, boundary.center.Y - hd.Y, .0f};
     auto nwb = aabb_t(nwc, hd);
-    auto nec = vec3f(boundary.center.x() + hd.x(), boundary.center.y() - hd.y(), .0f);
+    auto nec = hmm_vec3{boundary.center.X + hd.X, boundary.center.Y - hd.Y, .0f};
     auto neb = aabb_t(nec, hd);
-    auto swc = vec3f(boundary.center.x() - hd.x(), boundary.center.y() + hd.y(), .0f);
+    auto swc = hmm_vec3{boundary.center.X - hd.X, boundary.center.Y + hd.Y, .0f};
     auto swb = aabb_t(swc, hd);
-    auto sec = vec3f(boundary.center.x() + hd.x(), boundary.center.y() + hd.y(), .0f);
+    auto sec = hmm_vec3{boundary.center.X + hd.X, boundary.center.Y + hd.Y, .0f};
     auto seb = aabb_t(sec, hd);
 
     create_child(nwb);

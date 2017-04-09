@@ -1,4 +1,4 @@
-// Copyright ReGuider Team, 2016-2017
+﻿// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_core_h
 #define librg_core_h

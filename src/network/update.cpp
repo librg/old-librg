@@ -46,9 +46,9 @@ void librg::network::update()
 
             data.Write((bool) creating_entity);
             data.Write((uint8_t) streamable->type);
-            data.Write(transform->position.value);
-            data.Write(transform->rotation.value);
-            data.Write(transform->scale.value);
+            data.Write(transform->position);
+            data.Write(transform->rotation);
+            data.Write(transform->scale);
 
             // trigger create or update callbacks for the server
             callbacks::evt_create_t event = { guid, streamable->type, entity, &data };

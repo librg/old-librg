@@ -3,20 +3,18 @@
 #ifndef librg_components_transform_h
 #define librg_components_transform_h
 
-#include <vectorial/vectorial.h>
+#include <librg/linmath.h>
 
 namespace librg
 {
-    using namespace vectorial;
-
     struct transform_t {
         transform_t() = default;
-        transform_t(vec3f position, vec3f rotation, vec3f scale)
+        transform_t(hmm_vec3 position, hmm_vec3 rotation, hmm_vec3 scale)
         : position(position), rotation(rotation), scale(scale) {}
 
-        vec3f position;
-        vec3f rotation;
-        vec3f scale;
+        hmm_vec3 position;
+        hmm_vec3 rotation;
+        hmm_vec3 scale;
     };
 }
 
