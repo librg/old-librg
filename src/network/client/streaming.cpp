@@ -46,19 +46,19 @@ void librg::network::client_streamer_entity_sync(network::packet_t* packet) {
             transform->rotation = rotation;
             transform->scale    = scale;
 
-            streamer::client_cache.insert(std::make_pair(guid, entity));
+            streamer::entity_pool.insert(std::make_pair(guid, entity));
 
             // trigger create or update callbacks for the client
             callbacks::evt_create_t event = { guid, type, entity, &data };
             callbacks::trigger(callbacks::create, (callbacks::evt_t*) &event);
         }
         else {
-            if (streamer::client_cache.find(guid) == streamer::client_cache.end()) {
+            if (streamer::entity_pool.find(guid) == streamer::entity_pool.end()) {
                 core::error("unexpected entity %lld on update", guid);
                 continue;
             }
 
-            auto entity = streamer::client_cache[guid];
+            auto entity = streamer::entity_pool[guid];
             auto transform = entity.component<transform_t>();
 
             transform->position = position;
@@ -77,15 +77,15 @@ void librg::network::client_streamer_entity_sync(network::packet_t* packet) {
         uint64_t guid = 0;
         data.Read(guid);
 
-        if (streamer::client_cache.find(guid) != streamer::client_cache.end()) {
-            auto entity = streamer::client_cache[guid];
+        if (streamer::entity_pool.find(guid) != streamer::entity_pool.end()) {
+            auto entity = streamer::entity_pool[guid];
             auto streamable = entity.component<streamable_t>();
 
             // trigger remove callback
             callbacks::evt_remove_t event = { guid, streamable->type, entity, &data };
             callbacks::trigger(callbacks::remove, (callbacks::evt_t*) &event);
 
-            streamer::client_cache.erase(guid);
+            streamer::entity_pool.erase(guid);
             entity.destroy();
         }
         else {

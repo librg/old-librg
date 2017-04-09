@@ -41,7 +41,7 @@ namespace librg
         /**
          * Client-side streamer cache that stores current entities
          */
-        extern std::unordered_map<uint64_t, entity_t> client_cache;
+        extern std::unordered_map<uint64_t, entity_t> entity_pool;
 
         /**
          * Remove queue for unstreamed entities
