@@ -1,3 +1,7 @@
+Build v2.2.3 [9. 4. 2017]
+- Replaced mathfu/vectorial with Handmade-Math
+- Small fixes
+
 Build v2.1.2 [8. 4. 2017]
 - Range-based message sendivng
 - Small fixes for the streamer
