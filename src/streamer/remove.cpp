@@ -24,7 +24,8 @@ bool librg::streamer::remove(entity_t entity, bool soft_remove)
 
     for (auto &cached : entity_cache) {
         auto it = std::find(cached.second.begin(), cached.second.end(), entity);
-        cached.second.erase(it);
+
+        if (it != cached.second.end()) cached.second.erase(it);
     }
 
     return _root.remove(entity);
