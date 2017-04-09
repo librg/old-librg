@@ -671,7 +671,7 @@ HMMDEF hmm_quaternion &operator/=(hmm_quaternion &Left, float Right);
 
 #endif /* HANDMADE_MATH_H */
 
-#ifdef HANDMADE_MATH_IMPLEMENTATION
+#if 1 // TODO: #ifdef HANDMADE_MATH_IMPLEMENTATION
 
 HINLINE float
 HMM_SinF(float Angle)
