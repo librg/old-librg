@@ -3,6 +3,7 @@
 #include <librg/network.h>
 #include <librg/components/interpolable.h>
 #include <librg/components/streamable.h>
+#include <librg/callbacks.h>
 
 void librg::network::interpolate(double dt)
 {
@@ -21,7 +22,8 @@ void librg::network::interpolate(double dt)
 
         // ...
 
-        tran.position = npos;
-        inter.lastTransform = tran;
+        auto newTransform = transform_t(npos, tran.rotation, tran.scale);
+        callbacks::evt_inter_t tick_event = { entity, newTransform };
+        callbacks::trigger(callbacks::tick, (callbacks::evt_t*) &tick_event);
     });
 }

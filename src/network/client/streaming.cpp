@@ -62,14 +62,16 @@ void librg::network::client_streamer_entity_sync(network::packet_t* packet) {
             auto entity = streamer::entity_pool[guid];
             auto transform = entity.component<transform_t>();
             auto interpolable = entity.component<interpolable_t>();
+            
+            if (interpolable) {
+                interpolable->lastTransform = *transform;
+                interpolable->targetTransform = transform_t(position, rotation, scale);
+                interpolable->time = 0.0;
+            }
+
             transform->position = position;
             transform->rotation = rotation;
-            transform->scale    = scale;
-
-            if (interpolable) {
-                interpolable->targetTransform = *transform;
-                interpolable->time = {};
-            }
+            transform->scale = scale;
 
             // trigger create or update callbacks for the client
             callbacks::evt_update_t event = { guid, type, entity, &data };

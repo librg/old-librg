@@ -1,4 +1,4 @@
-// Copyright ReGuider Team, 2016-2017
+﻿// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_callbacks_h
 #define librg_callbacks_h
@@ -34,7 +34,7 @@ namespace librg
          */
         struct evt_inter_t {
             entity_t entity;
-            transform_t* data;
+            transform_t data;
         };
 
         /**

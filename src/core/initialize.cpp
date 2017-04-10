@@ -30,9 +30,6 @@ uv_tty_t tty;
 void on_poll_loop(uv_timer_t* req)
 {
     network::receive();
-
-    callbacks::evt_tick_t tick_event = { 0, 0.05 };
-    callbacks::trigger(callbacks::tick, (callbacks::evt_t*) &tick_event);
 }
 
 /**
@@ -44,7 +41,8 @@ void on_tick_loop(uv_timer_t* req)
         network::update();
     }
 
-    
+    callbacks::evt_tick_t tick_event = { 0, 0.05 };
+    callbacks::trigger(callbacks::tick, (callbacks::evt_t*) &tick_event);
 }
 
 /**
@@ -110,7 +108,7 @@ void librg::core_initialize(librg::mode mode)
     uv_timer_start(&poll_loop, on_poll_loop, 0, 1);
 
     uv_timer_init(uv_default_loop(), &tick_loop);
-    uv_timer_start(&tick_loop, on_tick_loop, 250, 500);
+    uv_timer_start(&tick_loop, on_tick_loop, 250, 32);
 
     // singal handling
     // uv_signal_t sig;
