@@ -12,7 +12,7 @@ void librg::network::interpolate(double dt)
         auto tpos = inter.targetTransform.position;
 
         inter.time += dt;
-        auto t = (float)(inter.time / 500.0); // <- there goes tick delay on the server
+        auto t = (float)(inter.time / 32.0); // <- there goes tick delay on the server
 
         auto posx = HMM_Lerp(lpos.X, t, tpos.X);
         auto posy = HMM_Lerp(lpos.Y, t, tpos.Y);
