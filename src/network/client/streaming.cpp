@@ -6,6 +6,7 @@
 #include <librg/callbacks.h>
 #include <librg/streamer.h>
 #include <librg/network/client/streaming.h>
+#include <librg/components/interpolable.h>
 
 void librg::network::client_streamer_entity_sync(network::packet_t* packet) {
 
@@ -60,10 +61,15 @@ void librg::network::client_streamer_entity_sync(network::packet_t* packet) {
 
             auto entity = streamer::entity_pool[guid];
             auto transform = entity.component<transform_t>();
-
+            auto interpolable = entity.component<interpolable_t>();
             transform->position = position;
             transform->rotation = rotation;
             transform->scale    = scale;
+
+            if (interpolable) {
+                interpolable->targetTransform = *transform;
+                interpolable->time = {};
+            }
 
             // trigger create or update callbacks for the client
             callbacks::evt_update_t event = { guid, type, entity, &data };

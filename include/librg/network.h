@@ -102,6 +102,12 @@ namespace librg
          */
         void add(int messageid, user_callback_t callback);
 
+        /**
+        * Interpolate client data based on our current input values.
+        * @param dt The time between 2 client ticks.
+        */
+        void interpolate(double dt);
+
         extern data_t data;
         extern std::map<RakNet::RakNetGUID, entity_t> clients;
         extern handler_t handlers;
