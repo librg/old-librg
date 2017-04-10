@@ -1,4 +1,4 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 
 #include <librg/core.h>
@@ -62,9 +62,9 @@ void librg::network::client_streamer_entity_sync(network::packet_t* packet) {
             auto entity = streamer::entity_pool[guid];
             auto transform = entity.component<transform_t>();
             auto interpolable = entity.component<interpolable_t>();
-            
+
             if (interpolable) {
-                interpolable->lastTransform = *transform;
+                interpolable->lastTransform = transform_t(transform->position, transform->rotation, transform->scale);
                 interpolable->targetTransform = transform_t(position, rotation, scale);
                 interpolable->time = 0.0;
             }

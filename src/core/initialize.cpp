@@ -1,4 +1,4 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #include <uv.h>
 
@@ -30,6 +30,11 @@ uv_tty_t tty;
 void on_poll_loop(uv_timer_t* req)
 {
     network::receive();
+
+    if (core::is_client()) {
+        // there goes calculated delta time per tick
+        librg::network::interpolate(16.0);
+    }
 }
 
 /**
@@ -108,7 +113,7 @@ void librg::core_initialize(librg::mode mode)
     uv_timer_start(&poll_loop, on_poll_loop, 0, 1);
 
     uv_timer_init(uv_default_loop(), &tick_loop);
-    uv_timer_start(&tick_loop, on_tick_loop, 250, 32);
+    uv_timer_start(&tick_loop, on_tick_loop, 250, 32); // <- change 32 to 500ms on the server and compile, then back for client and compile
 
     // singal handling
     // uv_signal_t sig;

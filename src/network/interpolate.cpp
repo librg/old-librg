@@ -1,4 +1,4 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #include <librg/network.h>
 #include <librg/components/interpolable.h>
@@ -10,8 +10,9 @@ void librg::network::interpolate(double dt)
     entities->each<interpolable_t, transform_t>([dt](entity_t entity, interpolable_t& inter, transform_t& tran) {
         auto lpos = inter.lastTransform.position;
         auto tpos = inter.targetTransform.position;
-        auto  t = inter.time + dt;
+
         inter.time += dt;
+        auto t = (float)(inter.time / 500.0); // <- there goes tick delay on the server
 
         auto posx = HMM_Lerp(lpos.X, t, tpos.X);
         auto posy = HMM_Lerp(lpos.Y, t, tpos.Y);
@@ -23,7 +24,7 @@ void librg::network::interpolate(double dt)
         // ...
 
         auto newTransform = transform_t(npos, tran.rotation, tran.scale);
-        callbacks::evt_inter_t tick_event = { entity, newTransform };
-        callbacks::trigger(callbacks::tick, (callbacks::evt_t*) &tick_event);
+        callbacks::evt_inter_t inter_event = { entity, newTransform };
+        callbacks::trigger(callbacks::inter, (callbacks::evt_t*) &inter_event);
     });
 }
