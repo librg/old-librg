@@ -38,6 +38,13 @@ namespace librg
         };
 
         /**
+         * Log event
+         */
+        struct evt_log_t {
+            std::string output;
+        };
+
+        /**
          * Entity create event
          */
         struct evt_create_t {
@@ -67,6 +74,7 @@ namespace librg
             create,
             update,
             remove,
+            log,
         };
 
         extern std::array<callback_t, NATIVE_CALLBACKS> handlers;
