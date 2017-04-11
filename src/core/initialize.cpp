@@ -1,9 +1,11 @@
-// Copyright ReGuider Team, 2016-2017
+﻿// Copyright ReGuider Team, 2016-2017
 //
 #include <uv.h>
 
 #define HANDMADE_MATH_IMPLEMENTATION
 #include <librg/linmath.h>
+
+#include <librg/timing.hpp>
 
 #ifdef WIN32
 #include <clocale>
@@ -24,16 +26,19 @@ uv_timer_t tick_loop;
 
 uv_tty_t tty;
 
+double librg_lasttime;
+
 /**
  * Main polling method
  */
 void on_poll_loop(uv_timer_t* req)
 {
     network::receive();
-
     if (core::is_client()) {
+        double newtime = get_time();
         // there goes calculated delta time per tick
-        librg::network::interpolate(16.0);
+        librg::network::interpolate((newtime - librg_lasttime)*1000.0);
+        librg_lasttime = newtime;
     }
 }
 
