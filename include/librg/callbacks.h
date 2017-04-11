@@ -101,6 +101,10 @@ namespace librg
          */
         void set(actions action, callback_t callback);
 
+        static inline void add(actions action, callback_t callback) {
+            set((callbacks::actions)(callbacks::num_of_actions + action), callback);
+        }
+
         /**
          * Private method
          * Trigger particular callback
