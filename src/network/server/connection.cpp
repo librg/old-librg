@@ -1,4 +1,4 @@
-// Copyright ReGuider Team, 2016-2017
+﻿// Copyright ReGuider Team, 2016-2017
 //
 #include <librg/core.h>
 #include <librg/events.h>
@@ -38,13 +38,13 @@ void librg::network::server_connect(RakNet::Packet* packet)
     RakNet::BitStream input(packet->data, packet->length, false);
     input.IgnoreBytes(sizeof(RakNet::MessageID));
 
-    int protocolVersion = -1, buildVersion = -1, platformId = -1;
+    uint16_t protocolVersion = -1, buildVersion = -1, platformId = -1;
     input.Read(platformId);
     input.Read(protocolVersion);
     input.Read(buildVersion);
 
     // incompatible protocol version - force immidiate disconnect
-    if (protocolVersion != NETWORK_PROTOCOL_VERSION || platformId != NETWORK_PLATFORM_ID) {
+    if (protocolVersion != network::protoVersion || platformId != network::platformId) {
         output.Write(static_cast<RakNet::MessageID>(CONNECTION_REFUSED));
         output.Write("Incompatible game version.");
 
@@ -55,7 +55,7 @@ void librg::network::server_connect(RakNet::Packet* packet)
     }
 
     // let server owner to decide, to kick or not to kick
-    if (buildVersion != NETWORK_BUILD_VERSION) {
+    if (buildVersion != network::buildVersion) {
         // TODO(inlife): add check for server parameters to decide, should be connection refused or allowed
         output.Write(static_cast<RakNet::MessageID>(CONNECTION_REFUSED));
         output.Write("Incompatible build version.");

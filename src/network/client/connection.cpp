@@ -1,4 +1,4 @@
-// Copyright ReGuider Team, 2016-2017
+﻿// Copyright ReGuider Team, 2016-2017
 //
 #include <librg/core.h>
 #include <librg/network.h>
@@ -50,9 +50,9 @@ void librg::network::client_connection_request_accepted(RakNet::Packet* packet)
     */
     RakNet::BitStream data;
     data.Write((RakNet::MessageID)CONNECTION_INIT);
-    data.Write(NETWORK_PLATFORM_ID);
-    data.Write(NETWORK_PROTOCOL_VERSION);
-    data.Write(NETWORK_BUILD_VERSION);
+    data.Write(network::platformId);
+    data.Write(network::protoVersion);
+    data.Write(network::buildVersion);
     data.Write("Test Player");
     data.Write("4555ASDASD4555ASDASD4555");
     network::data.peer->Send(&data, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);

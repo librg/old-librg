@@ -10,6 +10,10 @@ using namespace librg;
 
 void core::start(config_t config)
 {
+    network::platformId = config.platformId;
+    network::protoVersion = config.protoVersion;
+    network::buildVersion = config.buildVersion;
+
     if (core::is_server()) {
         if (HMM_LengthVec3(config.worldSize) != 0.f) {
             streamer::clear(aabb_t(config.worldSize));

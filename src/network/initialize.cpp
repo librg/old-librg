@@ -1,4 +1,4 @@
-// Copyright ReGuider Team, 2016-2017
+﻿// Copyright ReGuider Team, 2016-2017
 //
 #include <librg/core.h>
 #include <librg/network.h>
@@ -53,3 +53,10 @@ network::data_t network::data;
  * Storage for current clients
  */
 std::map<RakNet::RakNetGUID, entity_t> network::clients;
+
+/**
+* Storage for network configuration
+*/
+uint16_t network::platformId;
+uint16_t network::protoVersion;
+uint16_t network::buildVersion;

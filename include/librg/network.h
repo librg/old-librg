@@ -112,6 +112,9 @@ namespace librg
         extern std::map<RakNet::RakNetGUID, entity_t> clients;
         extern handler_t handlers;
         extern user_handler_t userHandlers;
+        extern uint16_t platformId;
+        extern uint16_t protoVersion;
+        extern uint16_t buildVersion;
     }
 }
 
