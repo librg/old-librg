@@ -4,7 +4,7 @@
 
 using namespace librg;
 
-void events::set(uint64_t action, events::callback_t callback)
+void events::add(uint64_t action, events::callback_t callback)
 {
     auto it = handlers.find(action);
 

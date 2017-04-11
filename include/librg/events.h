@@ -25,7 +25,7 @@ namespace librg
          * @param action
          * @param callback
          */
-        void set(uint64_t action, callback_t callback);
+        void add(uint64_t action, callback_t callback);
 
         /**
          * Public API method
