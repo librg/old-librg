@@ -6,5 +6,5 @@ using namespace librg;
 
 void librg::events_terminate()
 {
-    events::_events.clear();
+    events::handlers.clear();
 }

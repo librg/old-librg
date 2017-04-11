@@ -1,7 +1,7 @@
 ﻿// Copyright ReGuider Team, 2016-2017
 //
 #include <librg/core.h>
-#include <librg/events.h>
+#include <librg/callbacks.h>
 #include <librg/network.h>
 #include <librg/streamer.h>
 #include <librg/components/client.h>
@@ -87,18 +87,9 @@ void librg::network::server_connect(RakNet::Packet* packet)
     output.Write(static_cast<RakNet::MessageID>(CONNECTION_ACCEPTED));
     data.peer->Send(&output, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
 
-    auto store = new uint64_t[1]{ entity.id().id() };
+    auto event = callbacks::evt_connect_t{ entity };
+    callbacks::trigger(callbacks::connect, (callbacks::evt_t*)&event);
 
-    events::trigger("onClientConnect", EVENT_PARAM((void*)store, [entity](Sqrat::Array *array) {
-        array->Append(entity.id().id());
-    }));
-
-    // Game::Manager::Instance()->Trigger(1, packet);
-    // Event::Manager::Instance()->Dispatch("OnClientConnect", EVENT_PARAM(new OnClientConnectData{ packet }, [=](HSQUIRRELVM vm){
-    //     auto array = new Sqrat::Array(vm);
-    //     array->Append(packet);
-    //     return array;
-    // }));
     core::log("server_connect: id: %d name: %s serial: %s", packet->systemAddress.systemIndex, nickName.C_String(), serial.C_String());
     return;
 }
@@ -116,11 +107,9 @@ void librg::network::server_disconnect(RakNet::Packet* packet)
 
     if (clients.find(packet->guid) != clients.end()) {
         auto entity = clients[packet->guid];
-        auto store = new uint64_t[1]{ entity.id().id() };
-
-        events::trigger("onClientDisconnect", EVENT_PARAM((void*)store, [=](Sqrat::Array *array) {
-            array->Append(entity.id().id());
-        }), true);
+        
+        auto event = callbacks::evt_disconnect_t{ entity };
+        callbacks::trigger(callbacks::disconnect, (callbacks::evt_t*)&event);
 
         streamer::remove(clients[packet->guid]);
         clients.erase(packet->guid);

@@ -4,9 +4,12 @@
 
 using namespace librg;
 
-std::unordered_map<std::string, std::vector<events::listener_info_t>> events::_events;
-
 void librg::events_initialize()
 {
-    // hey
+    
 }
+
+/**
+ * Storage for event handlers
+ */
+std::unordered_map<uint64_t, std::vector<events::callback_t>> events::handlers;

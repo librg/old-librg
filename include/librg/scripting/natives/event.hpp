@@ -18,22 +18,7 @@ namespace librg
          */
         inline static void event_add_listener(const char *eventName, Sqrat::Function callback)
         {
-            auto handlerId = librg::events::add(
-                eventName,
-
-                [] (const void *event, void *blob) {
-                    auto array = (Sqrat::Array *)event;
-                    auto callb = (Sqrat::Function *)blob;
-
-                    callb->Execute(*array);
-                },
-
-                [] (const void *data, Sqrat::Array *array) {
-                    return array ? (void *)array : (void *)data;
-                },
-
-                new Sqrat::Function(callback)
-            );
+            
         }
 
         /**
@@ -46,7 +31,7 @@ namespace librg
          */
         inline static void event_dispatch(const char *eventName, Sqrat::Array array)
         {
-            librg::events::trigger(eventName, EVENT_PARAM_SQ_INTERNAL(new Sqrat::Array(array)));
+
         }
 
         /**

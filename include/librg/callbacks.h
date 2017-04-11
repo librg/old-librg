@@ -10,8 +10,6 @@
 
 namespace librg
 {
-    const uint8_t NATIVE_CALLBACKS = 16;
-
     namespace callbacks
     {
         /**
@@ -65,6 +63,18 @@ namespace librg
         using evt_remove_t = evt_create_t;
 
         /**
+         * Client connect event
+         */
+        struct evt_connect_t {
+            entity_t entity;
+        };
+
+        /**
+        * Client disconnect event
+        */
+        using evt_disconnect_t = evt_connect_t;
+
+        /**
          * Enum with all registered
          * event actions
          */
@@ -75,9 +85,12 @@ namespace librg
             update,
             remove,
             log,
+            connect,
+            disconnect,
+            num_of_actions
         };
 
-        extern std::array<callback_t, NATIVE_CALLBACKS> handlers;
+        extern std::array<callback_t, num_of_actions> handlers;
 
         /**
          * Public Client API method

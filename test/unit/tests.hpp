@@ -1,10 +1,10 @@
-#ifndef librg_unit_tests
+﻿#ifndef librg_unit_tests
 #define librg_unit_tests
 
 #include "utils/fs.hpp"
 #include "utils/aabb.hpp"
 #include "streamer.hpp"
-#include "events.hpp"
+//#include "events.hpp"
 
 namespace unit
 {
@@ -16,7 +16,7 @@ namespace unit
 
         // main
         streamer_test();
-        events_test();
+        //events_test();
     }
 }
 
