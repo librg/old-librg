@@ -1,10 +1,9 @@
-// Copyright ReGuider Team, 2016-2017
+﻿// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_network_server_connection_hpp
 #define librg_network_server_connection_hpp
 
 #include <librg/core.h>
-#include <librg/events.h>
 #include <librg/network.h>
 #include <librg/streamer.h>
 #include <librg/components/client.h>

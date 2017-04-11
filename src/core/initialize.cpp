@@ -14,7 +14,6 @@
 #include <librg/core.h>
 #include <librg/callbacks.h>
 #include <librg/entities.h>
-#include <librg/events.h>
 #include <librg/network.h>
 #include <librg/resources.h>
 #include <librg/streamer.h>
@@ -101,7 +100,6 @@ void librg::core_initialize(librg::mode mode)
     librg::core::set_mode(mode);
 
     librg::entities_initialize();
-    librg::events_initialize();
     librg::network_initialize();
     librg::resources_initialize();
     librg::streamer_initialize();

@@ -3,8 +3,6 @@
 #ifndef _scripting_event
 #define _scripting_event
 
-#include <librg/events.h>
-
 namespace librg
 {
     namespace scripting

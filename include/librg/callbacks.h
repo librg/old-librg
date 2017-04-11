@@ -90,7 +90,7 @@ namespace librg
             num_of_actions
         };
 
-        extern std::array<callback_t, num_of_actions> handlers;
+        extern std::unordered_map<uint64_t, std::vector<callback_t>> handlers;
 
         /**
          * Public Client API method

@@ -1,4 +1,4 @@
-// Copyright ReGuider Team, 2016-2017
+﻿// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_h
 #define librg_h
@@ -29,7 +29,6 @@ inline void uv_sleep(int milis) {
 #include <librg/core.h>
 #include <librg/callbacks.h>
 #include <librg/entities.h>
-#include <librg/events.h>
 #include <librg/network.h>
 #include <librg/resources.h>
 #include <librg/streamer.h>
