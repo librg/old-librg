@@ -52,6 +52,8 @@ namespace librg
             network::bitstream_t* data;
         };
 
+        using evt_change_t = evt_create_t;
+
         /**
          * Client/Server start event
          */
