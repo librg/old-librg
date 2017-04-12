@@ -2,6 +2,7 @@
 //
 #include <librg/streamer.h>
 #include <librg/components/client.h>
+#include <librg/callbacks.h>
 
 void librg::streamer::qtree_t::clear()
 {

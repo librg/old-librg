@@ -1,4 +1,4 @@
-// Copyright ReGuider Team, 2016-2017
+﻿// Copyright ReGuider Team, 2016-2017
 //
 #include <librg/network.h>
 #include <librg/components/interpolable.h>
@@ -12,7 +12,7 @@ void librg::network::interpolate(double dt)
         auto tpos = inter.targetTransform.position;
 
         inter.time += dt;
-        auto t = (float)(inter.time / 32.0); // <- there goes tick delay on the server
+        auto t = (float)(inter.time / network::tickRate); // <- there goes tick delay on the server
 
         auto posx = HMM_Lerp(lpos.X, t, tpos.X);
         auto posy = HMM_Lerp(lpos.Y, t, tpos.Y);

@@ -21,7 +21,6 @@
 using namespace librg;
 
 uv_timer_t poll_loop;
-uv_timer_t tick_loop;
 
 uv_tty_t tty;
 
@@ -39,19 +38,6 @@ void on_poll_loop(uv_timer_t* req)
         librg::network::interpolate((newtime - librg_lasttime)*1000.0);
         librg_lasttime = newtime;
     }
-}
-
-/**
- * Main tick method
- */
-void on_tick_loop(uv_timer_t* req)
-{
-    if (core::is_server()) {
-        network::update();
-    }
-
-    callbacks::evt_tick_t tick_event = { 0, 0.05 };
-    callbacks::trigger(callbacks::tick, (callbacks::evt_t*) &tick_event);
 }
 
 /**
@@ -114,9 +100,6 @@ void librg::core_initialize(librg::mode mode)
     // start loops
     uv_timer_init(uv_default_loop(), &poll_loop);
     uv_timer_start(&poll_loop, on_poll_loop, 0, 1);
-
-    uv_timer_init(uv_default_loop(), &tick_loop);
-    uv_timer_start(&tick_loop, on_tick_loop, 250, 32); // <- change 32 to 500ms on the server and compile, then back for client and compile
 
     // singal handling
     // uv_signal_t sig;

@@ -53,6 +53,13 @@ namespace librg
         };
 
         /**
+         * Client/Server start event
+         */
+        struct evt_start_t {
+            uint32_t _unused0;
+        };
+
+        /**
          * Entity udpate event
          */
         using evt_update_t = evt_create_t;
@@ -87,29 +94,48 @@ namespace librg
             log,
             connect,
             disconnect,
+            start,
             num_of_actions
         };
 
         extern std::unordered_map<uint64_t, std::vector<callback_t>> handlers;
 
         /**
-         * Public Client API method
-         * should be used to register handler
-         * for entities which were just created and first-time synced
-         * from the server (for current stream-zone)
+         * Public API method
+         * Sets callback for particular native event.
+         * @param action
          * @param callback
          */
         void set(actions action, callback_t callback);
 
+        /**
+        * Public API method
+        * Adds event handler to a custom event.
+        * @param action
+        * @param callback
+        */
         static inline void add(actions action, callback_t callback) {
             set((callbacks::actions)(callbacks::num_of_actions + action), callback);
         }
 
         /**
-         * Private method
-         * Trigger particular callback
+         * Public API method
+         * Triggers particular callback
+         * Directly used ONLY for natives!
+         * @param action
+         * @param event
          */
         void trigger(actions action, evt_t* event);
+
+        /**
+        * Public API method
+        * Triggers all registered event handlers of a particular custom event.
+        * @param action
+        * @param event
+        */
+        static inline void trigger_custom(actions action, evt_t* event) {
+            trigger((callbacks::actions)(callbacks::num_of_actions + action), event);
+        }
     }
 }
 

@@ -60,3 +60,4 @@ std::map<RakNet::RakNetGUID, entity_t> network::clients;
 uint16_t network::platformId;
 uint16_t network::protoVersion;
 uint16_t network::buildVersion;
+uint16_t network::tickRate;

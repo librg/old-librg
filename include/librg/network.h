@@ -115,6 +115,7 @@ namespace librg
         extern uint16_t platformId;
         extern uint16_t protoVersion;
         extern uint16_t buildVersion;
+        extern uint16_t tickRate;
     }
 }
 

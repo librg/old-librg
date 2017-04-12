@@ -63,6 +63,9 @@ void librg::network::update()
         for (auto pair : last_snapshot) {
             data.Write((uint64_t) pair.first);
 
+            // skip calling callback, if the entity is destroyed already.
+            if (!entities->valid((entityx::Entity::Id)pair.first)) continue;
+
             auto entity = entities->get(entityx::Entity::Id(pair.first));
             auto streamable = entity.component<streamable_t>();
 
