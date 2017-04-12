@@ -1,4 +1,4 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #include <uv.h>
 
@@ -35,7 +35,7 @@ void on_poll_loop(uv_timer_t* req)
     if (core::is_client()) {
         double newtime = get_time();
         // there goes calculated delta time per tick
-        librg::network::interpolate((newtime - librg_lasttime)*1000.0);
+        librg::network::interpolate((newtime - librg_lasttime)*100.0);
         librg_lasttime = newtime;
     }
 }
