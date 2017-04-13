@@ -31,7 +31,9 @@ namespace librg
          * Entity interpolation event (client)
          */
         struct evt_inter_t {
+            uint64_t guid;
             entity_t entity;
+            uint8_t type;
             transform_t data;
         };
 

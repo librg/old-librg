@@ -7,7 +7,7 @@
 
 void librg::network::interpolate(double dt)
 {
-    entities->each<interpolable_t, transform_t>([dt](entity_t entity, interpolable_t& inter, transform_t& tran) {
+    entities->each<interpolable_t, transform_t, streamable_t>([dt](entity_t entity, interpolable_t& inter, transform_t& tran, streamable_t& stream) {
         auto lpos = inter.lastTransform.position;
         auto tpos = inter.targetTransform.position;
 
@@ -24,7 +24,7 @@ void librg::network::interpolate(double dt)
         // ...
 
         auto newTransform = transform_t(npos, tran.rotation, tran.scale);
-        callbacks::evt_inter_t inter_event = { entity, newTransform };
+        callbacks::evt_inter_t inter_event = { entity.id().id(), entity, stream.type, newTransform };
         callbacks::trigger(callbacks::inter, (callbacks::evt_t*) &inter_event);
     });
 }
