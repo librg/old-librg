@@ -1,11 +1,9 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_network_h
 #define librg_network_h
 
-#include <BitStream.h>
-#include <RakPeerInterface.h>
-#include <MessageIdentifiers.h>
+#include <enet/enet.h>
 
 #include <librg/core.h>
 #include <librg/entities.h>
@@ -21,8 +19,73 @@ namespace librg
     {
         constexpr int MAX_MESSAGES = 256;
 
-        using bitstream_t          = RakNet::BitStream;
-        using packet_t             = RakNet::Packet;
+        class bistream_t {
+            public:
+                bistream_t() : mBuffer(nullptr), mCurrentWritePos(0), mCurrentReadPos(0) {}
+
+                template <typename T>
+                void Read(T & Var)
+                {
+                    unsigned int variableSize = sizeof(Var);
+                    memcpy(&Var, reinterpret_cast<char*>(mBuffer) + mCurrentReadPos, variableSize);
+                    mCurrentReadPos += variableSize;
+                }
+
+                template <typename T>
+                void Read(T * Var, unsigned int customSize = 0)
+                {
+                    if(Var == nullptr) return;
+
+                    unsigned int variableSize = sizeof(*Var);
+                    if(customSize != 0) variableSize = customSize;
+
+                    memcpy(Var, reinterpret_cast<char*>(mBuffer) + mCurrentReadPos, variableSize);
+                    mCurrentReadPos += variableSize;
+                }
+
+                template <typename T>
+                void Write(T * Var, unsigned int customSize = 0)
+                {
+                    if(Var == nullptr) return;
+
+                    unsigned int variableSize = sizeof(*Var);
+                    if(customSize != 0) variableSize = customSize;
+
+                    mBuffer = realloc(mBuffer, mCurrentWritePos + variableSize);
+                    memcpy(reinterpret_cast<char*>(mBuffer) + mCurrentWritePos, Var, variableSize);
+                    mCurrentWritePos += variableSize;
+                }
+
+                template <typename T>
+                void Write(T Var)
+                {
+                    unsigned int variableSize = sizeof(Var);
+                    mBuffer = realloc(mBuffer, mCurrentWritePos + variableSize);
+                    memcpy(reinterpret_cast<char*>(mBuffer) + mCurrentWritePos, &Var, variableSize);
+                    mCurrentWritePos += variableSize;
+                }
+
+                void Flush()
+                {
+                    mCurrentReadPos = 0;
+                    mCurrentWritePos = 0;
+
+                    if(mBuffer != nullptr)
+                        free(mBuffer);
+                }
+
+                void* GetRawBuffer() { return mBuffer; }
+                unsigned int GetRawBufferSize() { return mCurrentWritePos; }
+                void SetRawBuffer(void * pRawBuffer) { mBuffer = pRawBuffer; }
+
+            private:
+                void * mBuffer;
+                unsigned int mCurrentWritePos;
+                unsigned int mCurrentReadPos;
+        }
+
+        // using bitstream_t          = RakNet::BitStream;
+        using packet_t             = ENetPacket;
         using callback_t           = std::function<void(packet_t* packet)>;
         using user_callback_t      = std::function<void(bitstream_t* bitstream, packet_t* packet)>;
         using handler_t            = std::array<callback_t, MAX_MESSAGES>;

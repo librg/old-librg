@@ -3,10 +3,6 @@
 #ifndef librg_network_http_client_h
 #define librg_network_http_client_h
 
-#include <BitStream.h>
-#include <RakPeerInterface.h>
-#include <MessageIdentifiers.h>
-
 #include <librg/core.h>
 #include <librg/entities.h>
 #include <librg/components/client.h>

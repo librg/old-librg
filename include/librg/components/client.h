@@ -6,9 +6,6 @@
 #include <string>
 #include <unordered_map>
 
-#include <BitStream.h>
-#include <RakPeerInterface.h>
-
 namespace librg
 {
     struct client_t {

@@ -1,4 +1,4 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_network_client_streaming_hpp
 #define librg_network_client_streaming_hpp
@@ -11,7 +11,7 @@ namespace librg
 {
     namespace network
     {
-        void client_streamer_entity_sync(RakNet::Packet* packet);
+        void client_streamer_entity_sync(packet_t* packet);
     }
 }
 

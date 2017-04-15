@@ -1,4 +1,4 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #include <librg/core.h>
 #include <librg/callbacks.h>
@@ -14,7 +14,7 @@
 * init packet. Its the place where we should decide
 * was or was not he banned, and does he have access to our server
 */
-void librg::network::server_new_incoming_connection(RakNet::Packet* packet)
+void librg::network::server_new_incoming_connection(librg::packet_t* packet)
 {
     unsigned short id = packet->systemAddress.systemIndex;
     std::string    ip = packet->systemAddress.ToString(true, ':');
@@ -32,10 +32,10 @@ void librg::network::server_new_incoming_connection(RakNet::Packet* packet)
 * @param string Client name
 * @param string Client serial
 */
-void librg::network::server_connect(RakNet::Packet* packet)
+void librg::network::server_connect(librg::packet_t* packet)
 {
-    RakNet::BitStream output;
-    RakNet::BitStream input(packet->data, packet->length, false);
+    bitstream_t output;
+    bitstream_t input(packet->data, packet->length, false);
     input.IgnoreBytes(sizeof(RakNet::MessageID));
 
     uint16_t protocolVersion = -1, buildVersion = -1, platformId = -1;
@@ -97,7 +97,7 @@ void librg::network::server_connect(RakNet::Packet* packet)
 /**
 * On client disconnect
 */
-void librg::network::server_disconnect(RakNet::Packet* packet)
+void librg::network::server_disconnect(librg::packet_t* packet)
 {
     // Event::Manager::Instance()->Dispatch("OnClientDisconnect", EVENT_PARAM(new OnClientConnectData{ packet }, [=](HSQUIRRELVM vm){
     //     auto array = new Sqrat::Array(vm);
@@ -107,7 +107,7 @@ void librg::network::server_disconnect(RakNet::Packet* packet)
 
     if (clients.find(packet->guid) != clients.end()) {
         auto entity = clients[packet->guid];
-        
+
         auto event = callbacks::evt_disconnect_t{ entity };
         callbacks::trigger(callbacks::disconnect, (callbacks::evt_t*)&event);
 

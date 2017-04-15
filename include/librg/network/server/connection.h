@@ -1,4 +1,4 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_network_server_connection_hpp
 #define librg_network_server_connection_hpp
@@ -19,7 +19,7 @@ namespace librg
          * init packet. Its the place where we should decide
          * was or was not he banned, and does he have access to our server
          */
-        void server_new_incoming_connection(RakNet::Packet* packet);
+        void server_new_incoming_connection(packet_t* packet);
 
         /**
          * Fires when user sends his username and serial
@@ -31,12 +31,12 @@ namespace librg
          * @param string Client name
          * @param string Client serial
          */
-        void server_connect(RakNet::Packet* packet);
+        void server_connect(packet_t* packet);
 
         /**
          * On client disconnect
          */
-        void server_disconnect(RakNet::Packet* packet);
+        void server_disconnect(packet_t* packet);
     }
 }
 

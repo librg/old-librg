@@ -10,23 +10,23 @@ namespace librg
 {
     namespace network
     {
-        void client_remote_disconnect(RakNet::Packet* packet);
+        void client_remote_disconnect(packet_t* packet);
 
-        void client_remote_connectionlost(RakNet::Packet* packet);
+        void client_remote_connectionlost(packet_t* packet);
 
-        void client_remote_newincoming(RakNet::Packet* packet);
+        void client_remote_newincoming(packet_t* packet);
 
-        void client_new_incoming_connection(RakNet::Packet* packet);
+        void client_new_incoming_connection(packet_t* packet);
 
-        void client_no_free_incoming_connections(RakNet::Packet* packet);
+        void client_no_free_incoming_connections(packet_t* packet);
 
-        void client_disconnect_notification(RakNet::Packet* packet);
+        void client_disconnect_notification(packet_t* packet);
 
-        void client_connection_lost(RakNet::Packet* packet);
+        void client_connection_lost(packet_t* packet);
 
-        void client_connection_request_accepted(RakNet::Packet* packet);
+        void client_connection_request_accepted(packet_t* packet);
 
-        void client_connection_success(RakNet::Packet* packet);
+        void client_connection_success(packet_t* packet);
     }
 }
 

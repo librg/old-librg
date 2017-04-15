@@ -1,4 +1,4 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #include <librg/network.h>
 
@@ -11,7 +11,7 @@ using namespace librg;
  */
 void librg::network::receive()
 {
-    RakNet::Packet* packet = nullptr;
+    packet_t* packet = nullptr;
 
     while ((packet = network::data.peer->Receive())) {
         RakNet::MessageID id = packet->data[0];

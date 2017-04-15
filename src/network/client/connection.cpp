@@ -1,38 +1,40 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #include <librg/core.h>
 #include <librg/network.h>
 #include <librg/network/client/connection.h>
 
-void librg::network::client_remote_disconnect(RakNet::Packet* packet) {
+using namespace librg;
+
+void librg::network::client_remote_disconnect(packet_t* packet) {
     core::log("Another client has disconnected.");
 }
 
-void librg::network::client_remote_connectionlost(RakNet::Packet* packet) {
+void librg::network::client_remote_connectionlost(packet_t* packet) {
     core::log("Another client has lost the connection.");
 }
 
-void librg::network::client_remote_newincoming(RakNet::Packet* packet) {
+void librg::network::client_remote_newincoming(packet_t* packet) {
     core::log("Another client has connected.");
 }
 
-void librg::network::client_new_incoming_connection(RakNet::Packet* packet) {
+void librg::network::client_new_incoming_connection(packet_t* packet) {
     core::log("A connection is incoming.");
 }
 
-void librg::network::client_no_free_incoming_connections(RakNet::Packet* packet) {
+void librg::network::client_no_free_incoming_connections(packet_t* packet) {
     core::log("The server is full.");
 }
 
-void librg::network::client_disconnect_notification(RakNet::Packet* packet) {
+void librg::network::client_disconnect_notification(packet_t* packet) {
     core::log("disconnected.");
 }
 
-void librg::network::client_connection_lost(RakNet::Packet* packet) {
+void librg::network::client_connection_lost(packet_t* packet) {
     core::log("Connection lost.");
 }
 
-void librg::network::client_connection_request_accepted(RakNet::Packet* packet)
+void librg::network::client_connection_request_accepted(packet_t* packet)
 {
     core::log("Sending name, and serial");
 
@@ -48,7 +50,7 @@ void librg::network::client_connection_request_accepted(RakNet::Packet* packet)
     * @param int NETWORK_BUILD_VERSION
     * @param string Client Name
     */
-    RakNet::BitStream data;
+    bistream_t data;
     data.Write((RakNet::MessageID)CONNECTION_INIT);
     data.Write(network::platformId);
     data.Write(network::protoVersion);
@@ -58,6 +60,6 @@ void librg::network::client_connection_request_accepted(RakNet::Packet* packet)
     network::data.peer->Send(&data, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
 }
 
-void librg::network::client_connection_success(RakNet::Packet* packet) {
+void librg::network::client_connection_success(packet_t* packet) {
     core::log("Connection succeeded, we are now on the server");
 }
