@@ -9,9 +9,9 @@
 namespace librg
 {
     struct client_t {
-        client_t(RakNet::SystemAddress a, std::string n, std::string s) : address(a), nickname(n), serial(s), last_snapshot() {}
+        // client_t(RakNet::SystemAddress a, std::string n, std::string s) : address(a), nickname(n), serial(s), last_snapshot() {}
 
-        RakNet::SystemAddress address;
+        // RakNet::SystemAddress address;
         std::string nickname;
         std::string serial;
 

@@ -19,9 +19,10 @@ double librg_last_ticktime;
 */
 void on_tick_loop(uv_timer_t* req)
 {
-    if (core::is_server()) {
-        network::update();
-    }
+    // if (core::is_server()) {
+    //     network::update();
+    // }
+    // TODO streamer::update();
 
     double newtime = get_time();
     callbacks::evt_tick_t tick_event = { 0, (newtime - librg_last_ticktime) };
@@ -31,28 +32,19 @@ void on_tick_loop(uv_timer_t* req)
 
 void core::start(config_t config)
 {
-    network::platformId = config.platformId;
-    network::protoVersion = config.protoVersion;
-    network::buildVersion = config.buildVersion;
-    network::tickRate = config.tickRate;
+    // network::platformId = config.platformId;
+    // network::protoVersion = config.protoVersion;
+    // network::buildVersion = config.buildVersion;
+    // network::tickRate = config.tickRate;
 
-    if (network::tickRate == 0) {
-        network::tickRate = 32;
-    }
+    // if (network::tickRate == 0) {
+    //     network::tickRate = 32;
+    // }
 
-    if (core::is_server()) {
-        if (HMM_LengthVec3(config.worldSize) != 0.f) {
-            streamer::clear(aabb_t(config.worldSize));
-        }
-
-        network::server(config.port);
-    }
-    else {
-        network::client(config.ip, config.port);
-    }
+    network::start(config);
 
     uv_timer_init(uv_default_loop(), &tick_loop);
-    uv_timer_start(&tick_loop, on_tick_loop, 250, network::tickRate);
+    uv_timer_start(&tick_loop, on_tick_loop, 250, config.tick_rate);
 
     auto event = callbacks::evt_start_t{};
     callbacks::trigger(callbacks::start, (callbacks::evt_t*)&event);

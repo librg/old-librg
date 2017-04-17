@@ -107,7 +107,7 @@ endif()
 # Linking libraries
 ###
 target_link_libraries(librg
-    RakNetLibStatic
+    enet
     squirrel
     sqstdlib
     tinyxml2
@@ -131,6 +131,7 @@ target_include_directories(librg PUBLIC
     vendor/lib-enet/include
     vendor/lib-squirrel/include
     vendor/lib-libuv-cmake/libuv/include
+    vendor/lib-math/include
     vendor/lib-sqrat/include
     vendor/lib-tinyxml2
     vendor/lib-http-parser
