@@ -1,4 +1,4 @@
-#include <librg/utils/fs.h>
+﻿#include <librg/utils/fs.h>
 
 namespace unit
 {
@@ -18,10 +18,19 @@ namespace unit
             //     });
             // });
 
-            it("should be able to read file content", [](vald_t validate) {
-                // validate(false);
-                validate(true);
-                // validate(false);
+            std::string testString = "Hello World!";
+            std::string testFileName = "test_fs.txt";
+
+            it("should write text to file", [&](vald_t validate) {
+                int result = fs::write(testFileName, testString.size(), (fs::byte*)testString.c_str(), [validate](fs::result_t *res) { });
+
+                validate(result); 
+            });
+
+            it("should read file content", [&](vald_t validate) {
+                fs::read(testFileName, [validate, testString](fs::result_t *res) {
+                    validate(testString == std::string(res->content));
+                });
             });
         });
     }
