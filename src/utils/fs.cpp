@@ -1,4 +1,4 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #include <string.h>
 
@@ -142,7 +142,7 @@ bool fs::write(std::string filename, size_t dataSize, byte *data, fs::callback c
 
     // trying to open file
     int handle = uv_fs_open(uv_default_loop(), req, filename.c_str(), 
-                            O_CREAT|O_WRONLY|O_BINARY|O_TRUNC, 0644, NULL);
+                            O_CREAT|O_WRONLY|O_TRUNC, 0644, NULL);
 
     if (handle < 0) {
         core::error("file writing: \"%s\" %s\n", filename.c_str(), uv_strerror(handle));
