@@ -5,6 +5,28 @@
 
 using namespace librg;
 
+void network::set(uint16_t id, network::callback_t callback)
+{
+    if (network::message_handlers[id]) {
+        core::error("warning: you are redefining network message with id: %d", id);
+    }
+
+    network::message_handlers[id] = callback;
+}
+
+void network::msg(uint16_t id, network::peer_t* peer, network::message_t callback)
+{
+    // create
+    network::bitstream_t message;
+
+    // write data
+    message.write(id);
+    if (callback) { callback(&message); }
+
+    // send it!
+    enet_peer_send(peer, 3, enet_packet_create(message.raw(), message.raw_size(), ENET_PACKET_FLAG_RELIABLE));
+}
+
 // void librg::network::msg(int id, network::message_t callback)
 // {
 //     network::bitstream_t message;

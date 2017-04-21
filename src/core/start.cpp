@@ -10,8 +10,7 @@
 
 using namespace librg;
 
-uv_timer_t tick_loop;
-
+uv_timer_t librg_tick_loop;
 double librg_last_ticktime;
 
 /**
@@ -32,19 +31,12 @@ void on_tick_loop(uv_timer_t* req)
 
 void core::start(config_t config)
 {
-    // network::platformId = config.platformId;
-    // network::protoVersion = config.protoVersion;
-    // network::buildVersion = config.buildVersion;
-    // network::tickRate = config.tickRate;
+    if (!core::is_manual()) {
+        network::start(config);
+    }
 
-    // if (network::tickRate == 0) {
-    //     network::tickRate = 32;
-    // }
-
-    network::start(config);
-
-    uv_timer_init(uv_default_loop(), &tick_loop);
-    uv_timer_start(&tick_loop, on_tick_loop, 250, config.tick_rate);
+    uv_timer_init(uv_default_loop(), &librg_tick_loop);
+    uv_timer_start(&librg_tick_loop, on_tick_loop, 250, config.tick_rate);
 
     auto event = callbacks::evt_start_t{};
     callbacks::trigger(callbacks::start, (callbacks::evt_t*)&event);

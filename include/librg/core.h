@@ -7,8 +7,6 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
-#include <librg/utils/linmath.h>
-
 #include <ctime>
 #include <string>
 #include <map>
@@ -17,24 +15,30 @@
 #include <unordered_map>
 #include <functional>
 
+#include <librg/utils/linmath.h>
+
 namespace librg
 {
     /**
      * Modes librg can work with
      */
-    enum mode_t {
+    enum mode_e {
         mode_server,        /* blocking server with own libuv loop */
         mode_client,        /* blocking client with own libuv loop */
+        mode_both,          /* (not working) blocking client and server with own libuv loop */
         mode_server_manual, /* non-blocking server with run-once uv loop, manual core::tick() call required */
         mode_client_manual, /* non-blocking client with run-once uv loop, manual core::tick() call required */
+        mode_both_manual,   /* (not working) non-blocking client and server with run-once uv loop, manual core::tick() call required */
     };
+
+    using vector3_t = hmm_vec3;
 
     struct config_t {
         // core
         uint16_t tick_rate;
 
         // streamer configuration
-        hmm_vec3 world_size;
+        vector3_t world_size;
 
         // network configuration
         std::string ip;
@@ -48,7 +52,7 @@ namespace librg
         uint16_t build_version;
     };
 
-    void core_initialize(mode_t mode);
+    void core_initialize(mode_e mode);
     void core_terminate();
 
     namespace core
@@ -79,13 +83,13 @@ namespace librg
          * Set a mode for (server/client)
          * @param mode default is server
          */
-        void set_mode(mode_t mode);
+        void set_mode(mode_e mode);
 
         /**
          * Get current mode
          * @return
          */
-        mode_t get_mode();
+        mode_e get_mode();
 
         /**
          * Check if current execution mode is server

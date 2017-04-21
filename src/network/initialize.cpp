@@ -3,16 +3,15 @@
 #include <librg/core.h>
 #include <librg/network.h>
 #include <librg/entities.h>
-#include <librg/network/server/connection.h>
-#include <librg/network/client/connection.h>
-#include <librg/network/client/streaming.h>
+#include <librg/network/controllers.h>
 
 using namespace librg;
 
-ENetHost* network::host;
-ENetPeer* network::peer;
+network::host_t* network::host;
+network::peer_t* network::peer;
 
-std::unordered_map<ENetPeer*, entity_t> network::clients;
+std::unordered_map<network::peer_t*, entity_t> network::connected_peers;
+std::array<network::callback_t, LIBRG_NETWORK_MESSAGES> network::message_handlers;
 
 void librg::network_initialize()
 {
@@ -20,31 +19,17 @@ void librg::network_initialize()
     network::peer = nullptr;
 
     if (enet_initialize() != 0) {
-        core::error("An error occurred while initializing ENet.\n");
+        core::error("an error occurred while initializing network.");
         return;
     }
 
-    // network::data.peer = RakNet::RakPeerInterface::GetInstance();
-
-    // if (core::is_server()) {
-    //     network::handlers[ID_NEW_INCOMING_CONNECTION]           = network::server_new_incoming_connection;
-    //     network::handlers[ID_CONNECTION_LOST]                   = network::server_disconnect;
-    //     network::handlers[ID_DISCONNECTION_NOTIFICATION]        = network::server_disconnect;
-    //     network::handlers[network::CONNECTION_INIT]             = network::server_connect;
-    // }
-
-    // if (core::is_client()) {
-    //     network::handlers[ID_REMOTE_DISCONNECTION_NOTIFICATION] = network::client_remote_disconnect;
-    //     network::handlers[ID_REMOTE_CONNECTION_LOST]            = network::client_remote_connectionlost;
-    //     network::handlers[ID_REMOTE_NEW_INCOMING_CONNECTION]    = network::client_remote_newincoming;
-    //     network::handlers[ID_NEW_INCOMING_CONNECTION]           = network::client_new_incoming_connection;
-    //     network::handlers[ID_NO_FREE_INCOMING_CONNECTIONS]      = network::client_no_free_incoming_connections;
-    //     network::handlers[ID_DISCONNECTION_NOTIFICATION]        = network::client_disconnect_notification;
-    //     network::handlers[ID_CONNECTION_LOST]                   = network::client_connection_lost;
-    //     network::handlers[ID_CONNECTION_REQUEST_ACCEPTED]       = network::client_connection_request_accepted;
-    //     network::handlers[network::CONNECTION_ACCEPTED]         = network::client_connection_success;
-    //     network::handlers[network::ENTITY_SYNC_PACKET]          = network::client_streamer_entity_sync;
-    // }
+    network::message_handlers[network::connection_init]         = network::connection_controller::init;
+    network::message_handlers[network::connection_request]      = network::connection_controller::request;
+    network::message_handlers[network::connection_refuse]       = network::connection_controller::refuse;
+    network::message_handlers[network::connection_accept]       = network::connection_controller::accept;
+    network::message_handlers[network::connection_disconnect]   = network::connection_controller::disconnect;
+    network::message_handlers[network::entity_create]           = network::entity_controller::create;
+    network::message_handlers[network::entity_update]           = network::entity_controller::update;
 }
 
 /**

@@ -1,4 +1,4 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_callbacks_h
 #define librg_callbacks_h
@@ -81,8 +81,8 @@ namespace librg
         };
 
         /**
-        * Client disconnect event
-        */
+         * Client disconnect event
+         */
         using evt_disconnect_t = evt_connect_t;
 
         /**
@@ -113,11 +113,11 @@ namespace librg
         void set(actions action, callback_t callback);
 
         /**
-        * Public API method
-        * Adds event handler to a custom event.
-        * @param action
-        * @param callback
-        */
+         * Public API method
+         * Adds event handler to a custom event.
+         * @param action
+         * @param callback
+         */
         static inline void add(actions action, callback_t callback) {
             set((callbacks::actions)(callbacks::num_of_actions + action), callback);
         }
@@ -132,11 +132,11 @@ namespace librg
         void trigger(actions action, evt_t* event);
 
         /**
-        * Public API method
-        * Triggers all registered event handlers of a particular custom event.
-        * @param action
-        * @param event
-        */
+         * Public API method
+         * Triggers all registered event handlers of a particular custom event.
+         * @param action
+         * @param event
+         */
         static inline void trigger_custom(actions action, evt_t* event) {
             trigger((callbacks::actions)(callbacks::num_of_actions + action), event);
         }

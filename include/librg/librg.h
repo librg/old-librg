@@ -1,4 +1,4 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_h
 #define librg_h
@@ -22,6 +22,15 @@ inline void uv_sleep(int milis) {
     usleep(milis * 1000);
 }
 #endif
+
+#define LIBRG_VERSION_MAJOR 1
+#define LIBRG_VERSION_MINOR 0
+#define LIBRG_VERSION_PATCH 0
+#define LIBRG_VERSION_CREATE(major, minor, patch) (((major)<<16) | ((minor)<<8) | (patch))
+#define LIBRG_VERSION_GET_MAJOR(version) (((version)>>16)&0xFF)
+#define LIBRG_VERSION_GET_MINOR(version) (((version)>>8)&0xFF)
+#define LIBRG_VERSION_GET_PATCH(version) ((version)&0xFF)
+#define LIBRG_VERSION LIBRG_VERSION_CREATE(LIBRG_VERSION_MAJOR, LIBRG_VERSION_MINOR, LIBRG_VERSION_PATCH)
 
 /**
  * All includes

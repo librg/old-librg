@@ -10,79 +10,79 @@
 
 using namespace librg;
 
-/**
- * Regulated ticker, should be used
- * to send regular messages to all connected clients
- */
-void librg::network::update()
-{
-    // /**
-    //  * Entity packing adn sending
-    //  */
-    // entities->each<client_t>([](entity_t player, client_t& client) {
-    //     // core::log("sending updates to uid: %d", player.id().index());
-    //     // copy last to local last, alias next snapshot as last and clear it
-    //     auto next_snapshot = &client.last_snapshot;
-    //     auto last_snapshot =  client.last_snapshot;
+// /**
+//  * Regulated ticker, should be used
+//  * to send regular messages to all connected clients
+//  */
+// void librg::network::update()
+// {
+//     // /**
+//     //  * Entity packing adn sending
+//     //  */
+//     // entities->each<client_t>([](entity_t player, client_t& client) {
+//     //     // core::log("sending updates to uid: %d", player.id().index());
+//     //     // copy last to local last, alias next snapshot as last and clear it
+//     //     auto next_snapshot = &client.last_snapshot;
+//     //     auto last_snapshot =  client.last_snapshot;
 
-    //     next_snapshot->clear();
-    //     auto queue = streamer::query(player);
+//     //     next_snapshot->clear();
+//     //     auto queue = streamer::query(player);
 
-    //     // create data and write inital data
-    //     network::bitstream_t data;
+//     //     // create data and write inital data
+//     //     network::bitstream_t data;
 
-    //     data.Write((RakNet::MessageID) network::ENTITY_SYNC_PACKET);
-    //     data.Write((uint16_t) queue.size());
+//     //     data.Write((RakNet::MessageID) network::ENTITY_SYNC_PACKET);
+//     //     data.Write((uint16_t) queue.size());
 
-    //     // add entity creates and updates
-    //     for (auto entity : queue) {
-    //         uint64_t guid = entity.id().id();
-    //         data.Write((uint64_t) guid);
+//     //     // add entity creates and updates
+//     //     for (auto entity : queue) {
+//     //         uint64_t guid = entity.id().id();
+//     //         data.Write((uint64_t) guid);
 
-    //         auto streamable = entity.component<streamable_t>();
-    //         auto transform  = entity.component<transform_t>();
+//     //         auto streamable = entity.component<streamable_t>();
+//     //         auto transform  = entity.component<transform_t>();
 
-    //         bool creating_entity = (last_snapshot.erase(guid) == 0);
+//     //         bool creating_entity = (last_snapshot.erase(guid) == 0);
 
-    //         data.Write((bool) creating_entity);
-    //         data.Write((uint8_t) streamable->type);
-    //         data.Write(transform->position);
-    //         data.Write(transform->rotation);
-    //         data.Write(transform->scale);
+//     //         data.Write((bool) creating_entity);
+//     //         data.Write((uint8_t) streamable->type);
+//     //         data.Write(transform->position);
+//     //         data.Write(transform->rotation);
+//     //         data.Write(transform->scale);
 
-    //         // trigger create or update callbacks for the server
-    //         callbacks::evt_create_t event = { guid, streamable->type, entity, &data };
-    //         callbacks::trigger(creating_entity ? callbacks::create : callbacks::update, (callbacks::evt_t*) &event);
+//     //         // trigger create or update callbacks for the server
+//     //         callbacks::evt_create_t event = { guid, streamable->type, entity, &data };
+//     //         callbacks::trigger(creating_entity ? callbacks::create : callbacks::update, (callbacks::evt_t*) &event);
 
-    //         next_snapshot->insert(std::make_pair(guid, true));
-    //     }
+//     //         next_snapshot->insert(std::make_pair(guid, true));
+//     //     }
 
-    //     data.Write((uint16_t) last_snapshot.size());
+//     //     data.Write((uint16_t) last_snapshot.size());
 
-    //     // add entity removes
-    //     for (auto pair : last_snapshot) {
-    //         data.Write((uint64_t) pair.first);
+//     //     // add entity removes
+//     //     for (auto pair : last_snapshot) {
+//     //         data.Write((uint64_t) pair.first);
 
-    //         // skip calling callback, if the entity is destroyed already.
-    //         if (!entities->valid((entityx::Entity::Id)pair.first)) continue;
+//     //         // skip calling callback, if the entity is destroyed already.
+//     //         if (!entities->valid((entityx::Entity::Id)pair.first)) continue;
 
-    //         auto entity = entities->get(entityx::Entity::Id(pair.first));
-    //         auto streamable = entity.component<streamable_t>();
+//     //         auto entity = entities->get(entityx::Entity::Id(pair.first));
+//     //         auto streamable = entity.component<streamable_t>();
 
-    //         callbacks::evt_remove_t event = { pair.first, streamable->type, entity, &data };
-    //         callbacks::trigger(callbacks::remove, (callbacks::evt_t*) &event);
-    //     }
+//     //         callbacks::evt_remove_t event = { pair.first, streamable->type, entity, &data };
+//     //         callbacks::trigger(callbacks::remove, (callbacks::evt_t*) &event);
+//     //     }
 
-    //     network::data.peer->Send(&data, HIGH_PRIORITY, RELIABLE_ORDERED, 0, client.address, false);
-    // });
+//     //     network::data.peer->Send(&data, HIGH_PRIORITY, RELIABLE_ORDERED, 0, client.address, false);
+//     // });
 
-    // /**
-    //  * Rebuilding entity tree
-    //  * TODO(inlife): move to a separate thread and place
-    //  */
-    // streamer::clear();
+//     // /**
+//     //  * Rebuilding entity tree
+//     //  * TODO(inlife): move to a separate thread and place
+//     //  */
+//     // streamer::clear();
 
-    // entities->each<streamable_t>([](entity_t entity, streamable_t& streamable) {
-    //     streamer::insert(entity);
-    // });
-}
+//     // entities->each<streamable_t>([](entity_t entity, streamable_t& streamable) {
+//     //     streamer::insert(entity);
+//     // });
+// }

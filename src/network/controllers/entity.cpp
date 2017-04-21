@@ -2,11 +2,24 @@
 //
 
 #include <librg/core.h>
-#include <librg/network.h>
 #include <librg/callbacks.h>
 #include <librg/streamer.h>
-#include <librg/network/client/streaming.h>
+#include <librg/network.h>
+#include <librg/network/controllers.h>
 #include <librg/components/interpolable.h>
+
+using namespace librg;
+
+void network::entity_controller::create(network::peer_t* peer, network::packet_t* packet, uint8_t channel)
+{
+    //
+}
+
+void network::entity_controller::update(network::peer_t* peer, network::packet_t* packet, uint8_t channel)
+{
+    //
+}
+
 
 // void librg::network::client_streamer_entity_sync(network::packet_t* packet) {
 
