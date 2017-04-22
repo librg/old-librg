@@ -50,6 +50,7 @@ void network::connection_controller::request(network::peer_t* peer, network::pac
     input.read(protocolVersion);
     input.read(buildVersion);
 
+    core::log("%d", platformId);
 
     // // incompatible protocol version - force immidiate disconnect
     // if (protocolVersion != network::protoVersion || platformId != network::platformId) {
@@ -92,7 +93,7 @@ void network::connection_controller::request(network::peer_t* peer, network::pac
     // auto event = callbacks::evt_connect_t{ entity };
     // callbacks::trigger(callbacks::connect, (callbacks::evt_t*)&event);
 
-    core::log("connect: id: %d name: %s serial: %s", peer->connectID, "nonono", "anananana");
+    core::log("connect: id: %ld name: %s serial: %s", peer->connectID, "nonono", "anananana");
 }
 
 void network::connection_controller::accept(network::peer_t* peer, network::packet_t* packet, uint8_t channel)
@@ -107,29 +108,15 @@ void network::connection_controller::refuse(network::peer_t* peer, network::pack
 
 void network::connection_controller::disconnect(network::peer_t* peer, network::packet_t* packet, uint8_t channel)
 {
-    core::log("connection disconnected");
+    core::log("disconnected");
+
+    if (connected_peers.find(peer) != connected_peers.end()) {
+        auto entity = connected_peers[peer];
+
+        auto event = callbacks::evt_disconnect_t{ entity };
+        callbacks::trigger(callbacks::disconnect, (callbacks::evt_t*)&event);
+
+        streamer::remove(connected_peers[peer]);
+        connected_peers.erase(peer);
+    }
 }
-
-/**
- * On client disconnect
- */
-// void librg::network::server_disconnect(librg::packet_t* packet)
-// {
-    // Event::Manager::Instance()->Dispatch("OnClientDisconnect", EVENT_PARAM(new OnClientConnectData{ packet }, [=](HSQUIRRELVM vm){
-    //     auto array = new Sqrat::Array(vm);
-    //     array->Append(packet);
-    //     return array;
-    // }));
-
-    // if (clients.find(packet->guid) != clients.end()) {
-    //     auto entity = clients[packet->guid];
-
-    //     auto event = callbacks::evt_disconnect_t{ entity };
-    //     callbacks::trigger(callbacks::disconnect, (callbacks::evt_t*)&event);
-
-    //     streamer::remove(clients[packet->guid]);
-    //     clients.erase(packet->guid);
-    // }
-
-    // core::log("server_disconnect: id: %d", packet->systemAddress.systemIndex);
-// }

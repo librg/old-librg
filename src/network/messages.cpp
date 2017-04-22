@@ -2,9 +2,15 @@
 //
 #include <librg/network.h>
 #include <librg/streamer.h>
+#include <librg/components/client.h>
 
 using namespace librg;
 
+/**
+ * Set callback for listening particular network event
+ * @param id       id of the message, for custom messages id should be >= last_packet_number
+ * @param callback method that will be called
+ */
 void network::set(uint16_t id, network::callback_t callback)
 {
     if (network::message_handlers[id]) {
@@ -14,53 +20,79 @@ void network::set(uint16_t id, network::callback_t callback)
     network::message_handlers[id] = callback;
 }
 
+/**
+ * Send message to particular connected peer
+ * @param messageid
+ * @param address
+ * @param message_t
+ */
 void network::msg(uint16_t id, network::peer_t* peer, network::message_t callback)
 {
-    // create
     network::bitstream_t message;
 
-    // write data
     message.write(id);
     if (callback) { callback(&message); }
 
-    // send it!
-    enet_peer_send(peer, 3, enet_packet_create(message.raw(), message.raw_size(), ENET_PACKET_FLAG_RELIABLE));
+    enet_peer_send(peer, 3, enet_packet_create(
+        message.raw(), message.raw_size(), ENET_PACKET_FLAG_RELIABLE
+    ));
 }
 
-// void librg::network::msg(int id, network::message_t callback)
-// {
-//     network::bitstream_t message;
+/**
+ * Send message to all peers except particular one
+ * @param message id
+ * @param peer to be ignored
+ * @param callback
+ */
+void network::msg_except(uint16_t id, network::peer_t* bad_peer, network::message_t callback)
+{
+    network::bitstream_t message;
 
-//     message.Write((RakNet::MessageID) GUEST_PACKET_ENUM);
-//     message.Write((RakNet::MessageID) id); callback(&message);
+    message.write(id);
+    if (callback) { callback(&message); }
 
-//     network::data.peer->Send(&message, HIGH_PRIORITY, RELIABLE_ORDERED, 0, network::data.address, false);
-// }
+    for (auto pair : network::connected_peers) {
+        if (pair.first == bad_peer) {
+            continue;
+        }
 
-// void librg::network::msg(int id, RakNet::SystemAddress address, network::message_t callback)
-// {
-//     network::bitstream_t message;
+        enet_peer_send(pair.first, 3, enet_packet_create(
+            message.raw(), message.raw_size(), ENET_PACKET_FLAG_RELIABLE
+        ));
+    }
+}
 
-//     message.Write((RakNet::MessageID) GUEST_PACKET_ENUM);
-//     message.Write((RakNet::MessageID) id); callback(&message);
+/**
+ * Send message for all peers inside stream zone for particular entity (or peer)
+ * @param message id
+ * @param entity which will be used as root for calculating nearby in-stream clients
+ * @param message_t
+ */
+void network::msg_stream(uint16_t id, entity_t entity, network::message_t callback)
+{
+    network::bitstream_t message;
 
-//     network::data.peer->Send(&message, HIGH_PRIORITY, RELIABLE_ORDERED, 0, address, false);
-// }
+    message.write(id);
+    if (callback) { callback(&message); }
 
-// void librg::network::msg(int id, entity_t entity, network::message_t callback)
-// {
-//     network::bitstream_t message;
+    auto entities = librg::streamer::query(entity);
 
-//     message.Write((RakNet::MessageID) GUEST_PACKET_ENUM);
-//     message.Write((RakNet::MessageID) id); callback(&message);
+    for (auto other : entities) {
+        auto client = other.component<client_t>();
+        if (!client) continue;
 
-//     auto entities = librg::streamer::query(entity);
+        enet_peer_send(client->peer, 3, enet_packet_create(
+            message.raw(), message.raw_size(), ENET_PACKET_FLAG_RELIABLE
+        ));
+    }
+}
 
-//     for (auto other : entities) {
-//         auto client = other.component<client_t>();
-
-//         if (client) {
-//             network::data.peer->Send(&message, HIGH_PRIORITY, RELIABLE_ORDERED, 0, client->address, false);
-//         }
-//     }
-// }
+/**
+ * Send message to all connected peers
+ * @param message id
+ * @param message_t
+ */
+void network::msg_all(uint16_t id, network::message_t callback)
+{
+    network::msg_except(id, nullptr, callback);
+}
