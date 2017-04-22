@@ -1,4 +1,4 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_utils_fs
 #define librg_utils_fs
@@ -9,6 +9,8 @@
 
 namespace librg
 {
+    
+    // TODO: Move docs from cpp here.
     namespace fs
     {
         struct fs_result_t {
@@ -22,21 +24,59 @@ namespace librg
 
         void private_onread(uv_fs_t *req);
 
-    #ifdef WIN32
+#ifdef WIN32
         static char separator = '\\';
-    #else
+#else
         static char separator = '/';
-    #endif
-
-        // define callback and aliases
-        typedef std::function<void(fs_result_t*)> callback;
-        typedef fs_result_t result_t;
-
+#endif
+        
+        using callback = std::function<void(fs_result_t*)>;
+        using result_t = fs_result_t;
+        using byte     = char;
+        
         // async
+        
+        /**
+        * read file contents and pass result
+        * of type fs:result_t to the callback
+        *
+        * @param  filename
+        * @param  callback
+        * @return result of operation
+        */
         bool read(std::string filename, callback callback);
+        
+        /**
+        * write file contents and pass result
+        * of type fs:result_t to the callback
+        *
+        * @note   Caller frees data
+        * @param  dataSize
+        * @param  data
+        * @param  filename
+        * @param  callback
+        * @return result of operation
+        */
+        bool write(std::string filename, size_t dataSize, byte *data, callback callback);
 
         // sync
+        
+        /**
+        * Create directory
+        *
+        * @param  filename
+        * @return result of operation
+        */
         int mkdir(std::string filename);
+        
+        
+        /**
+        * Remove directory
+        *
+        * @param  filename
+        * @return result of operation
+        */
+        int rmdir(std::string filename);
 
         // ugly
         using _s = std::string;
