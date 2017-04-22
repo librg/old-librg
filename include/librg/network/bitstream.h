@@ -51,6 +51,14 @@ namespace librg
                     mCurrentWritePos += variableSize;
                 }
 
+                // TODO:
+                // warning, potential crash if buffer < position
+                template <typename T>
+                void write_at(T Var, size_t position)
+                {
+                    memcpy(reinterpret_cast<char*>(mBuffer) + position, &Var, sizeof(Var));
+                }
+
                 void Flush()
                 {
                     mCurrentReadPos = 0;

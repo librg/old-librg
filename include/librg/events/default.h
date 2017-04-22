@@ -73,28 +73,6 @@ namespace librg
          * Client disconnect event
          */
         using event_disconnect_t = event_connect_t;
-
-        /**
-         * Builtin events
-         */
-        enum events_e {
-            // core
-            on_start,
-            on_tick,
-            on_log,
-
-            // clients
-            on_connect,
-            on_disconnect,
-
-            // entities
-            on_inter,
-            on_create,
-            on_update,
-            on_remove,
-
-            last_event_number,
-        };
     }
 }
 

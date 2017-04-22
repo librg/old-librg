@@ -28,8 +28,8 @@ namespace librg
         using peer_t        = ENetPeer;
         using host_t        = ENetHost;
         using packet_t      = ENetPacket;
-        using callback_t    = std::function<void(peer_t* peer, packet_t* packet, uint8_t channel)>;
-        using message_t     = std::function<void(bitstream_t* message)>;
+        using callback_t    = std::function<void(peer_t* peer, packet_t* packet, bitstream_t* data)>;
+        using message_t     = std::function<void(bitstream_t* data)>;
 
         /**
          * Builtin network messages (events)
@@ -68,10 +68,19 @@ namespace librg
         void set(uint16_t id, callback_t callback);
 
         /**
+         * Send message via "smart" method
+         * it will try to detect who should be a receieve
+         * depending on mode wea are running in
+         * @param message id
+         * @param message encoder
+         */
+        void msg(uint16_t id, message_t callback);
+
+        /**
          * Send message to particular connected peer
          * @param messageid
          * @param address
-         * @param message_t
+         * @param message encoder
          */
         void msg(uint16_t id, peer_t* peer, message_t callback);
 
@@ -79,7 +88,7 @@ namespace librg
          * Send message to all peers except particular one
          * @param message id
          * @param peer to be ignored
-         * @param callback
+         * @param message encoder
          */
         void msg_except(uint16_t id, peer_t* peer, message_t callback);
 
@@ -87,14 +96,14 @@ namespace librg
          * Send message for all peers inside stream zone for particular entity (or peer)
          * @param message id
          * @param entity which will be used as root for calculating nearby in-stream clients
-         * @param message_t
+         * @param message encoder
          */
         void msg_stream(uint16_t id, entity_t entity, message_t callback);
 
         /**
          * Send message to all connected peers
          * @param message id
-         * @param message_t
+         * @param message encoder
          */
         void msg_all(uint16_t id, message_t callback);
 

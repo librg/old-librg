@@ -6,17 +6,11 @@ using namespace librg;
 
 void events::trigger(uint16_t id, events::event_t* event)
 {
-    auto size = events::event_handlers[id].size();
+    for (auto & event_handler : events::event_handlers[id]) {
+        event_handler(event);
+    }
 
-    switch (size) {
-        case 1:
-            events::event_handlers[id][0](event);
-        break;
-        case 0: return; break;
-        default:
-            for (auto event_handler : events::event_handlers[id]) {
-                event_handler(event);
-            }
-        break;
+    if (event) {
+        delete event;
     }
 }

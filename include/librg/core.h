@@ -35,7 +35,7 @@ namespace librg
 
     struct config_t {
         // core
-        uint16_t tick_rate;
+        uint16_t tick_delay;
 
         // streamer configuration
         vector3_t world_size;

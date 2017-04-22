@@ -1,88 +1,114 @@
 // Copyright ReGuider Team, 2016-2017
 //
-#include <unordered_map>
+#include <enet/enet.h>
 
 #include <librg/core.h>
 #include <librg/entities.h>
 #include <librg/network.h>
 #include <librg/streamer.h>
-// #include <librg/callbacks.h>
+#include <librg/events.h>
+#include <librg/components/client.h>
 
 using namespace librg;
 
-// /**
-//  * Regulated ticker, should be used
-//  * to send regular messages to all connected clients
-//  */
-// void librg::network::update()
-// {
-//     // /**
-//     //  * Entity packing adn sending
-//     //  */
-//     // entities->each<client_t>([](entity_t player, client_t& client) {
-//     //     // core::log("sending updates to uid: %d", player.id().index());
-//     //     // copy last to local last, alias next snapshot as last and clear it
-//     //     auto next_snapshot = &client.last_snapshot;
-//     //     auto last_snapshot =  client.last_snapshot;
+/**
+ * Regulated ticker, should be used
+ * to send regular messages to all connected clients
+ */
+void streamer::update()
+{
+    /**
+     * Entity packing and sending
+     */
+    entities->each<client_t>([](entity_t player, client_t& client) {
+        // core::log("sending updates to uid: %d", player.id().index());
+        // copy last to local last, alias next snapshot as last and clear it
+        auto next_snapshot = &client.last_snapshot;
+        auto last_snapshot =  client.last_snapshot;
 
-//     //     next_snapshot->clear();
-//     //     auto queue = streamer::query(player);
+        next_snapshot->clear();
+        auto queue = streamer::query(player);
 
-//     //     // create data and write inital data
-//     //     network::bitstream_t data;
+        uint16_t created_entities = 0;
+        uint16_t updated_entities = queue.size();
 
-//     //     data.Write((RakNet::MessageID) network::ENTITY_SYNC_PACKET);
-//     //     data.Write((uint16_t) queue.size());
+        // create data and write inital stuff
+        network::bitstream_t for_create;
+        network::bitstream_t for_update;
 
-//     //     // add entity creates and updates
-//     //     for (auto entity : queue) {
-//     //         uint64_t guid = entity.id().id();
-//     //         data.Write((uint64_t) guid);
+        for_create.write((uint16_t) network::entity_create);
+        for_create.write((uint16_t) created_entities);
 
-//     //         auto streamable = entity.component<streamable_t>();
-//     //         auto transform  = entity.component<transform_t>();
+        for_update.write((uint16_t) network::entity_update);
+        for_update.write((uint16_t) updated_entities);
 
-//     //         bool creating_entity = (last_snapshot.erase(guid) == 0);
+        // add entity creates and updates
+        for (auto entity : queue) {
+            uint64_t guid = entity.id().id();
 
-//     //         data.Write((bool) creating_entity);
-//     //         data.Write((uint8_t) streamable->type);
-//     //         data.Write(transform->position);
-//     //         data.Write(transform->rotation);
-//     //         data.Write(transform->scale);
+            auto streamable = entity.component<streamable_t>();
+            auto transform  = entity.component<transform_t>();
 
-//     //         // trigger create or update callbacks for the server
-//     //         callbacks::evt_create_t event = { guid, streamable->type, entity, &data };
-//     //         callbacks::trigger(creating_entity ? callbacks::create : callbacks::update, (callbacks::evt_t*) &event);
+            if (last_snapshot.erase(guid) == 0) {
+                created_entities++;
+                updated_entities--;
 
-//     //         next_snapshot->insert(std::make_pair(guid, true));
-//     //     }
+                for_create.write((uint64_t) guid);
+                for_create.write((uint8_t) streamable->type);
+                for_create.write(transform->position);
+                for_create.write(transform->rotation);
+                for_create.write(transform->scale);
 
-//     //     data.Write((uint16_t) last_snapshot.size());
+                events::trigger(events::on_create, new events::event_create_t {
+                    guid, streamable->type, entity, &for_create
+                });
+            }
+            else {
+                for_update.write((uint64_t) guid);
+                for_update.write((uint8_t) streamable->type);
+                for_update.write(transform->position);
+                for_update.write(transform->rotation);
+                for_update.write(transform->scale);
 
-//     //     // add entity removes
-//     //     for (auto pair : last_snapshot) {
-//     //         data.Write((uint64_t) pair.first);
+                events::trigger(events::on_update, new events::event_update_t {
+                    guid, streamable->type, entity, &for_update
+                });
+            }
 
-//     //         // skip calling callback, if the entity is destroyed already.
-//     //         if (!entities->valid((entityx::Entity::Id)pair.first)) continue;
+            next_snapshot->insert(std::make_pair(guid, true));
+        }
 
-//     //         auto entity = entities->get(entityx::Entity::Id(pair.first));
-//     //         auto streamable = entity.component<streamable_t>();
+        for_create.write_at((uint16_t) created_entities, sizeof(uint16_t));
+        for_update.write_at((uint16_t) updated_entities, sizeof(uint16_t));
 
-//     //         callbacks::evt_remove_t event = { pair.first, streamable->type, entity, &data };
-//     //         callbacks::trigger(callbacks::remove, (callbacks::evt_t*) &event);
-//     //     }
+        for_create.write((uint16_t) last_snapshot.size());
 
-//     //     network::data.peer->Send(&data, HIGH_PRIORITY, RELIABLE_ORDERED, 0, client.address, false);
-//     // });
+        // add entity removes
+        for (auto pair : last_snapshot) {
+            for_create.write((uint64_t) pair.first);
 
-//     // /**
-//     //  * Rebuilding entity tree
-//     //  * TODO(inlife): move to a separate thread and place
-//     //  */
-//     // streamer::clear();
+            // skip calling callback, if the entity is destroyed already.
+            if (!entities->valid((entityx::Entity::Id)pair.first)) continue;
 
-//     // entities->each<streamable_t>([](entity_t entity, streamable_t& streamable) {
-//     //     streamer::insert(entity);
-//     // });
-// }
+            auto entity = entities->get(entityx::Entity::Id(pair.first));
+            auto streamable = entity.component<streamable_t>();
+
+            events::trigger(events::on_remove, new events::event_remove_t {
+                pair.first, streamable->type, entity, &for_create
+            });
+        }
+
+        enet_peer_send(client.peer, 0, enet_packet_create( for_create.raw(), for_create.raw_size(), ENET_PACKET_FLAG_RELIABLE ));
+        enet_peer_send(client.peer, 1, enet_packet_create( for_update.raw(), for_update.raw_size(), ENET_PACKET_FLAG_UNRELIABLE_FRAGMENT ));
+    });
+
+    /**
+     * Rebuilding entity tree
+     * TODO(inlife): move to a separate thread and place
+     */
+    streamer::clear();
+
+    entities->each<streamable_t>([](entity_t entity, streamable_t& streamable) {
+        streamer::insert(entity);
+    });
+}

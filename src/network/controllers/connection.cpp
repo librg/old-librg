@@ -12,8 +12,9 @@
 #include <librg/components/transform.h>
 
 using namespace librg;
+using namespace librg::network;
 
-void network::connection_controller::init(network::peer_t* peer, network::packet_t* packet, uint8_t channel)
+void connection_controller::init(peer_t* peer, packet_t* packet, bitstream_t* data)
 {
     char my_host[16];
 
@@ -24,7 +25,7 @@ void network::connection_controller::init(network::peer_t* peer, network::packet
         /**
          * Send connection request packet
          */
-        network::msg(network::connection_request, peer, [](bitstream_t* message) {
+        msg(connection_request, peer, [](bitstream_t* message) {
             message->write((uint8_t) 1);
             message->write((uint8_t) 1);
             message->write((uint8_t) 1);
@@ -35,25 +36,19 @@ void network::connection_controller::init(network::peer_t* peer, network::packet
     }
 }
 
-void network::connection_controller::request(network::peer_t* peer, network::packet_t* packet, uint8_t channel)
+void connection_controller::request(peer_t* peer, packet_t* packet, bitstream_t* data)
 {
     bitstream_t output;
-    bitstream_t input;
-
-    uint16_t id = 0;
-
-    input.set_raw(packet->data);
-    input.read(id);
 
     uint8_t protocolVersion = 0, buildVersion = 0, platformId = 0;
-    input.read(platformId);
-    input.read(protocolVersion);
-    input.read(buildVersion);
+    data->read(platformId);
+    data->read(protocolVersion);
+    data->read(buildVersion);
 
     core::log("%d", platformId);
 
     // // incompatible protocol version - force immidiate disconnect
-    // if (protocolVersion != network::protoVersion || platformId != network::platformId) {
+    // if (protocolVersion != protoVersion || platformId != platformId) {
     //     output.Write(static_cast<RakNet::MessageID>(CONNECTION_REFUSED));
     //     output.Write("Incompatible game version.");
 
@@ -64,7 +59,7 @@ void network::connection_controller::request(network::peer_t* peer, network::pac
     // }
 
     // // let server owner to decide, to kick or not to kick
-    // if (buildVersion != network::buildVersion) {
+    // if (buildVersion != buildVersion) {
     //     // TODO(inlife): add check for server parameters to decide, should be connection refused or allowed
     //     output.Write(static_cast<RakNet::MessageID>(CONNECTION_REFUSED));
     //     output.Write("Incompatible build version.");
@@ -87,29 +82,30 @@ void network::connection_controller::request(network::peer_t* peer, network::pac
     entity.assign<client_t>(peer, "nonono", "anananana");
 
     // send success
-    network::connected_peers.insert(std::make_pair(peer, entity));
-    network::msg(network::connection_accept, peer, nullptr);
+    connected_peers.insert(std::make_pair(peer, entity));
+    msg(connection_accept, peer, nullptr);
     events::trigger(events::on_connect, new events::event_connect_t{ entity });
 
     core::log("connect: id: %ld name: %s serial: %s", peer->connectID, "nonono", "anananana");
 }
 
-void network::connection_controller::accept(network::peer_t* peer, network::packet_t* packet, uint8_t channel)
+void connection_controller::accept(peer_t* peer, packet_t* packet, bitstream_t* data)
 {
+    connected_peers.insert(std::make_pair(peer, entities->create()));
     core::log("connection acccepted");
 }
 
-void network::connection_controller::refuse(network::peer_t* peer, network::packet_t* packet, uint8_t channel)
+void connection_controller::refuse(peer_t* peer, packet_t* packet, bitstream_t* data)
 {
     core::log("connection refused");
 }
 
-void network::connection_controller::disconnect(network::peer_t* peer, network::packet_t* packet, uint8_t channel)
+void connection_controller::disconnect(peer_t* peer, packet_t* packet, bitstream_t* data)
 {
     core::log("something disconnected");
 
     if (connected_peers.find(peer) != connected_peers.end()) {
-        events::trigger(events::on_disconnect, new event_disconnect_t{ connected_peers[peer] });
+        events::trigger(events::on_disconnect, new events::event_disconnect_t{ connected_peers[peer] });
         streamer::remove(connected_peers[peer]);
         connected_peers.erase(peer);
     }

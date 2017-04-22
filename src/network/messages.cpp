@@ -6,6 +6,8 @@
 
 using namespace librg;
 
+#define LIBRG_NETWORK_MESSAGE_CHANNEL 2
+
 /**
  * Set callback for listening particular network event
  * @param id       id of the message, for custom messages id should be >= last_packet_number
@@ -21,6 +23,19 @@ void network::set(uint16_t id, network::callback_t callback)
 }
 
 /**
+ * Send message via "smart" method
+ * it will try to detect who should be a receieve
+ * depending on mode wea are running in
+ * @param message id
+ * @param message encoder
+ */
+void network::msg(uint16_t id, message_t callback)
+{
+    // TODO: make smart, now its stupid
+    network::msg_all(id, callback);
+}
+
+/**
  * Send message to particular connected peer
  * @param messageid
  * @param address
@@ -33,7 +48,7 @@ void network::msg(uint16_t id, network::peer_t* peer, network::message_t callbac
     message.write(id);
     if (callback) { callback(&message); }
 
-    enet_peer_send(peer, 3, enet_packet_create(
+    enet_peer_send(peer, LIBRG_NETWORK_MESSAGE_CHANNEL, enet_packet_create(
         message.raw(), message.raw_size(), ENET_PACKET_FLAG_RELIABLE
     ));
 }
@@ -56,7 +71,7 @@ void network::msg_except(uint16_t id, network::peer_t* bad_peer, network::messag
             continue;
         }
 
-        enet_peer_send(pair.first, 3, enet_packet_create(
+        enet_peer_send(pair.first, LIBRG_NETWORK_MESSAGE_CHANNEL, enet_packet_create(
             message.raw(), message.raw_size(), ENET_PACKET_FLAG_RELIABLE
         ));
     }
@@ -81,7 +96,7 @@ void network::msg_stream(uint16_t id, entity_t entity, network::message_t callba
         auto client = other.component<client_t>();
         if (!client) continue;
 
-        enet_peer_send(client->peer, 3, enet_packet_create(
+        enet_peer_send(client->peer, LIBRG_NETWORK_MESSAGE_CHANNEL, enet_packet_create(
             message.raw(), message.raw_size(), ENET_PACKET_FLAG_RELIABLE
         ));
     }

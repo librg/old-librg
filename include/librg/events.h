@@ -16,6 +16,28 @@ namespace librg
         using callback_t = std::function<void(event_t*)>;
 
         /**
+         * Builtin events
+         */
+        enum events_e {
+            // core
+            on_start,
+            on_tick,
+            on_log,
+
+            // clients
+            on_connect,
+            on_disconnect,
+
+            // entities
+            on_inter,
+            on_create,
+            on_update,
+            on_remove,
+
+            last_event_number,
+        };
+
+        /**
          * Adds a callback listener to a particular event
          * @param event id. for custom events, id should be >= last_event_number
          * @param callback
@@ -42,7 +64,7 @@ namespace librg
          * @param event id
          * @param event
          */
-        void trigger(uint16_t id, event_t* event);
+        void trigger(uint16_t id, event_t* event = nullptr);
 
         /**
          * Templated shourcut trigger
