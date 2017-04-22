@@ -22,7 +22,7 @@ namespace librg
     void entities_terminate();
 
     // todo
-    void entities_interpolate();
+    void entities_interpolate(double dt);
 }
 
 #endif // librg_entities_h

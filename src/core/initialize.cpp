@@ -22,6 +22,7 @@ uv_timer_t librg_poll_loop;
 uv_tty_t librg_tty;
 
 double librg_lasttime;
+config_t core::config;
 
 /**
  * Main polling method
@@ -32,8 +33,7 @@ void on_poll_loop(uv_timer_t* req)
 
     if (core::is_client()) {
         double newtime = get_time();
-        // there goes calculated delta time per tick
-        // librg::network::interpolate((newtime - librg_lasttime)*100.0);
+        librg::entities_interpolate((newtime - librg_lasttime) * 100.0);
         librg_lasttime = newtime;
     }
 }

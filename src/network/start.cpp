@@ -4,12 +4,12 @@
 
 using namespace librg;
 
-void network::start(config_t config)
+void network::start()
 {
     // setup address for incoming connections
     ENetAddress address;
 
-    address.port = config.port;
+    address.port = core::config.port;
     address.host = ENET_HOST_ANY;
 
     // start server or client
@@ -18,11 +18,11 @@ void network::start(config_t config)
     }
 
     // network::host = enet_host_create(nullptr, 1, LIBRG_NETWORK_CHANNELS, 57600 / 8, 14400 / 8);
-    network::host = enet_host_create(&address, config.max_connections, LIBRG_NETWORK_CHANNELS, 0, 0);
+    network::host = enet_host_create(&address, core::config.max_connections, LIBRG_NETWORK_CHANNELS, 0, 0);
 
     // verify host creation
     if (network::host == nullptr) {
-        core::error("cannot create network host. port %d may be already taken.", config.port);
+        core::error("cannot create network host. port %d may be already taken.", core::config.port);
 
         core::log("falling back to listen-only host...");
         network::host = enet_host_create(nullptr, 1, LIBRG_NETWORK_CHANNELS, 57600 / 8, 14400 / 8);
@@ -30,7 +30,7 @@ void network::start(config_t config)
 
     // connect to server if client
     if (core::is_client()) {
-        enet_address_set_host(&address, config.ip.c_str());
+        enet_address_set_host(&address, core::config.ip.c_str());
 
         core::log("connecting to server %x:%u", address.host, address.port);
         network::peer = enet_host_connect(network::host, &address, LIBRG_NETWORK_CHANNELS, 0);

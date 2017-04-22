@@ -27,13 +27,15 @@ void on_tick_loop(uv_timer_t* req)
 
 void core::start(config_t config)
 {
-    if (!core::is_manual()) {
-        network::start(config);
-    }
+    core::config = config;
 
     // setup default value for tickrate
-    if (!config.tick_delay || config.tick_delay < 16) {
-        config.tick_delay = 16;
+    if (!core::config.tick_delay || core::config.tick_delay < 16) {
+        core::config.tick_delay = 16;
+    }
+
+    if (!core::is_manual()) {
+        network::start();
     }
 
     uv_timer_init(uv_default_loop(), &librg_tick_loop);

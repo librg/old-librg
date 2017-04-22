@@ -111,6 +111,8 @@ namespace librg
         static inline bool is_manual() {
             return (get_mode() == mode_client_manual || get_mode() == mode_server_manual);
         }
+
+        extern config_t config;
     }
 }
 

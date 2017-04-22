@@ -51,7 +51,7 @@ namespace librg
          * Start the server
          * @param port
          */
-        void start(config_t config);
+        void start();
 
         /**
          * Calls a recieve update for network
