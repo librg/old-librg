@@ -6,24 +6,23 @@ using namespace librg;
 
 void network::start(config_t config)
 {
-    // setup address
-    ENetAddress address = { .port = config.port };
+    // setup address for incoming connections
+    ENetAddress address = { .port = config.port, .host = ENET_HOST_ANY };
 
     // start server or client
     if (core::is_server()) {
         core::log("starting server on port %d", address.port);
+    }
 
-        address.host  = ENET_HOST_ANY;
-        network::host = enet_host_create(&address, config.max_connections, LIBRG_NETWORK_CHANNELS, 0, 0);
-    }
-    else {
-        network::host = enet_host_create(nullptr, 1, LIBRG_NETWORK_CHANNELS, 57600 / 8, 14400 / 8);
-    }
+    // network::host = enet_host_create(nullptr, 1, LIBRG_NETWORK_CHANNELS, 57600 / 8, 14400 / 8);
+    network::host = enet_host_create(&address, config.max_connections, LIBRG_NETWORK_CHANNELS, 0, 0);
 
     // verify host creation
     if (network::host == nullptr) {
-        core::error("cannot create network host. this port may be already taken.");
-        return;
+        core::error("cannot create network host. port %d may be already taken.", config.port);
+
+        core::log("falling back to listen-only host...");
+        network::host = enet_host_create(nullptr, 1, LIBRG_NETWORK_CHANNELS, 57600 / 8, 14400 / 8);
     }
 
     // connect to server if client

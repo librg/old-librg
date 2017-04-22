@@ -1,7 +1,7 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #include <librg/core.h>
-#include <librg/callbacks.h>
+#include <librg/events.h>
 
 using namespace librg;
 
@@ -24,14 +24,12 @@ void core::error(const char* format, ...)
     // Visit http://en.cppreference.com/w/cpp/chrono/c/strftime
     // for more information about date/time format
     strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
-    
+
     char output[2048] = { 0 };
 
     // TODO(inlife): move to async trigger -> callback
     sprintf(output, "[SERVER][%s] - %s\n", buf, message);
-
-    auto logEvent = callbacks::evt_log_t{ output };
-    callbacks::trigger(callbacks::log, (callbacks::evt_t*)&logEvent);
+    events::trigger(events::on_log, new events::event_log_t{output});
 }
 
 /**
@@ -58,7 +56,5 @@ void core::log(const char* format, ...)
 
     // TODO(inlife): move to async trigger -> callback
     sprintf(output, "[SERVER][%s] - %s\n", buf, message);
-
-    auto logEvent = callbacks::evt_log_t{ output };
-    callbacks::trigger(callbacks::log, (callbacks::evt_t*)&logEvent);
+    events::trigger(events::on_log, new events::event_log_t{output});
 }

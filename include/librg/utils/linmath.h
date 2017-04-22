@@ -1,4 +1,6 @@
-﻿/*
+#define HANDMADE_MATH_IMPLEMENTATION
+
+/*
 HandmadeMath.h v1.1.2
 
 This is a single header file with a bunch of useful functions for

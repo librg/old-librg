@@ -31,31 +31,3 @@ void librg::network_initialize()
     network::message_handlers[network::entity_create]           = network::entity_controller::create;
     network::message_handlers[network::entity_update]           = network::entity_controller::update;
 }
-
-/**
- * Storage for handlers
- */
-// network::handler_t network::handlers;
-
-/**
- * Storage for user handlers
- */
-// network::user_handler_t network::userHandlers;
-
-/**
- * Storage for network data
- */
-// network::data_t network::data;
-
-/**
- * Storage for current clients
- */
-// std::map<RakNet::RakNetGUID, entity_t> network::clients;
-
-/**
-* Storage for network configuration
-*/
-// uint16_t network::platformId;
-// uint16_t network::protoVersion;
-// uint16_t network::buildVersion;
-// uint16_t network::tickRate;

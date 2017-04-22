@@ -62,7 +62,7 @@ namespace librg
 
         /**
          * Set callback for listening particular network event
-         * @param id       id of the message, for custom messages id should be >= last_packet_number
+         * @param id of the message, for custom messages id should be >= last_packet_number
          * @param callback method that will be called
          */
         void set(uint16_t id, callback_t callback);

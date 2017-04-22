@@ -2,21 +2,17 @@
 //
 #include <uv.h>
 
-#define HANDMADE_MATH_IMPLEMENTATION
-#include <librg/utils/linmath.h>
-
-#include <librg/timing.hpp>
-
 #ifdef WIN32
 #include <clocale>
 #endif
 
 #include <librg/core.h>
-#include <librg/callbacks.h>
+#include <librg/events.h>
 #include <librg/entities.h>
 #include <librg/network.h>
 #include <librg/resources.h>
 #include <librg/streamer.h>
+#include <librg/utils/timing.hpp>
 
 using namespace librg;
 

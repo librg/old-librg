@@ -3,7 +3,7 @@
 #include <enet/enet.h>
 
 #include <librg/core.h>
-#include <librg/callbacks.h>
+#include <librg/events.h>
 #include <librg/streamer.h>
 #include <librg/network.h>
 #include <librg/network/controllers.h>
@@ -89,9 +89,7 @@ void network::connection_controller::request(network::peer_t* peer, network::pac
     // send success
     network::connected_peers.insert(std::make_pair(peer, entity));
     network::msg(network::connection_accept, peer, nullptr);
-
-    // auto event = callbacks::evt_connect_t{ entity };
-    // callbacks::trigger(callbacks::connect, (callbacks::evt_t*)&event);
+    events::trigger(events::on_connect, new events::event_connect_t{ entity });
 
     core::log("connect: id: %ld name: %s serial: %s", peer->connectID, "nonono", "anananana");
 }
@@ -108,14 +106,10 @@ void network::connection_controller::refuse(network::peer_t* peer, network::pack
 
 void network::connection_controller::disconnect(network::peer_t* peer, network::packet_t* packet, uint8_t channel)
 {
-    core::log("disconnected");
+    core::log("something disconnected");
 
     if (connected_peers.find(peer) != connected_peers.end()) {
-        auto entity = connected_peers[peer];
-
-        auto event = callbacks::evt_disconnect_t{ entity };
-        callbacks::trigger(callbacks::disconnect, (callbacks::evt_t*)&event);
-
+        events::trigger(events::on_disconnect, new event_disconnect_t{ connected_peers[peer] });
         streamer::remove(connected_peers[peer]);
         connected_peers.erase(peer);
     }

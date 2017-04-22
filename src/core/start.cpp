@@ -5,8 +5,8 @@
 #include <librg/core.h>
 #include <librg/network.h>
 #include <librg/streamer.h>
-#include <librg/callbacks.h>
-#include <librg/timing.hpp>
+#include <librg/events.h>
+#include <librg/utils/timing.hpp>
 
 using namespace librg;
 
@@ -24,8 +24,11 @@ void on_tick_loop(uv_timer_t* req)
     // TODO streamer::update();
 
     double newtime = get_time();
-    callbacks::evt_tick_t tick_event = { 0, (newtime - librg_last_ticktime) };
-    callbacks::trigger(callbacks::tick, (callbacks::evt_t*) &tick_event);
+
+    events::trigger(events::on_tick, (events::event_t*) new events::event_tick_t {
+        0, newtime - librg_last_ticktime
+    });
+
     librg_last_ticktime = newtime;
 }
 
@@ -38,8 +41,7 @@ void core::start(config_t config)
     uv_timer_init(uv_default_loop(), &librg_tick_loop);
     uv_timer_start(&librg_tick_loop, on_tick_loop, 250, config.tick_rate);
 
-    auto event = callbacks::evt_start_t{};
-    callbacks::trigger(callbacks::start, (callbacks::evt_t*)&event);
+    events::trigger(events::on_start, nullptr);
 
     // starting loop
     uv_run(uv_default_loop(), core::is_manual() ? UV_RUN_NOWAIT : UV_RUN_DEFAULT);
