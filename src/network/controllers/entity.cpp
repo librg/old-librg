@@ -101,7 +101,6 @@ void entity_controller::update(peer_t* peer, packet_t* packet, bitstream_t* data
         data->read(scale);
 
         if (streamer::entity_pool.find(guid) == streamer::entity_pool.end()) {
-            core::error("unexpected entity %lld on update", guid);
             continue;
         }
 
