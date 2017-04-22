@@ -2,27 +2,22 @@
 //
 #include <uv.h>
 
-#define HANDMADE_MATH_IMPLEMENTATION
-#include <librg/linmath.h>
-
-#include <librg/timing.hpp>
-
 #ifdef WIN32
 #include <clocale>
 #endif
 
 #include <librg/core.h>
-#include <librg/callbacks.h>
+#include <librg/events.h>
 #include <librg/entities.h>
 #include <librg/network.h>
 #include <librg/resources.h>
 #include <librg/streamer.h>
+#include <librg/utils/timing.hpp>
 
 using namespace librg;
 
-uv_timer_t poll_loop;
-
-uv_tty_t tty;
+uv_timer_t librg_poll_loop;
+uv_tty_t librg_tty;
 
 double librg_lasttime;
 
@@ -31,29 +26,14 @@ double librg_lasttime;
  */
 void on_poll_loop(uv_timer_t* req)
 {
-    network::receive();
+    network::poll();
+
     if (core::is_client()) {
         double newtime = get_time();
         // there goes calculated delta time per tick
-        librg::network::interpolate((newtime - librg_lasttime)*100.0);
+        // librg::network::interpolate((newtime - librg_lasttime)*100.0);
         librg_lasttime = newtime;
     }
-}
-
-/**
- * System signal hanlder
- * @param req
- * @param signum
- */
-void on_signal(uv_signal_t *req, int signum)
-{
-    // stop for ctrl+C
-    if (signum == 2) {
-        // Server::Core::Log("\nExiting!");
-        uv_stop(uv_default_loop());
-    }
-
-    uv_signal_stop(req);
 }
 
 /**
@@ -79,9 +59,14 @@ void on_console(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf)
     buf->base[nread] = '\0';
     // librg::core::onInput(buf->base);
     // add console event
+    // core::log(buf->base);
+
+    if (strncmp(buf->base, "exit", 4) == 0) {
+        uv_stop(uv_default_loop());
+    }
 }
 
-void librg::core_initialize(librg::mode mode)
+void librg::core_initialize(librg::mode_e mode)
 {
     librg::core::set_mode(mode);
 
@@ -98,23 +83,13 @@ void librg::core_initialize(librg::mode mode)
 #endif
 
     // start loops
-    uv_timer_init(uv_default_loop(), &poll_loop);
-    uv_timer_start(&poll_loop, on_poll_loop, 0, 1);
-
-    // singal handling
-    // uv_signal_t sig;
-    // uv_signal_init(uv_default_loop(), &sig);
-    // uv_signal_start(&sig, on_signal, SIGINT);
+    uv_timer_init(uv_default_loop(), &librg_poll_loop);
+    uv_timer_start(&librg_poll_loop, on_poll_loop, 0, 1);
 
     // terminal window
-    uv_tty_init(uv_default_loop(), &tty, 0, 1);
-    uv_tty_set_mode(&tty, UV_TTY_MODE_NORMAL);
+    uv_tty_init(uv_default_loop(), &librg_tty, 0, 1);
+    uv_tty_set_mode(&librg_tty, UV_TTY_MODE_NORMAL);
 
     // setup reading callback
-    uv_read_start((uv_stream_t*)&tty, tty_alloc, on_console);
-
-    // if (uv_tty_get_winsize(&tty, &width, &height)) {
-    //     fprintf(stderr, "Could not get TTY information\n");
-    //     // uv_tty_reset_mode();
-    // }
+    uv_read_start((uv_stream_t*)&librg_tty, tty_alloc, on_console);
 }

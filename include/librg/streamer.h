@@ -1,4 +1,4 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_streamer_h
 #define librg_streamer_h
@@ -68,6 +68,12 @@ namespace librg
          * Public API method for cleaning up the quad-tree.
          */
         void clear();
+
+        /**
+         * Generate and send update packets
+         * for every client entity inside streamer
+         */
+        void update();
 
         /**
          * Public API method for cleaning up the quad-tree and

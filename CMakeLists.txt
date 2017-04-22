@@ -32,13 +32,6 @@ ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 
 ## trying to disable
-## raknet static lib, still no success
-option(RAKNET_ENABLE_DLL "Generate the DLL project if true." OFF)
-option(RAKNET_ENABLE_SAMPLES "" OFF)
-set(RAKNET_ENABLE_DLL OFF CACHE BOOL "Generate the DLL project if true.")
-option(mathfu_build_benchmarks "Build MathFu benchmarks." OFF)
-option(mathfu_build_tests "Build MathFu unit tests." OFF)
-
 set(ENTITYX_BUILD_TESTING false CACHE BOOL "Enable building of tests.")
 set(ENTITYX_RUN_BENCHMARKS false CACHE BOOL "Run benchmarks (in conjunction with -DENTITYX_BUILD_TESTING=1).")
 set(ENTITYX_MAX_COMPONENTS 64 CACHE STRING "Set the maximum number of components.")
@@ -48,7 +41,7 @@ set(ENTITYX_BUILD_SHARED false CACHE BOOL "Build shared libraries?")
 ###
 # Compile vendor dependencies
 ###
-add_subdirectory(vendor/lib-raknet)
+add_subdirectory(vendor/lib-enet)
 add_subdirectory(vendor/lib-libuv-cmake)
 add_subdirectory(vendor/lib-squirrel)
 add_subdirectory(vendor/lib-sqrat)
@@ -114,7 +107,7 @@ endif()
 # Linking libraries
 ###
 target_link_libraries(librg
-    RakNetLibStatic
+    enet
     squirrel
     sqstdlib
     tinyxml2
@@ -135,9 +128,10 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 endif()
 
 target_include_directories(librg PUBLIC
-    vendor/lib-raknet/Source
+    vendor/lib-enet/include
     vendor/lib-squirrel/include
     vendor/lib-libuv-cmake/libuv/include
+    vendor/lib-math/include
     vendor/lib-sqrat/include
     vendor/lib-tinyxml2
     vendor/lib-http-parser
@@ -150,7 +144,7 @@ add_executable(rgtest ${TEST_FILES})
 
 target_link_libraries(rgtest librg)
 
-set_target_properties(RakNetLibStatic   PROPERTIES FOLDER librg/vendors)
+set_target_properties(enet              PROPERTIES FOLDER librg/vendors)
 set_target_properties(squirrel          PROPERTIES FOLDER librg/vendors)
 set_target_properties(sqstdlib          PROPERTIES FOLDER librg/vendors)
 set_target_properties(tinyxml2          PROPERTIES FOLDER librg/vendors)

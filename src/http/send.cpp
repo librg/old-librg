@@ -1,6 +1,6 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
-#include <librg/network/http/client.h>
+#include <librg/http/client.h>
 
 void librg::network::http::send(request_t *req, request_callback_t callback)
 {

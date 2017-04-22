@@ -1,4 +1,4 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_utils_aabb_h
 #define librg_utils_aabb_h
@@ -7,7 +7,7 @@
 
 #include <complex> // std::abs
 
-#include <librg/linmath.h>
+#include <librg/utils/linmath.h>
 
 namespace librg
 {

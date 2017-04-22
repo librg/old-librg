@@ -1,6 +1,6 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
-#include <librg/network/http/client.h>
+#include <librg/http/client.h>
 
 void librg::network::http::add_header(request_t *req, std::string head, std::string text)
 {

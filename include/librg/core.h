@@ -1,4 +1,4 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_core_h
 #define librg_core_h
@@ -6,8 +6,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
-
-#include <librg/linmath.h>
 
 #include <ctime>
 #include <string>
@@ -17,38 +15,51 @@
 #include <unordered_map>
 #include <functional>
 
+#include <librg/utils/linmath.h>
+
 namespace librg
 {
-    enum mode {
-        mode_server,
-        mode_client,
-        mode_server_manual,
-        mode_client_manual
+    /**
+     * Modes librg can work with
+     */
+    enum mode_e {
+        mode_server,        /* blocking server with own libuv loop */
+        mode_client,        /* blocking client with own libuv loop */
+        mode_both,          /* (not working) blocking client and server with own libuv loop */
+        mode_server_manual, /* non-blocking server with run-once uv loop, manual core::tick() call required */
+        mode_client_manual, /* non-blocking client with run-once uv loop, manual core::tick() call required */
+        mode_both_manual,   /* (not working) non-blocking client and server with run-once uv loop, manual core::tick() call required */
     };
 
-    void core_initialize(mode mode);
+    using vector3_t = hmm_vec3;
+
+    struct config_t {
+        // core
+        uint16_t tick_delay;
+
+        // streamer configuration
+        vector3_t world_size;
+
+        // network configuration
+        std::string ip;
+        std::string password;
+        uint16_t port;
+        uint16_t max_connections;
+
+        // backend network
+        uint16_t platform_id;
+        uint16_t proto_version;
+        uint16_t build_version;
+    };
+
+    void core_initialize(mode_e mode);
     void core_terminate();
 
     namespace core
     {
-        struct config_t {
-            std::string ip;
-            int port;
-            int maxPlayers;
-            hmm_vec3 worldSize;
-
-            // network configuration
-            uint16_t platformId;
-            uint16_t protoVersion;
-            uint16_t buildVersion;
-            uint16_t tickRate;
-        };
-
         /**
          * Main entry point for framework
          * Starts all networking and other parts
-         * @param host
-         * @param port
          */
         void start(config_t config);
 
@@ -72,13 +83,13 @@ namespace librg
          * Set a mode for (server/client)
          * @param mode default is server
          */
-        void set_mode(mode mode);
+        void set_mode(mode_e mode);
 
         /**
          * Get current mode
          * @return
          */
-        mode get_mode();
+        mode_e get_mode();
 
         /**
          * Check if current execution mode is server

@@ -6,15 +6,14 @@
 #include <string>
 #include <unordered_map>
 
-#include <BitStream.h>
-#include <RakPeerInterface.h>
+#include <librg/network.h>
 
 namespace librg
 {
     struct client_t {
-        client_t(RakNet::SystemAddress a, std::string n, std::string s) : address(a), nickname(n), serial(s), last_snapshot() {}
+        client_t(network::peer_t* p, std::string n, std::string s) : peer(p), nickname(n), serial(s), last_snapshot() {}
 
-        RakNet::SystemAddress address;
+        network::peer_t* peer;
         std::string nickname;
         std::string serial;
 

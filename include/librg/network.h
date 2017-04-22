@@ -1,16 +1,21 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_network_h
 #define librg_network_h
 
-#include <BitStream.h>
-#include <RakPeerInterface.h>
-#include <MessageIdentifiers.h>
+#include <enet/enet.h>
 
 #include <librg/core.h>
 #include <librg/entities.h>
-#include <librg/components/client.h>
-#include <librg/network/http/client.h>
+#include <librg/network/bitstream.h>
+
+#ifndef LIBRG_NETWORK_MESSAGES
+#define LIBRG_NETWORK_MESSAGES 1024
+#endif
+
+#ifndef LIBRG_NETWORK_CHANNELS
+#define LIBRG_NETWORK_CHANNELS 4
+#endif
 
 namespace librg
 {
@@ -19,103 +24,101 @@ namespace librg
 
     namespace network
     {
-        constexpr int MAX_MESSAGES = 256;
+        // using guid_t        = uint64_t;
+        using peer_t        = ENetPeer;
+        using host_t        = ENetHost;
+        using packet_t      = ENetPacket;
+        using callback_t    = std::function<void(peer_t* peer, packet_t* packet, bitstream_t* data)>;
+        using message_t     = std::function<void(bitstream_t* data)>;
 
-        using bitstream_t          = RakNet::BitStream;
-        using packet_t             = RakNet::Packet;
-        using callback_t           = std::function<void(packet_t* packet)>;
-        using user_callback_t      = std::function<void(bitstream_t* bitstream, packet_t* packet)>;
-        using handler_t            = std::array<callback_t, MAX_MESSAGES>;
-        using user_handler_t       = std::unordered_map<int, user_callback_t>;
-        using message_t            = std::function<void(bitstream_t* message)>;
-        using guid_t               = uint64_t;
+        /**
+         * Builtin network messages (events)
+         */
+        enum message_e {
+            connection_init,
+            connection_request,
+            connection_refuse,
+            connection_accept,
+            connection_disconnect,
 
-        struct data_t {
-            RakNet::SystemAddress address;
-            RakNet::RakPeerInterface* peer;
-            RakNet::SocketDescriptor socket_descriptor;
-        };
+            entity_create,
+            entity_update,
 
-        enum messageid {
-            CONNECTION_INIT = ID_USER_PACKET_ENUM + 1,
-            CONNECTION_REFUSED,
-            CONNECTION_ACCEPTED,
-            CONNECTION_DISCONNECTED,
-            ENTITY_SYNC_PACKET,
-            GUEST_PACKET_ENUM,
+            last_packet_number,
         };
 
         /**
          * Start the server
          * @param port
          */
-        void server(int port);
-
-        /**
-         * Start the client
-         * @param ip
-         * @param port
-         */
-        void client(std::string ip, int port);
-
-        /**
-         * Call an update for network
-         * Calculates update packets for clients
-         */
-        void update();
+        void start(config_t config);
 
         /**
          * Calls a recieve update for network
          * (server receives new data from clients)
          * (client receives new data from server)
          */
-        void receive();
+        void poll();
 
         /**
-         * Send message from the client to server
-         * or from server to all clients
-         * @param messageid
-         * @param message_t
+         * Set callback for listening particular network event
+         * @param id of the message, for custom messages id should be >= last_packet_number
+         * @param callback method that will be called
          */
-        void msg(int id, message_t callback);
+        void set(uint16_t id, callback_t callback);
 
         /**
-        * Send message from the server to client
-        * @param messageid
-        * @param address
-        * @param message_t
-        */
-        void msg(int id, RakNet::SystemAddress address, message_t callback);
-
-        /**
-        * Send message from the server to client
-        * @param entity
-        * @param messageid
-        * @param message_t
-        */
-        void msg(int id, entity_t entity, message_t callback);
-
-        /**
-         * Register custom network event handler.
-         * @param messageid
-         * @param callback_t
+         * Send message via "smart" method
+         * it will try to detect who should be a receieve
+         * depending on mode wea are running in
+         * @param message id
+         * @param message encoder
          */
-        void add(int messageid, user_callback_t callback);
+        void msg(uint16_t id, message_t callback);
 
         /**
-        * Interpolate client data based on our current input values.
-        * @param dt The time between 2 client ticks.
-        */
-        void interpolate(double dt);
+         * Send message to particular connected peer
+         * @param messageid
+         * @param address
+         * @param message encoder
+         */
+        void msg(uint16_t id, peer_t* peer, message_t callback);
 
-        extern data_t data;
-        extern std::map<RakNet::RakNetGUID, entity_t> clients;
-        extern handler_t handlers;
-        extern user_handler_t userHandlers;
-        extern uint16_t platformId;
-        extern uint16_t protoVersion;
-        extern uint16_t buildVersion;
-        extern uint16_t tickRate;
+        /**
+         * Send message to all peers except particular one
+         * @param message id
+         * @param peer to be ignored
+         * @param message encoder
+         */
+        void msg_except(uint16_t id, peer_t* peer, message_t callback);
+
+        /**
+         * Send message for all peers inside stream zone for particular entity (or peer)
+         * @param message id
+         * @param entity which will be used as root for calculating nearby in-stream clients
+         * @param message encoder
+         */
+        void msg_stream(uint16_t id, entity_t entity, message_t callback);
+
+        /**
+         * Send message to all connected peers
+         * @param message id
+         * @param message encoder
+         */
+        void msg_all(uint16_t id, message_t callback);
+
+        /**
+         * Our nifty data
+         */
+        extern host_t* host;
+        extern peer_t* peer;
+
+        /**
+         * Data arrays
+         * even more niftier
+         */
+        extern std::unordered_map<peer_t*, entity_t> connected_peers;
+        extern std::array<callback_t, LIBRG_NETWORK_MESSAGES> message_handlers;
     }
 }
 

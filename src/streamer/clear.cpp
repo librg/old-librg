@@ -1,8 +1,6 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #include <librg/streamer.h>
-#include <librg/components/client.h>
-#include <librg/callbacks.h>
 
 void librg::streamer::qtree_t::clear()
 {
@@ -25,12 +23,11 @@ void librg::streamer::clear()
     }
 
     remove_queue.clear();
-
     entity_cache.clear();
 }
 
 void librg::streamer::clear(aabb_t bounds)
 {
-    clear();
+    librg::streamer::clear();
     _root.boundary = bounds;
 }

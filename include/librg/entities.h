@@ -20,6 +20,9 @@ namespace librg
 
     void entities_initialize();
     void entities_terminate();
+
+    // todo
+    void entities_interpolate();
 }
 
 #endif // librg_entities_h

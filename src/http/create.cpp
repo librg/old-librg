@@ -1,6 +1,6 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
-#include <librg/network/http/client.h>
+#include <librg/http/client.h>
 
 librg::network::http::request_t librg::network::http::create(std::string host, std::string method, std::string uri, int port)
 {

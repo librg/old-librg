@@ -5,13 +5,12 @@
 #include <librg/core.h>
 #include <librg/network.h>
 #include <librg/streamer.h>
-#include <librg/callbacks.h>
-#include <librg/timing.hpp>
+#include <librg/events.h>
+#include <librg/utils/timing.hpp>
 
 using namespace librg;
 
-uv_timer_t tick_loop;
-
+uv_timer_t librg_tick_loop;
 double librg_last_ticktime;
 
 /**
@@ -19,43 +18,28 @@ double librg_last_ticktime;
 */
 void on_tick_loop(uv_timer_t* req)
 {
-    if (core::is_server()) {
-        network::update();
-    }
-
     double newtime = get_time();
-    callbacks::evt_tick_t tick_event = { 0, (newtime - librg_last_ticktime) };
-    callbacks::trigger(callbacks::tick, (callbacks::evt_t*) &tick_event);
+    events::trigger(events::on_tick, new events::event_tick_t{0, newtime - librg_last_ticktime});
     librg_last_ticktime = newtime;
+
+    streamer::update();
 }
 
 void core::start(config_t config)
 {
-    network::platformId = config.platformId;
-    network::protoVersion = config.protoVersion;
-    network::buildVersion = config.buildVersion;
-    network::tickRate = config.tickRate;
-
-    if (network::tickRate == 0) {
-        network::tickRate = 32;
+    if (!core::is_manual()) {
+        network::start(config);
     }
 
-    if (core::is_server()) {
-        if (HMM_LengthVec3(config.worldSize) != 0.f) {
-            streamer::clear(aabb_t(config.worldSize));
-        }
-
-        network::server(config.port);
-    }
-    else {
-        network::client(config.ip, config.port);
+    // setup default value for tickrate
+    if (!config.tick_delay || config.tick_delay < 16) {
+        config.tick_delay = 16;
     }
 
-    uv_timer_init(uv_default_loop(), &tick_loop);
-    uv_timer_start(&tick_loop, on_tick_loop, 250, network::tickRate);
+    uv_timer_init(uv_default_loop(), &librg_tick_loop);
+    uv_timer_start(&librg_tick_loop, on_tick_loop, 250, config.tick_delay);
 
-    auto event = callbacks::evt_start_t{};
-    callbacks::trigger(callbacks::start, (callbacks::evt_t*)&event);
+    events::trigger(events::on_start, nullptr);
 
     // starting loop
     uv_run(uv_default_loop(), core::is_manual() ? UV_RUN_NOWAIT : UV_RUN_DEFAULT);
