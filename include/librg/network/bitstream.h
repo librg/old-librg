@@ -1,6 +1,8 @@
 #ifndef librg_network_bitstream_h
 #define librg_network_bitstream_h
 
+#include <string.h>
+
 namespace librg
 {
     namespace network

@@ -6,6 +6,8 @@
 #include <clocale>
 #endif
 
+#include <cstring>
+
 #include <librg/core.h>
 #include <librg/events.h>
 #include <librg/entities.h>

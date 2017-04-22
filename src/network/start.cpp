@@ -7,7 +7,10 @@ using namespace librg;
 void network::start(config_t config)
 {
     // setup address for incoming connections
-    ENetAddress address = { .port = config.port, .host = ENET_HOST_ANY };
+    ENetAddress address;
+
+    address.port = config.port;
+    address.host = ENET_HOST_ANY;
 
     // start server or client
     if (core::is_server()) {

@@ -30,7 +30,7 @@ void streamer::update()
         auto queue = streamer::query(player);
 
         uint16_t created_entities = 0;
-        uint16_t updated_entities = queue.size();
+        uint16_t updated_entities = (uint16_t)queue.size();
 
         // create data and write inital stuff
         network::bitstream_t for_create;

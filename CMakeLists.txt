@@ -123,6 +123,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
         shell32
         advapi32
         ws2_32
+        winmm
         userenv
     )
 endif()

@@ -1,11 +1,12 @@
 // Copyright ReGuider Team, 2016-2017
 //
+#include <cstring>
 #include <librg/http/client.h>
 
 void librg::network::http::send(request_t *req, request_callback_t callback)
 {
     std::string output = req->headers;
-    
+
     if (req->data) {
         output.append("Content-Length", req->length);
     }
