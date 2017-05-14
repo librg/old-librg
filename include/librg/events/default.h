@@ -1,4 +1,4 @@
-#ifndef librg_events_default_h
+﻿#ifndef librg_events_default_h
 #define librg_events_default_h
 
 #include <librg/network.h>
@@ -31,6 +31,7 @@ namespace librg
             entity_t entity;
             uint8_t type;
             transform_t data;
+            float alpha;
         };
 
         /**

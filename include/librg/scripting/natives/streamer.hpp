@@ -13,20 +13,20 @@ namespace librg
     {
         inline static void streamer_set_visible(uint64_t index, bool state)
         {
-            auto entity = librg::entities->get((Entity::Id)index);
+            auto entity = librg::entities->get((entity_t::Id)index);
             librg::streamer::set_visible(entity, state);
         }
 
         inline static void streamer_set_visible_for(uint64_t index, uint64_t targetIndex, bool state)
         {
-            auto entity = librg::entities->get((Entity::Id)index);
-            auto target = librg::entities->get((Entity::Id)targetIndex);
+            auto entity = librg::entities->get((entity_t::Id)index);
+            auto target = librg::entities->get((entity_t::Id)targetIndex);
             librg::streamer::set_visible_for(target, entity, state);
         }
 
         inline static void streamer_set_query_range(uint64_t index, Sqrat::Array range)
         {
-            auto entity = librg::entities->get((Entity::Id)index);
+            auto entity = librg::entities->get((entity_t::Id)index);
             auto streamer = entity.component<streamable_t>();
 
             if (streamer) {
@@ -34,18 +34,18 @@ namespace librg
                 auto y = range.GetValue<float>(1);
                 auto z = range.GetValue<float>(2);
 
-                streamer->queryRange = hmm_vec3{ *x,*y,*z };
+                streamer->query_range = hmm_vec3{ *x,*y,*z };
             }
         }
 
         // TODO: How to get VM handle here? It is required by Sqrat::Array...
         inline static int streamer_get_query_range(uint64_t index)
         {
-            auto entity = librg::entities->get((Entity::Id)index);
+            auto entity = librg::entities->get((entity_t::Id)index);
             auto streamer = entity.component<streamable_t>();
 
             if (streamer) {
-                auto range = streamer->queryRange;
+                auto range = streamer->query_range;
             }
 
             return -1;

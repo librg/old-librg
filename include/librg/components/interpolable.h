@@ -5,16 +5,16 @@
 
 #include <librg/entities.h>
 #include <librg/components/transform.h>
-#include <chrono>
 
 namespace librg
 {
-    using namespace std::chrono;
     struct interpolable_t {
-        interpolable_t(transform_t tran) : time(), targetTransform(tran), lastTransform(tran) {}
+        interpolable_t(transform_t tran) : time(), target(tran), latest(tran) {}
+
         double time;
-        transform_t targetTransform;
-        transform_t lastTransform;
+
+        transform_t target;
+        transform_t latest;
     };
 }
 

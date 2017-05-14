@@ -1,4 +1,4 @@
-// Copyright ReGuider Team, 2016-2017
+﻿// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_streamer_h
 #define librg_streamer_h
@@ -28,7 +28,7 @@ namespace librg
             bool insert(entity_t entity);
             bool remove(entity_t entity);
             void clear();
-            void query(std::vector<entity_t> &visible, aabb_t range, ComponentHandle<streamable_t> streamable, entity_t caller);
+            void query(std::vector<entity_t> &visible, aabb_t range, entityx::ComponentHandle<streamable_t> streamable, entity_t caller);
 
             aabb_t boundary;
             std::vector<entity_t> entities;

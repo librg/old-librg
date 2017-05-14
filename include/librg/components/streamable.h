@@ -9,13 +9,15 @@
 namespace librg
 {
     struct streamable_t {
-        streamable_t() : queryRange{ 250, 250, 250 }, ignoredEntities(), type(0) {}
-        streamable_t(hmm_vec3 queryRange): queryRange(queryRange), ignoredEntities(), type(0) {}
-        streamable_t(float x, float y, float z) : queryRange(hmm_vec3{ x,y,z }), ignoredEntities(), type(0) {}
-        streamable_t(hmm_vec3 queryRange, uint8_t type): queryRange(queryRange), ignoredEntities(), type(type) {}
-        hmm_vec3 queryRange;
-        std::vector<Entity> ignoredEntities;
+        streamable_t() : query_range{ 250, 250, 250 }, ignored(), type(0) {}
+        streamable_t(uint8_t type) : query_range{ 250, 250, 250 }, ignored(), type(type) {}
+        streamable_t(hmm_vec3 queryRange): query_range(queryRange), ignored(), type(0) {}
+        streamable_t(float x, float y, float z) : query_range(hmm_vec3{ x,y,z }), ignored(), type(0) {}
+        streamable_t(hmm_vec3 queryRange, uint8_t type): query_range(queryRange), ignored(), type(type) {}
+
         uint8_t type;
+        hmm_vec3 query_range;
+        std::vector<entity_t> ignored;
     };
 }
 

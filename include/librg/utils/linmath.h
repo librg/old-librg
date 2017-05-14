@@ -1,4 +1,4 @@
-#define HANDMADE_MATH_IMPLEMENTATION
+﻿#define HANDMADE_MATH_IMPLEMENTATION
 
 /*
 HandmadeMath.h v1.1.2
@@ -520,6 +520,7 @@ extern "C"
 
     HMMDEF hmm_quaternion HMM_Quaternion(float X, float Y, float Z, float W);
     HMMDEF hmm_quaternion HMM_QuaternionV4(hmm_vec4 Vector);
+    HMMDEF hmm_quaternion HMM_QuaternionFromVec3(hmm_vec3 Vector);
     HMMDEF hmm_quaternion HMM_AddQuaternion(hmm_quaternion Left, hmm_quaternion Right);
     HMMDEF hmm_quaternion HMM_SubtractQuaternion(hmm_quaternion Left, hmm_quaternion Right);
     HMMDEF hmm_quaternion HMM_MultiplyQuaternion(hmm_quaternion Left, hmm_quaternion Right);
@@ -1703,6 +1704,7 @@ HMM_NLerp(hmm_quaternion Left, float Time, hmm_quaternion Right)
     return(Result);
 }
 
+/*
 HINLINE hmm_quaternion
 HMM_Slerp(hmm_quaternion Left, float Time, hmm_quaternion Right)
 {
@@ -1724,6 +1726,67 @@ HMM_Slerp(hmm_quaternion Left, float Time, hmm_quaternion Right)
     Result = HMM_MultiplyQuaternionF(Result, Is);
 
     return(Result);
+}
+*/
+HINLINE hmm_quaternion
+HMM_QuaternionFromVec3(hmm_vec3 i)
+{
+    hmm_quaternion q;
+
+    float pitch = i.X;
+    float roll  = i.Y;
+    float yaw   = i.Z;
+
+    float t0 = std::cos(yaw * 0.5);
+    float t1 = std::sin(yaw * 0.5);
+    float t2 = std::cos(roll * 0.5);
+    float t3 = std::sin(roll * 0.5);
+    float t4 = std::cos(pitch * 0.5);
+    float t5 = std::sin(pitch * 0.5);
+
+    q.W = t0 * t2 * t4 + t1 * t3 * t5;
+    q.X = t0 * t3 * t4 - t1 * t2 * t5;
+    q.Y = t0 * t2 * t5 + t1 * t3 * t4;
+    q.Z = t1 * t2 * t4 - t0 * t3 * t5;
+
+    return q;
+}
+
+HINLINE hmm_quaternion
+HMM_Slerp(hmm_quaternion v0, float t, hmm_quaternion v1) {
+    // Only unit quaternions are valid rotations.
+    // Normalize to avoid undefined behavior.
+    v0 = HMM_NormalizeQuaternion(v0);
+    v1 = HMM_NormalizeQuaternion(v1);
+
+    // Compute the cosine of the angle between the two vectors.
+    float dot = HMM_DotQuaternion(v0, v1);
+
+    const double DOT_THRESHOLD = 0.9995;
+    if (fabs(dot) > DOT_THRESHOLD) {
+        // If the inputs are too close for comfort, linearly interpolate
+        // and normalize the result.
+
+        hmm_quaternion result = HMM_AddQuaternion(v0, HMM_MultiplyQuaternionF(HMM_SubtractQuaternion(v1, v0), t));
+        return HMM_NormalizeQuaternion(result);
+    }
+
+    // If the dot product is negative, the quaternions
+    // have opposite handed-ness and slerp won't take
+    // the shorter path. Fix by reversing one quaternion.
+    if (dot < 0.0f) {
+        v1 = HMM_Quaternion(-v1.X, -v1.Y, -v1.Z, -v1.W);
+        dot = -dot;
+    }
+
+    dot = HMM_Clamp(-1, dot, 1);           // Robustness: Stay within domain of acos()
+    float theta_0 = acos(dot);  // theta_0 = angle between input vectors
+    float theta = theta_0*t;    // theta = angle between v0 and result 
+
+    hmm_quaternion v2 = HMM_SubtractQuaternion(v1, HMM_MultiplyQuaternionF(v0, dot));
+    v2 = HMM_NormalizeQuaternion(v2);              // { v0, v2 } is now an orthonormal basis
+
+    return HMM_AddQuaternion(HMM_MultiplyQuaternionF(v0, cos(theta)), HMM_MultiplyQuaternionF(v2, sin(theta)));
 }
 
 HINLINE hmm_mat4
@@ -1779,6 +1842,12 @@ HMM_QuaternionFromAxisAngle(hmm_vec3 Axis, float AngleOfRotation)
     Result.XYZ = HMM_DivideVec3f(RotatedVector, AxisNorm);
 
     return(Result);
+}
+
+HINLINE bool
+HMM_CompareQuaternion(hmm_quaternion q1, hmm_quaternion q2)
+{
+    return (q1.X == q2.X && q1.Y == q2.Y && q1.Z == q2.Z && q1.W == q2.W);
 }
 
 #ifdef HANDMADE_MATH_CPP_MODE

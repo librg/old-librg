@@ -1,4 +1,4 @@
-// Copyright ReGuider Team, 2016-2017
+﻿// Copyright ReGuider Team, 2016-2017
 //
 
 #include <librg/core.h>
@@ -16,8 +16,6 @@ void entity_controller::create(peer_t* peer, packet_t* packet, bitstream_t* data
     uint16_t query_size = 0;
     data->read(query_size);
 
-    // core::log("amount of create objects: %d", query_size);
-
     for (int i = 0; i < query_size; ++i) {
         uint64_t guid = 0;
         uint8_t type  = 0;
@@ -25,12 +23,10 @@ void entity_controller::create(peer_t* peer, packet_t* packet, bitstream_t* data
         data->read(guid);
         data->read(type);
 
-        // entities
-        // TODO: figure out a better way
-        // to store client-side entity objects
-
         // transform_t transform;
-        hmm_vec3 position, rotation, scale;
+        hmm_vec3 position, scale;
+        hmm_vec4 rotation;
+
         data->read(position);
         data->read(rotation);
         data->read(scale);
@@ -81,8 +77,6 @@ void entity_controller::update(peer_t* peer, packet_t* packet, bitstream_t* data
     uint16_t query_size = 0;
     data->read(query_size);
 
-    // core::log("amount of update objects: %d", query_size);
-
     for (int i = 0; i < query_size; ++i) {
         uint64_t guid = 0;
         uint8_t type  = 0;
@@ -90,12 +84,10 @@ void entity_controller::update(peer_t* peer, packet_t* packet, bitstream_t* data
         data->read(guid);
         data->read(type);
 
-        // entities
-        // TODO: figure out a better way
-        // to store client-side entity objects
-
         // transform_t transform;
-        hmm_vec3 position, rotation, scale;
+        hmm_vec3 position, scale;
+        hmm_vec4 rotation;
+
         data->read(position);
         data->read(rotation);
         data->read(scale);
@@ -109,9 +101,9 @@ void entity_controller::update(peer_t* peer, packet_t* packet, bitstream_t* data
         auto interpolable   = entity.component<interpolable_t>();
 
         if (interpolable) {
-            interpolable->lastTransform     = transform_t(transform->position, transform->rotation, transform->scale);
-            interpolable->targetTransform   = transform_t(position, rotation, scale);
-            interpolable->time  = 0.0;
+            interpolable->latest    = transform_t(transform->position, transform->rotation, transform->scale);
+            interpolable->target    = transform_t(position, rotation, scale);
+            interpolable->time      = 0.0;
         }
 
         transform->position = position;

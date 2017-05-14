@@ -1,4 +1,4 @@
-// Copyright ReGuider Team, 2016-2017
+﻿// Copyright ReGuider Team, 2016-2017
 //
 #include <librg/network.h>
 
@@ -15,17 +15,15 @@ void network::start()
     // start server or client
     if (core::is_server()) {
         core::log("starting server on port %d", address.port);
+        network::host = enet_host_create(&address, core::config.max_connections, LIBRG_NETWORK_CHANNELS, 0, 0);
     }
-
-    // network::host = enet_host_create(nullptr, 1, LIBRG_NETWORK_CHANNELS, 57600 / 8, 14400 / 8);
-    network::host = enet_host_create(&address, core::config.max_connections, LIBRG_NETWORK_CHANNELS, 0, 0);
+    else {
+        network::host = enet_host_create(nullptr, 1, LIBRG_NETWORK_CHANNELS, 57600 / 8, 14400 / 8);
+    }
 
     // verify host creation
     if (network::host == nullptr) {
         core::error("cannot create network host. port %d may be already taken.", core::config.port);
-
-        core::log("falling back to listen-only host...");
-        network::host = enet_host_create(nullptr, 1, LIBRG_NETWORK_CHANNELS, 57600 / 8, 14400 / 8);
     }
 
     // connect to server if client

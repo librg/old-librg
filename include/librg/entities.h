@@ -1,4 +1,4 @@
-// Copyright ReGuider Team, 2016-2017
+﻿// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_entities_h
 #define librg_entities_h
@@ -7,8 +7,6 @@
 #include <entityx/Entity.h>
 #include <entityx/System.h>
 #include <entityx/deps/Dependencies.h>
-
-using namespace entityx;
 
 namespace librg
 {
