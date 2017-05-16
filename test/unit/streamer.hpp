@@ -1,4 +1,5 @@
-﻿#include <librg/streamer.h>
+#include <stdio.h>
+#include <librg/streamer.h>
 
 namespace unit
 {
@@ -11,7 +12,9 @@ namespace unit
 
             auto entity = librg::entities->create();
             entity.assign<librg::streamable_t>(hmm_vec3{ 1000, 1000, 1000 });
-            entity.assign<librg::transform_t>();
+            entity.assign<librg::transform_t>(hmm_vec3{ 30,20,0 });
+
+            //librg::streamer::insert(entity);
 
             it("should be able to return queue", [entity](vald_t validate) {
 
@@ -24,14 +27,13 @@ namespace unit
 
                 auto friendly = librg::entities->create();
                 friendly.assign<librg::streamable_t>(hmm_vec3{ 1000, 1000, 1000 });
-                auto ft = librg::transform_t();
-                ft.position = hmm_vec3{ 30,20,10 };
-                friendly.assign<librg::transform_t>(ft);
+                friendly.assign<librg::transform_t>(hmm_vec3{ 30,20,10 });
 
                 librg::streamer::insert(friendly);
-                librg::streamer::insert(entity);
 
                 auto queue = librg::streamer::query(entity);
+
+                // printf("actual size: %lu", queue.size());
 
                 validate(queue.size() == 1);
             });
@@ -42,9 +44,7 @@ namespace unit
                 for (int i = 0; i < 666; i++) {
                     auto enemy = librg::entities->create();
                     enemy.assign<librg::streamable_t>(hmm_vec3{ 300, 300, 300 });
-                    auto ft = librg::transform_t();
-                    ft.position = hmm_vec3{ (float)i,20,10 };
-                    enemy.assign<librg::transform_t>(ft);
+                    enemy.assign<librg::transform_t>(hmm_vec3{ (float)i,20,10 });
 
                     librg::streamer::insert(enemy);
                 }

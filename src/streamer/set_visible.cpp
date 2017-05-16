@@ -1,10 +1,8 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #include <librg/streamer.h>
 
-using namespace librg;
-
-bool _set_visible_for(std::vector<entity_t> &entities, entity_t entity, bool state)
+bool _set_visible_for(std::vector<librg::entity_t> &entities, librg::entity_t entity, bool state)
 {
     auto &b = entities;
     auto query = std::find(b.begin(), b.end(), entity);
@@ -25,14 +23,14 @@ bool _set_visible_for(std::vector<entity_t> &entities, entity_t entity, bool sta
     }
 }
 
-bool librg::streamer::set_visible(entity_t entity, bool state)
+bool librg::streamer::set_visible(librg::entity_t entity, bool state)
 {
     return _set_visible_for(_root.blacklistedEntities, entity, state);
 }
 
-bool librg::streamer::set_visible_for(entity_t target, entity_t entity, bool state)
+bool librg::streamer::set_visible_for(librg::entity_t target, librg::entity_t entity, bool state)
 {
-    auto streamable = target.component<streamable_t>();
+    auto streamable = target.component<librg::streamable_t>();
     if (!streamable) return false;
 
     auto &ignoredEntities = streamable->ignored;
