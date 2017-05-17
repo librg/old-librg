@@ -4,10 +4,6 @@
 cmake_minimum_required (VERSION 2.8)
 project (ReGuider)
 
-set(RG_MAJOR_VERSION 2)
-set(RG_MINOR_VERSION 0)
-set(RG_PATCH_VERSION 1)
-
 ###
 # Predefines to block make at the root
 ###
@@ -46,7 +42,6 @@ add_subdirectory(vendor/lib-libuv-cmake)
 add_subdirectory(vendor/lib-squirrel)
 add_subdirectory(vendor/lib-sqrat)
 add_subdirectory(vendor/lib-tinyxml2)
-add_subdirectory(vendor/lib-http-parser)
 add_subdirectory(vendor/lib-entityx)
 
 # TODO: fix later for beautiful c++17 code
@@ -111,7 +106,6 @@ target_link_libraries(librg
     squirrel
     sqstdlib
     tinyxml2
-    http_parser
     entityx
     uv
 )
@@ -135,9 +129,7 @@ target_include_directories(librg PUBLIC
     vendor/lib-math/include
     vendor/lib-sqrat/include
     vendor/lib-tinyxml2
-    vendor/lib-http-parser
     vendor/lib-entityx
-    # vendor/squirrel/squirrel
 )
 
 file(GLOB_RECURSE TEST_FILES "${PROJECT_SOURCE_DIR}/test/*.cpp")
@@ -149,7 +141,6 @@ set_target_properties(enet              PROPERTIES FOLDER librg/vendors)
 set_target_properties(squirrel          PROPERTIES FOLDER librg/vendors)
 set_target_properties(sqstdlib          PROPERTIES FOLDER librg/vendors)
 set_target_properties(tinyxml2          PROPERTIES FOLDER librg/vendors)
-set_target_properties(http_parser       PROPERTIES FOLDER librg/vendors)
 set_target_properties(entityx           PROPERTIES FOLDER librg/vendors)
 set_target_properties(uv                PROPERTIES FOLDER librg/vendors)
 set_target_properties(librg             PROPERTIES FOLDER librg)
