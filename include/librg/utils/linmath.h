@@ -1,4 +1,4 @@
-﻿#define HANDMADE_MATH_IMPLEMENTATION
+#define HANDMADE_MATH_IMPLEMENTATION
 
 /*
 HandmadeMath.h v1.1.2
@@ -242,20 +242,20 @@ extern "C"
 #if !defined(HMM_SINF) || !defined(HMM_COSF) || !defined(HMM_TANF) || \
     !defined(HMM_EXPF) || !defined(HMM_LOGF) || !defined(HMM_ACOSF) || \
     !defined(HMM_ATANF)|| !defined(HMM_ATAN2F)
-#include <math.h>    
+#include <math.h>
 #endif
 
 #ifndef HMM_SINF
 #define HMM_SINF sinf
-#endif    
+#endif
 
 #ifndef HMM_COSF
 #define HMM_COSF cosf
-#endif    
+#endif
 
 #ifndef HMM_TANF
 #define HMM_TANF tanf
-#endif        
+#endif
 
 #ifndef HMM_EXPF
 #define HMM_EXPF expf
@@ -1737,12 +1737,12 @@ HMM_QuaternionFromVec3(hmm_vec3 i)
     float roll  = i.Y;
     float yaw   = i.Z;
 
-    float t0 = std::cos(yaw * 0.5);
-    float t1 = std::sin(yaw * 0.5);
-    float t2 = std::cos(roll * 0.5);
-    float t3 = std::sin(roll * 0.5);
-    float t4 = std::cos(pitch * 0.5);
-    float t5 = std::sin(pitch * 0.5);
+    float t0 = HMM_CosF(yaw * 0.5);
+    float t1 = HMM_SinF(yaw * 0.5);
+    float t2 = HMM_CosF(roll * 0.5);
+    float t3 = HMM_SinF(roll * 0.5);
+    float t4 = HMM_CosF(pitch * 0.5);
+    float t5 = HMM_SinF(pitch * 0.5);
 
     q.W = t0 * t2 * t4 + t1 * t3 * t5;
     q.X = t0 * t3 * t4 - t1 * t2 * t5;
@@ -1763,7 +1763,7 @@ HMM_Slerp(hmm_quaternion v0, float t, hmm_quaternion v1) {
     float dot = HMM_DotQuaternion(v0, v1);
 
     const double DOT_THRESHOLD = 0.9995;
-    if (fabs(dot) > DOT_THRESHOLD) {
+    if (HMM_ABS(dot) > DOT_THRESHOLD) {
         // If the inputs are too close for comfort, linearly interpolate
         // and normalize the result.
 
@@ -1780,13 +1780,13 @@ HMM_Slerp(hmm_quaternion v0, float t, hmm_quaternion v1) {
     }
 
     dot = HMM_Clamp(-1, dot, 1);           // Robustness: Stay within domain of acos()
-    float theta_0 = acos(dot);  // theta_0 = angle between input vectors
-    float theta = theta_0*t;    // theta = angle between v0 and result 
+    float theta_0 = HMM_ACosF(dot);  // theta_0 = angle between input vectors
+    float theta = theta_0*t;    // theta = angle between v0 and result
 
     hmm_quaternion v2 = HMM_SubtractQuaternion(v1, HMM_MultiplyQuaternionF(v0, dot));
     v2 = HMM_NormalizeQuaternion(v2);              // { v0, v2 } is now an orthonormal basis
 
-    return HMM_AddQuaternion(HMM_MultiplyQuaternionF(v0, cos(theta)), HMM_MultiplyQuaternionF(v2, sin(theta)));
+    return HMM_AddQuaternion(HMM_MultiplyQuaternionF(v0, HMM_CosF(theta)), HMM_MultiplyQuaternionF(v2, HMM_SinF(theta)));
 }
 
 HINLINE hmm_mat4
