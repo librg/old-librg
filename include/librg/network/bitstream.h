@@ -40,22 +40,12 @@ namespace librg
                  */
                 void read(void* var, size_t variable_size)
                 {
-                    try {
-                        if (var == nullptr) {
-                            throw std::runtime_error("bitstream_t::read Unable to read nullptr !");
-                        }
+                    librg_assert(var != nullptr, "bitstream_t::read Unable to read nullptr!");
+                    librg_assert(variable_size <= buffer_size, "bistream_t::read Unable to read from unallocated space!");
 
-                        if (variable_size > buffer_size) {
-                            throw std::runtime_error("bistream_t::read Unable to read from unallocated space !");
-                        }
-
-                        memcpy(var, reinterpret_cast<char*>(raw_buffer) + read_offset, variable_size);
-                        read_offset += variable_size;
-                        buffer_size -= variable_size;
-                    }
-                    catch (std::exception &ex) {
-                        core::error(ex.what());
-                    }
+                    memcpy(var, reinterpret_cast<char*>(raw_buffer) + read_offset, variable_size);
+                    read_offset += variable_size;
+                    buffer_size -= variable_size;
                 }
 
                 /**
@@ -197,20 +187,13 @@ namespace librg
                  */
                 void write(void* var, size_t variable_size)
                 {
-                    try {
-                        if (var == nullptr){
-                            throw std::runtime_error("bitstream_t::write Unable to write nullptr !" );
-                        }
+                    librg_assert(var != nullptr, "bitstream_t::write Unable to write nullptr!");
 
-                        raw_buffer = realloc(raw_buffer, write_offset + variable_size);
-                        memcpy(reinterpret_cast<char*>(raw_buffer) + write_offset, var, variable_size);
+                    raw_buffer = realloc(raw_buffer, write_offset + variable_size);
+                    memcpy(reinterpret_cast<char*>(raw_buffer) + write_offset, var, variable_size);
 
-                        write_offset += variable_size;
-                        buffer_size += variable_size;
-                    }
-                    catch (std::exception &ex) {
-                        core::error(ex.what());
-                    }
+                    write_offset += variable_size;
+                    buffer_size += variable_size;
                 }
 
                 /**
@@ -223,16 +206,8 @@ namespace librg
                 {
                     size_t variable_size = sizeof(T);
 
-                    try {
-                        if (position + variable_size > buffer_size) {
-                            throw std::runtime_error("bitstream_t::write_at Unable to write to unallocated memory !" );
-                        }
-
-                        memcpy(reinterpret_cast<char*>(raw_buffer) + position, &var, variable_size);
-                    }
-                    catch (std::exception &ex) {
-                        core::error(ex.what());
-                    }
+                    librg_assert(position + variable_size <= buffer_size, "bitstream_t::write_at Unable to write to unallocated memory!");
+                    memcpy(reinterpret_cast<char*>(raw_buffer) + position, &var, variable_size);
                 }
 
                 template<class T>

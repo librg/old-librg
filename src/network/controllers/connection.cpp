@@ -30,8 +30,8 @@ void connection_controller::init(peer_t* peer, packet_t* packet, bitstream_t* da
             message->write_uint8(core::config.proto_version);
             message->write_uint8(core::config.build_version);
 
-            message->write_cstr("Test Player");
-            message->write_cstr("4555ASDASD4555ASDASD4555");
+            message->write("Test Player");
+            message->write("4555ASDASD4555ASDASD4555");
         });
     }
 }

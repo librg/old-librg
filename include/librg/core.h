@@ -3,6 +3,14 @@
 #ifndef librg_core_h
 #define librg_core_h
 
+#ifdef _MSC_VER
+#define librg_trap() __debugbreak()
+#else
+#define librg_trap() __builtin_trap()
+#endif
+
+#define librg_assert(expr, errmsg) if (!(expr)) { core::error(errmsg); librg_trap(); }
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
