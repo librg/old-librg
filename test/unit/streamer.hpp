@@ -24,6 +24,7 @@ namespace unit
             });
 
             it("should be able to return exactly 1 entity", [entity](vald_t validate) {
+                librg::streamer::clear();
 
                 auto friendly = librg::entities->create();
                 friendly.assign<librg::streamable_t>(hmm_vec3{ 1000, 1000, 1000 });
@@ -32,8 +33,6 @@ namespace unit
                 librg::streamer::insert(friendly);
 
                 auto queue = librg::streamer::query(entity);
-
-                // printf("actual size: %lu", queue.size());
 
                 validate(queue.size() == 1);
             });

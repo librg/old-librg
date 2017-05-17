@@ -25,13 +25,13 @@ void connection_controller::init(peer_t* peer, packet_t* packet, bitstream_t* da
         /**
          * Send connection request packet
          */
-        msg(connection_request, peer, [](bitstream_t* message) {
-            message->write((uint8_t) 1);
-            message->write((uint8_t) 1);
-            message->write((uint8_t) 1);
+        network::msg(connection_request, peer, [](bitstream_t* message) {
+            message->write_uint8(core::config.platform_id);
+            message->write_uint8(core::config.proto_version);
+            message->write_uint8(core::config.build_version);
 
-            message->write("Test Player");
-            message->write("4555ASDASD4555ASDASD4555");
+            message->write_cstr("Test Player");
+            message->write_cstr("4555ASDASD4555ASDASD4555");
         });
     }
 }
@@ -47,8 +47,12 @@ void connection_controller::request(peer_t* peer, packet_t* packet, bitstream_t*
 
     core::log("%d", platformId);
 
+    auto platform_id   = data->read_uint8();
+    auto proto_version = data->read_uint8();
+    auto build_version = data->read_uint8();
+
     // // incompatible protocol version - force immidiate disconnect
-    // if (protocolVersion != protoVersion || platformId != platformId) {
+    // if (proto_version != core::config.proto_version || platform_id != core::config.platform_id) {
     //     output.Write(static_cast<RakNet::MessageID>(CONNECTION_REFUSED));
     //     output.Write("Incompatible game version.");
 

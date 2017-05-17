@@ -47,9 +47,9 @@ namespace librg
         uint16_t max_connections;
 
         // backend network
-        uint16_t platform_id;
-        uint16_t proto_version;
-        uint16_t build_version;
+        uint8_t platform_id;
+        uint8_t proto_version;
+        uint8_t build_version;
     };
 
     void core_initialize(mode_e mode);

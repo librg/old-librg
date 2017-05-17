@@ -16,23 +16,14 @@ void network::poll()
         switch (event.type) {
             case ENET_EVENT_TYPE_RECEIVE:
                 {
-                    // core::log("a packet of length %u containing %s was received from %s on channel %u.\n",
-                    //         (uint32_t)event.packet->dataLength,
-                    //         event.packet->data,
-                    //         event.peer->data,
-                    //         event.channelID);
+                    auto data = network::bitstream_t(event.packet->data, event.packet->dataLength);
+                    auto puid = data.read_uint16();
 
-                    uint16_t id = 0;
-                    auto data   = network::bitstream_t();
-
-                    data.set_raw(event.packet->data);
-                    data.read(id);
-
-                    if (network::message_handlers[id]) {
-                        network::message_handlers[id](event.peer, event.packet, &data);
+                    if (network::message_handlers[puid]) {
+                        network::message_handlers[puid](event.peer, event.packet, &data);
                     }
                     else {
-                        core::error("network: unknown message: %d", id);
+                        core::error("network: unknown message: %d", puid);
                     }
 
                     enet_packet_destroy(event.packet);
