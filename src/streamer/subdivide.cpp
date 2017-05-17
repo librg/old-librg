@@ -1,7 +1,7 @@
 // Copyright ReGuider Team, 2016-2017
 //
 #include <librg/streamer.h>
-#include <librg/utils/linmath.h>
+#include <librg/utils/math.h>
 
 void librg::streamer::qtree_t::subdivide()
 {

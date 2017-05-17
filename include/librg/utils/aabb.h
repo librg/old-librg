@@ -3,11 +3,7 @@
 #ifndef librg_utils_aabb_h
 #define librg_utils_aabb_h
 
-// TODO(zaklaus): Probably move to a better place!
-
-#include <complex> // std::abs
-
-#include <librg/utils/linmath.h>
+#include <librg/utils/math.h>
 
 namespace librg
 {
@@ -37,17 +33,17 @@ namespace librg
 
         bool intersects_2d(aabb_t rhs)
         {
-            if (std::abs(center.X - rhs.center.X) > (halfdim.X + rhs.halfdim.X)) return false;
-            if (std::abs(center.Y - rhs.center.Y) > (halfdim.Y + rhs.halfdim.Y)) return false;
+            if (HMM_ABS(center.X - rhs.center.X) > (halfdim.X + rhs.halfdim.X)) return false;
+            if (HMM_ABS(center.Y - rhs.center.Y) > (halfdim.Y + rhs.halfdim.Y)) return false;
 
             return true;
         }
 
         bool intersects_3d(aabb_t rhs)
         {
-            if (std::abs(center.X - rhs.center.X) > (halfdim.X + rhs.halfdim.X)) return false;
-            if (std::abs(center.Y - rhs.center.Y) > (halfdim.Y + rhs.halfdim.Y)) return false;
-            if (std::abs(center.Z - rhs.center.Z) > (halfdim.Z + rhs.halfdim.Z)) return false;
+            if (HMM_ABS(center.X - rhs.center.X) > (halfdim.X + rhs.halfdim.X)) return false;
+            if (HMM_ABS(center.Y - rhs.center.Y) > (halfdim.Y + rhs.halfdim.Y)) return false;
+            if (HMM_ABS(center.Z - rhs.center.Z) > (halfdim.Z + rhs.halfdim.Z)) return false;
 
             return true;
         }

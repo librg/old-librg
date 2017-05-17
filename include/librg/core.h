@@ -23,7 +23,7 @@
 #include <unordered_map>
 #include <functional>
 
-#include <librg/utils/linmath.h>
+#include <librg/utils/math.h>
 
 namespace librg
 {
