@@ -17,7 +17,7 @@ void _onread(uv_fs_t *req)
     uv_fs_req_cleanup(req);
 
     if (req->result < 0) {
-        core::error("file reading: %s\n", uv_strerror(req->result));
+        core::error("file reading: %s\n", uv_strerror((int)req->result));
     }
 
     fs::result_t* result = (fs::result_t*) req->data;
@@ -47,7 +47,7 @@ void _onwrite(uv_fs_t *req)
     uv_fs_req_cleanup(req);
 
     if (req->result < 0) {
-        core::error("file writing: %s\n", uv_strerror(req->result));
+        core::error("file writing: %s\n", uv_strerror((int)req->result));
     }
 
     fs::result_t* result = (fs::result_t*) req->data;
@@ -130,7 +130,7 @@ bool fs::read(std::string filename, fs::callback callback)
     data->callback    = callback;
 
     req->data = data;
-    uv_buf_t uvBuf = uv_buf_init(str, req->statbuf.st_size);
+    uv_buf_t uvBuf = uv_buf_init(str, (uint32_t)req->statbuf.st_size);
 
     uv_fs_read(uv_default_loop(), req, handle, &uvBuf, 1, -1, _onread);
     return true;
@@ -141,7 +141,7 @@ bool fs::write(std::string filename, size_t dataSize, byte *data, fs::callback c
     uv_fs_t* req = new uv_fs_t;
 
     // trying to open file
-    int handle = uv_fs_open(uv_default_loop(), req, filename.c_str(), 
+    int handle = uv_fs_open(uv_default_loop(), req, filename.c_str(),
                             O_CREAT|O_WRONLY|O_TRUNC, 0644, NULL);
 
     if (handle < 0) {
@@ -152,8 +152,8 @@ bool fs::write(std::string filename, size_t dataSize, byte *data, fs::callback c
     // get the filename stuff
     char* filepath = new char[filename.size()];
     memcpy(filepath, filename.c_str(), filename.size());
-  
-    uv_buf_t uvBuf = uv_buf_init(new char[dataSize], dataSize);
+
+    uv_buf_t uvBuf = uv_buf_init(new char[dataSize], (uint32_t)dataSize);
     memcpy(uvBuf.base, data, dataSize);
 
     // creating content buffer

@@ -24,7 +24,7 @@ namespace unit
             it("should write text to file", [&](vald_t validate) {
                 int result = fs::write(testFileName, testString.size(), (fs::byte*)testString.c_str(), [validate](fs::result_t *res) { });
 
-                validate(result); 
+                validate(result == 0);
             });
 
             it("should read file content", [&](vald_t validate) {

@@ -88,11 +88,11 @@ HMM_SquareRootF(float Value)
 
 #ifdef HANDMADE_MATH_NO_SSE
     Result = sqrtf(Value);
-#else        
+#else
     __m128 In = _mm_set_ss(Value);
     __m128 Out = _mm_sqrt_ss(In);
     Result = _mm_cvtss_f32(Out);
-#endif 
+#endif
 
     return(Result);
 }
@@ -104,7 +104,7 @@ HMM_RSquareRootF(float Value)
 
 #ifdef HANDMADE_MATH_NO_SSE
     Result = 1.0f / HMM_SqrtF(Value);
-#else        
+#else
     __m128 In = _mm_set_ss(Value);
     __m128 Out = _mm_rsqrt_ss(In);
     Result = _mm_cvtss_f32(Out);
@@ -1061,12 +1061,12 @@ HMM_QuaternionFromVec3(hmm_vec3 i)
     float roll  = i.Y;
     float yaw   = i.Z;
 
-    float t0 = HMM_CosF(yaw * 0.5);
-    float t1 = HMM_SinF(yaw * 0.5);
-    float t2 = HMM_CosF(roll * 0.5);
-    float t3 = HMM_SinF(roll * 0.5);
-    float t4 = HMM_CosF(pitch * 0.5);
-    float t5 = HMM_SinF(pitch * 0.5);
+    float t0 = HMM_CosF(yaw * 0.5f);
+    float t1 = HMM_SinF(yaw * 0.5f);
+    float t2 = HMM_CosF(roll * 0.5f);
+    float t3 = HMM_SinF(roll * 0.5f);
+    float t4 = HMM_CosF(pitch * 0.5f);
+    float t5 = HMM_SinF(pitch * 0.5f);
 
     q.W = t0 * t2 * t4 + t1 * t3 * t5;
     q.X = t0 * t3 * t4 - t1 * t2 * t5;
