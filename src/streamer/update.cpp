@@ -3,11 +3,13 @@
 #include <enet/enet.h>
 
 #include <librg/core.h>
+#include <librg/events.h>
 #include <librg/entities.h>
 #include <librg/network.h>
 #include <librg/streamer.h>
-#include <librg/events.h>
+
 #include <librg/components/client.h>
+#include <librg/components/client_streamable.h>
 
 using namespace librg;
 
@@ -17,11 +19,17 @@ using namespace librg;
  */
 void streamer::update()
 {
-    /**
-     * Entity packing and sending
-     */
-    entities->each<client_t>([](entity_t player, client_t& client) {
-        // core::log("sending updates to uid: %d", player.id().index());
+    if (core::is_client()) {
+        entities->each<client_streamable_t>([](entity_t entity, client_streamable_t &client) {
+            events::trigger(events::on_client_stream_entity, new events::event_entity_t(entity));
+        });
+
+        return;
+    }
+
+    entities->each<client_t>([](entity_t player, client_t &client) {
+        if (!client.active) return;
+
         // copy last to local last, alias next snapshot as last and clear it
         auto next_snapshot = &client.last_snapshot;
         auto last_snapshot =  client.last_snapshot;
@@ -59,9 +67,9 @@ void streamer::update()
                 for_create.write(transform->rotation);
                 for_create.write(transform->scale);
 
-                events::trigger(events::on_create, new events::event_create_t {
-                    guid, streamable->type, entity, &for_create
-                });
+                events::trigger(events::on_create, new events::event_bs_entity_t(
+                    &for_create, entity, guid, streamable->type
+                ));
             }
             else {
                 for_update.write((uint64_t) guid);
@@ -70,9 +78,9 @@ void streamer::update()
                 for_update.write(transform->rotation);
                 for_update.write(transform->scale);
 
-                events::trigger(events::on_update, new events::event_update_t {
-                    guid, streamable->type, entity, &for_update
-                });
+                events::trigger(events::on_update, new events::event_bs_entity_t(
+                    &for_update, entity, guid, streamable->type
+                ));
             }
 
             next_snapshot->insert(std::make_pair(guid, true));
@@ -90,12 +98,12 @@ void streamer::update()
             // skip calling callback, if the entity is destroyed already.
             if (!entities->valid((entityx::Entity::Id)pair.first)) continue;
 
-            auto entity = entities->get(entityx::Entity::Id(pair.first));
+            auto entity = entities->get(entity_t::Id(pair.first));
             auto streamable = entity.component<streamable_t>();
 
-            events::trigger(events::on_remove, new events::event_remove_t {
-                pair.first, streamable->type, entity, &for_create
-            });
+            events::trigger(events::on_remove, new events::event_bs_entity_t(
+                &for_create, entity, pair.first, streamable->type
+            ));
         }
 
         enet_peer_send(client.peer, 0, enet_packet_create( for_create.raw(), for_create.raw_size(), ENET_PACKET_FLAG_RELIABLE ));

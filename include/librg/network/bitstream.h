@@ -2,7 +2,6 @@
 #define librg_network_bitstream_h
 
 #include <string.h>
-#include <stdexcept>
 
 namespace librg
 {
@@ -263,7 +262,7 @@ namespace librg
                     write(var);
                 }
 
-                void write_int64(int8_t var)
+                void write_int64(int64_t var)
                 {
                     write(var);
                 }
@@ -283,7 +282,7 @@ namespace librg
                     write(var);
                 }
 
-                void write_uint64(uint8_t var)
+                void write_uint64(uint64_t var)
                 {
                     write(var);
                 }

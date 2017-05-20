@@ -9,10 +9,12 @@ namespace librg
 {
     struct transform_t {
         transform_t() = default;
+
         transform_t(hmm_vec3 position)
             : position(position), rotation(), scale() {}
+
         transform_t(hmm_vec3 position, hmm_vec4 rotation, hmm_vec3 scale)
-        : position(position), rotation(rotation), scale(scale) {}
+            : position(position), rotation(rotation), scale(scale) {}
 
         hmm_vec3 position;
         hmm_vec4 rotation;

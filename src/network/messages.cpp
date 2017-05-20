@@ -94,7 +94,7 @@ void network::msg_stream(uint16_t id, entity_t entity, network::message_t callba
 
     for (auto other : entities) {
         auto client = other.component<client_t>();
-        if (!client) continue;
+        if (!client || !client->active) continue;
 
         enet_peer_send(client->peer, LIBRG_NETWORK_MESSAGE_CHANNEL, enet_packet_create(
             message.raw(), message.raw_size(), ENET_PACKET_FLAG_RELIABLE

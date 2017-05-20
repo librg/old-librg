@@ -34,6 +34,11 @@ namespace librg
             on_update,
             on_remove,
 
+            // client streaming
+            on_client_stream_add,
+            on_client_stream_remove,
+            on_client_stream_entity,
+
             last_event_number,
         };
 

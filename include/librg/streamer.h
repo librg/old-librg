@@ -1,8 +1,9 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #ifndef librg_streamer_h
 #define librg_streamer_h
 
+#include <librg/network.h>
 #include <librg/entities.h>
 #include <librg/utils/aabb.h>
 #include <librg/components/streamable.h>
@@ -18,10 +19,8 @@ namespace librg
 
         struct qtree_t {
             qtree_t() {}
-            qtree_t(aabb_t boundary) : boundary(boundary),
-                                       entities(),
-                                       blacklistedEntities(),
-                                       trees() {}
+            qtree_t(aabb_t boundary)
+                : boundary(boundary), entities(), blacklistedEntities(), trees() {}
 
             void subdivide();
             void create_child(aabb_t boundary);
@@ -48,6 +47,9 @@ namespace librg
          */
         extern std::vector<entity_t> remove_queue;
 
+        /**
+         * Cache for entities in current query
+         */
         extern std::unordered_map<entity_t, std::vector<entity_t>> entity_cache;
 
         /**
@@ -109,6 +111,25 @@ namespace librg
          * @return        Returns zero if no change has happened, one otherwise.
          */
         bool set_visible_for(entity_t target, entity_t entity, bool state);
+
+        /**
+         * Client side streamer methods
+         */
+        namespace client
+        {
+            /**
+             * Set entity to be streamed by particular client
+             * @param entity
+             * @param client
+             */
+            void set(entity_t entity, network::peer_t* peer);
+
+            /**
+             * Remove entity from client streamer
+             * @param entity
+             */
+            void remove(entity_t entity);
+        }
     }
 }
 

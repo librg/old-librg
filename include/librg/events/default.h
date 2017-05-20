@@ -1,4 +1,4 @@
-﻿#ifndef librg_events_default_h
+#ifndef librg_events_default_h
 #define librg_events_default_h
 
 #include <librg/network.h>
@@ -11,69 +11,66 @@ namespace librg
     {
         /**
          * Default event
-         * and callback type
          */
-        using event_t = void;
+        struct event_t {
+            void* data;
+        };
 
         /**
          * Tick event
          */
         struct event_tick_t {
+            void* data;
             uint64_t tick;
             double dt;
-        };
-
-        /**
-         * Entity interpolation event (client)
-         */
-        struct event_inter_t {
-            uint64_t guid;
-            entity_t entity;
-            uint8_t type;
-            transform_t data;
-            float alpha;
         };
 
         /**
          * Log event
          */
         struct event_log_t {
+            event_log_t(std::string s) : output(s) {}
+
+            void* data;
             std::string output;
         };
 
         /**
-         * Entity create event
+         * Entity event
          */
-        struct event_create_t {
+        struct event_entity_t {
+            event_entity_t() {}
+            event_entity_t(entity_t e) : entity(e) {}
+            event_entity_t(entity_t e, uint64_t g) : entity(e), guid(g) {}
+            event_entity_t(entity_t e, uint64_t g, uint8_t t) : entity(e), guid(g), type(t) {}
+            event_entity_t(void* d, entity_t e, uint64_t g, uint8_t t) : data(d), entity(e), guid(g), type(t) {}
+
+            void* data;
+            entity_t entity;
             uint64_t guid;
             uint8_t type;
-            entity_t entity;
+        };
+
+        /**
+         * Bistreamed entity event
+         */
+        struct event_bs_entity_t {
+            event_bs_entity_t(network::bitstream_t* d, entity_t e, uint64_t g, uint8_t t) : data(d), entity(e), guid(g), type(t) {}
+
             network::bitstream_t* data;
-        };
-
-        using event_change_t = event_create_t;
-
-        /**
-         * Entity udpate event
-         */
-        using event_update_t = event_create_t;
-
-        /**
-         * Entity create event
-         */
-        using event_remove_t = event_create_t;
-
-        /**
-         * Client connect event
-         */
-        struct event_connect_t {
             entity_t entity;
+            uint64_t guid;
+            uint8_t type;
         };
 
         /**
-         * Client disconnect event
+         * Backwards commpability
          */
-        using event_disconnect_t = event_connect_t;
+        using event_create_t = event_bs_entity_t;
+        using event_update_t = event_bs_entity_t;
+        using event_remove_t = event_bs_entity_t;
+        using event_connect_t = event_bs_entity_t;
+        using event_disconnect_t = event_bs_entity_t;
     }
 }
 

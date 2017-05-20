@@ -1,4 +1,4 @@
-﻿// Copyright ReGuider Team, 2016-2017
+// Copyright ReGuider Team, 2016-2017
 //
 #include <librg/network.h>
 #include <librg/events.h>
@@ -43,8 +43,8 @@ void librg::entities_interpolate(double dt)
         // ...
 
         auto new_transform = transform_t(npos, HMM_Vec4(nrot.X, nrot.Y, nrot.Z, nrot.W), trans.scale);
-        events::trigger(events::on_inter, new events::event_inter_t {
-            entity.id().id(), entity, stream.type, new_transform, t
-        });
+        events::trigger(events::on_inter, new events::event_entity_t(
+            (void *)&new_transform, entity, entity.id().id(), stream.type
+        ));
     });
 }

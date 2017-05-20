@@ -19,7 +19,7 @@ double librg_last_ticktime;
 void on_tick_loop(uv_timer_t* req)
 {
     double newtime = get_time();
-    events::trigger(events::on_tick, new events::event_tick_t{0, newtime - librg_last_ticktime});
+    events::trigger(events::on_tick, new events::event_tick_t{ nullptr, 0, newtime - librg_last_ticktime });
     librg_last_ticktime = newtime;
 
     streamer::update();

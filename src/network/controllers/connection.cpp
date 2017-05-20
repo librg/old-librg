@@ -22,9 +22,6 @@ void connection_controller::init(peer_t* peer, packet_t* packet, bitstream_t* da
     core::log("a new connection attempt at %s:%u.\n", my_host, peer->address.port);
 
     if (core::is_client()) {
-        /**
-         * Send connection request packet
-         */
         network::msg(connection_request, peer, [](bitstream_t* message) {
             message->write_uint8(core::config.platform_id);
             message->write_uint8(core::config.proto_version);
@@ -38,18 +35,11 @@ void connection_controller::init(peer_t* peer, packet_t* packet, bitstream_t* da
 
 void connection_controller::request(peer_t* peer, packet_t* packet, bitstream_t* data)
 {
-    bitstream_t output;
-
-    uint8_t protocolVersion = 0, buildVersion = 0, platformId = 0;
-    data->read(platformId);
-    data->read(protocolVersion);
-    data->read(buildVersion);
-
-    core::log("%d", platformId);
-
     auto platform_id   = data->read_uint8();
     auto proto_version = data->read_uint8();
     auto build_version = data->read_uint8();
+
+    core::log("%d", platform_id);
 
     // // incompatible protocol version - force immidiate disconnect
     // if (proto_version != core::config.proto_version || platform_id != core::config.platform_id) {
@@ -81,22 +71,27 @@ void connection_controller::request(peer_t* peer, packet_t* packet, bitstream_t*
     // input.read(serial);
 
     auto entity = entities->create();
-    entity.assign<streamable_t>();
-    entity.assign<transform_t>();
+
     entity.assign<client_t>(peer, "nonono", "anananana");
 
-    // send success
+    // add client peer to storage
     connected_peers.insert(std::make_pair(peer, entity));
-    msg(connection_accept, peer, nullptr);
-    events::trigger(events::on_connect, new events::event_connect_t{ entity });
+
+    // send and trigger
+    network::msg(connection_accept, peer, nullptr);
+    events::trigger(events::on_connect, new events::event_entity_t(entity));
 
     core::log("connect: id: %ld name: %s serial: %s", peer->connectID, "nonono", "anananana");
 }
 
 void connection_controller::accept(peer_t* peer, packet_t* packet, bitstream_t* data)
 {
-    connected_peers.insert(std::make_pair(peer, entities->create()));
     core::log("connection acccepted");
+
+    auto entity = entities->create();
+
+    connected_peers.insert(std::make_pair(peer, entity));
+    events::trigger(events::on_connect, new events::event_entity_t(entity));
 }
 
 void connection_controller::refuse(peer_t* peer, packet_t* packet, bitstream_t* data)
@@ -109,8 +104,14 @@ void connection_controller::disconnect(peer_t* peer, packet_t* packet, bitstream
     core::log("something disconnected");
 
     if (connected_peers.find(peer) != connected_peers.end()) {
-        events::trigger(events::on_disconnect, new events::event_disconnect_t{ connected_peers[peer] });
-        streamer::remove(connected_peers[peer]);
+        auto entity = connected_peers[peer];
+        auto client = entity.component<client_t>();
+
         connected_peers.erase(peer);
+        client->active = false;
+
+        return events::trigger(events::on_disconnect, new events::event_entity_t(entity));
     }
+
+    return events::trigger(events::on_disconnect, new events::event_entity_t());
 }

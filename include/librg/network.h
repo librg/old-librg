@@ -24,7 +24,6 @@ namespace librg
 
     namespace network
     {
-        // using guid_t        = uint64_t;
         using peer_t        = ENetPeer;
         using host_t        = ENetHost;
         using packet_t      = ENetPacket;
@@ -43,6 +42,8 @@ namespace librg
 
             entity_create,
             entity_update,
+            client_streamer_add,
+            client_streamer_remove,
 
             last_packet_number,
         };
