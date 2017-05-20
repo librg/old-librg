@@ -7,6 +7,7 @@
 #include <librg/network/controllers.h>
 #include <librg/components/interpolable.h>
 #include <librg/components/client_streamable.h>
+#include <librg/components/server_owned.h>
 
 using namespace librg;
 using namespace librg::network;
@@ -30,8 +31,10 @@ void entity_controller::create(peer_t* peer, packet_t* packet, bitstream_t* data
         auto entity         = entities->create();
         auto streamable     = entity.assign<streamable_t>();
         auto transform      = entity.assign<transform_t>();
+        auto server_owned   = entity.assign<server_owned_t>();
 
         streamable->type    = type;
+        server_owned->guid  = guid;
         transform->position = position;
         transform->rotation = rotation;
         transform->scale    = scale;
@@ -128,5 +131,31 @@ void entity_controller::client_streamer_remove(peer_t* peer, packet_t* packet, b
 
     if (entity.has_component<client_streamable_t>()) {
         entity.remove<client_streamable_t>();
+    }
+}
+
+void entity_controller::client_streamer_update(peer_t* peer, packet_t* packet, bitstream_t* data)
+{
+    auto amount = data->read_uint16();
+
+    for (auto i = 0; i < amount; i++) {
+        auto guid = data->read_uint64();
+        auto id   = entity_t::Id();
+
+        if (!entities->valid(id)) {
+            return;
+        }
+
+        auto entity             = entities->get(id);
+        auto streamable         = entity.component<streamable_t>();
+        auto client_streamable  = entity.component<client_streamable_t>();
+
+        if (!client_streamable || client_streamable->peer != peer) {
+            return core::log("no component, or peer is different");
+        }
+
+        events::trigger(events::on_client_stream_entity, new events::event_bs_entity_t(
+            data, entity, guid, streamable->type
+        ));
     }
 }

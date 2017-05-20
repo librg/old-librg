@@ -9,6 +9,7 @@
 #include <librg/streamer.h>
 
 #include <librg/components/client.h>
+#include <librg/components/server_owned.h>
 #include <librg/components/client_streamable.h>
 
 using namespace librg;
@@ -20,9 +21,30 @@ using namespace librg;
 void streamer::update()
 {
     if (core::is_client()) {
-        entities->each<client_streamable_t>([](entity_t entity, client_streamable_t &client) {
-            events::trigger(events::on_client_stream_entity, new events::event_entity_t(entity));
+        auto data   = network::bitstream_t();
+        auto amount = 0;
+
+        data.write_uint16(network::client_streamer_update);
+        data.write_uint16(0); // amount of entities to be sent (updates)
+
+        entities->each<client_streamable_t>([&data, &amount](entity_t entity, client_streamable_t &client) {
+            auto streamable     = entity.component<streamable_t>();
+            auto server_owned   = entity.component<server_owned_t>();
+
+            data.write_uint64(server_owned->guid);
+
+            events::trigger(events::on_client_stream_entity, new events::event_bs_entity_t(
+                &data, entity, server_owned->guid, streamable->type
+            ));
+
+            amount++;
         });
+
+        data.write_at((uint16_t) amount, sizeof(uint16_t));
+
+        for (auto pair : network::connected_peers) {
+            enet_peer_send(pair.first, 1, enet_packet_create(data.raw(), data.raw_size(), ENET_PACKET_FLAG_UNRELIABLE_FRAGMENT));
+        }
 
         return;
     }

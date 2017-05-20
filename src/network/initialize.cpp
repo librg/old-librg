@@ -32,4 +32,5 @@ void librg::network_initialize()
     network::message_handlers[network::entity_update]           = network::entity_controller::update;
     network::message_handlers[network::client_streamer_add]     = network::entity_controller::client_streamer_add;
     network::message_handlers[network::client_streamer_remove]  = network::entity_controller::client_streamer_remove;
+    network::message_handlers[network::client_streamer_update]  = network::entity_controller::client_streamer_update;
 }

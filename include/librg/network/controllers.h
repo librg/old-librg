@@ -30,6 +30,7 @@ namespace librg
             void controller_action(update);
             void controller_action(client_streamer_add);
             void controller_action(client_streamer_remove);
+            void controller_action(client_streamer_update);
         }
     }
 }

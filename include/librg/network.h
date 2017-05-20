@@ -44,6 +44,7 @@ namespace librg
             entity_update,
             client_streamer_add,
             client_streamer_remove,
+            client_streamer_update,
 
             last_packet_number,
         };
