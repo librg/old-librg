@@ -25,6 +25,7 @@ namespace librg
             on_log,
 
             // clients
+            on_refuse,
             on_connect,
             on_disconnect,
 

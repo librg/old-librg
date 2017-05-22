@@ -36,9 +36,9 @@ void streamer::client::remove(entity_t entity)
         return;
     }
 
-    entity.remove<client_streamable_t>();
-
     network::msg(network::client_streamer_remove, component->peer, [&entity](network::bitstream_t* message) {
         message->write_uint64(entity.id().id());
     });
+
+    entity.remove<client_streamable_t>();
 }

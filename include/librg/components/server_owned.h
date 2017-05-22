@@ -9,6 +9,9 @@
 namespace librg
 {
     struct server_owned_t {
+        server_owned_t() {}
+        server_owned_t(uint64_t g) : guid(g) {}
+
         uint64_t guid;
     };
 }

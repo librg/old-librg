@@ -20,13 +20,8 @@ void entity_controller::create(peer_t* peer, packet_t* packet, bitstream_t* data
         auto guid = data->read_uint64();
         auto type  = data->read_uint8();
 
-        // transform_t transform;
-        hmm_vec3 position, scale;
-        hmm_vec4 rotation;
-
-        data->read(position);
-        data->read(rotation);
-        data->read(scale);
+        transform_t newtransform;
+        data->read(newtransform);
 
         auto entity         = entities->create();
         auto streamable     = entity.assign<streamable_t>();
@@ -35,9 +30,7 @@ void entity_controller::create(peer_t* peer, packet_t* packet, bitstream_t* data
 
         streamable->type    = type;
         server_owned->guid  = guid;
-        transform->position = position;
-        transform->rotation = rotation;
-        transform->scale    = scale;
+        *transform          = newtransform;
 
         streamer::entity_pool.insert(std::make_pair(guid, entity));
 
@@ -74,13 +67,8 @@ void entity_controller::update(peer_t* peer, packet_t* packet, bitstream_t* data
         auto guid = data->read_uint64();
         auto type = data->read_uint8();
 
-        // transform_t transform;
-        hmm_vec3 position, scale;
-        hmm_vec4 rotation;
-
-        data->read(position);
-        data->read(rotation);
-        data->read(scale);
+        transform_t newtransform;
+        data->read(newtransform);
 
         if (streamer::entity_pool.find(guid) == streamer::entity_pool.end()) {
             continue;
@@ -92,13 +80,12 @@ void entity_controller::update(peer_t* peer, packet_t* packet, bitstream_t* data
 
         if (interpolable) {
             interpolable->latest    = transform_t(transform->position, transform->rotation, transform->scale);
-            interpolable->target    = transform_t(position, rotation, scale);
+            interpolable->target    = transform_t(newtransform.position, newtransform.rotation, newtransform.scale);
             interpolable->time      = 0.0;
         }
 
-        transform->position = position;
-        transform->rotation = rotation;
-        transform->scale    = scale;
+        // set new transform
+        *transform = newtransform;
 
         events::trigger(events::on_update, new events::event_bs_entity_t(data, entity, guid, type));
     }
@@ -109,13 +96,17 @@ void entity_controller::client_streamer_add(peer_t* peer, packet_t* packet, bits
     auto guid = data->read_uint64();
 
     if (streamer::entity_pool.find(guid) == streamer::entity_pool.end()) {
-        return;
+        return core::log("cannot find entity to add to my streaming!");
     }
 
     auto entity = streamer::entity_pool[guid];
 
     if (!entity.has_component<client_streamable_t>()) {
         entity.assign<client_streamable_t>();
+
+        events::trigger(events::on_client_stream_add, new events::event_bs_entity_t(
+            data, entity, guid, entity.component<streamable_t>()->type
+        ));
     }
 }
 
@@ -124,13 +115,17 @@ void entity_controller::client_streamer_remove(peer_t* peer, packet_t* packet, b
     auto guid = data->read_uint64();
 
     if (streamer::entity_pool.find(guid) == streamer::entity_pool.end()) {
-        return;
+        return core::log("cannot find entity to remove from my streaming!");
     }
 
     auto entity = streamer::entity_pool[guid];
 
     if (entity.has_component<client_streamable_t>()) {
         entity.remove<client_streamable_t>();
+
+        events::trigger(events::on_client_stream_remove, new events::event_bs_entity_t(
+            data, entity, guid, entity.component<streamable_t>()->type
+        ));
     }
 }
 
@@ -140,22 +135,33 @@ void entity_controller::client_streamer_update(peer_t* peer, packet_t* packet, b
 
     for (auto i = 0; i < amount; i++) {
         auto guid = data->read_uint64();
-        auto id   = entity_t::Id();
+        auto size = data->read_uint32();
+        auto id   = entity_t::Id(guid);
 
         if (!entities->valid(id)) {
-            return;
+            core::log("invlid entity on client streamer udpate");
+            data->skip(size);
+            continue;
         }
 
         auto entity             = entities->get(id);
+        auto transform          = entity.component<transform_t>();
         auto streamable         = entity.component<streamable_t>();
         auto client_streamable  = entity.component<client_streamable_t>();
 
         if (!client_streamable || client_streamable->peer != peer) {
-            return core::log("no component, or peer is different");
+            core::log("no component, or peer is different");
+            data->skip(size);
+            continue;
         }
+
+        transform_t newtransform;
 
         events::trigger(events::on_client_stream_entity, new events::event_bs_entity_t(
             data, entity, guid, streamable->type
         ));
+
+        data->read(newtransform);
+        *transform = newtransform;
     }
 }

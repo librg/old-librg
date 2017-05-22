@@ -10,6 +10,7 @@
 #include <librg/components/client.h>
 #include <librg/components/streamable.h>
 #include <librg/components/transform.h>
+#include <librg/components/server_owned.h>
 
 using namespace librg;
 using namespace librg::network;
@@ -38,8 +39,6 @@ void connection_controller::request(peer_t* peer, packet_t* packet, bitstream_t*
     auto platform_id   = data->read_uint8();
     auto proto_version = data->read_uint8();
     auto build_version = data->read_uint8();
-
-    core::log("%d", platform_id);
 
     // // incompatible protocol version - force immidiate disconnect
     // if (proto_version != core::config.proto_version || platform_id != core::config.platform_id) {
@@ -72,46 +71,54 @@ void connection_controller::request(peer_t* peer, packet_t* packet, bitstream_t*
 
     auto entity = entities->create();
 
+    // assign default compoenents
+    entity.assign<transform_t>();
     entity.assign<client_t>(peer, "nonono", "anananana");
 
     // add client peer to storage
     connected_peers.insert(std::make_pair(peer, entity));
 
     // send and trigger
-    network::msg(connection_accept, peer, nullptr);
-    events::trigger(events::on_connect, new events::event_entity_t(entity));
+    network::msg(connection_accept, peer, [&entity](bitstream_t* message) {
+        message->write_uint64(entity.id().id());
+    });
 
-    core::log("connect: id: %ld name: %s serial: %s", peer->connectID, "nonono", "anananana");
+    events::trigger(events::on_connect, new events::event_entity_t(entity));
 }
 
 void connection_controller::accept(peer_t* peer, packet_t* packet, bitstream_t* data)
 {
-    core::log("connection acccepted");
-
     auto entity = entities->create();
+    auto guid   = data->read_uint64();
 
+    // assign default compoennets
+    entity.assign<transform_t>();
+    entity.assign<server_owned_t>(guid);
+
+    // add server peer to storage
     connected_peers.insert(std::make_pair(peer, entity));
+    streamer::entity_pool.insert(std::make_pair(guid, entity));
     events::trigger(events::on_connect, new events::event_entity_t(entity));
 }
 
 void connection_controller::refuse(peer_t* peer, packet_t* packet, bitstream_t* data)
 {
-    core::log("connection refused");
+    events::trigger(events::on_refuse, nullptr);
 }
 
 void connection_controller::disconnect(peer_t* peer, packet_t* packet, bitstream_t* data)
 {
-    core::log("something disconnected");
-
-    if (connected_peers.find(peer) != connected_peers.end()) {
-        auto entity = connected_peers[peer];
-        auto client = entity.component<client_t>();
-
-        connected_peers.erase(peer);
-        client->active = false;
-
-        return events::trigger(events::on_disconnect, new events::event_entity_t(entity));
+    if (connected_peers.find(peer) == connected_peers.end()) {
+        return core::log("did not find the entity in connected_peers");
     }
 
-    return events::trigger(events::on_disconnect, new events::event_entity_t());
+    auto entity = connected_peers[peer];
+
+    if (core::is_server()) {
+        entity.component<client_t>()->active = false;
+    }
+
+    connected_peers.erase(peer);
+
+    return events::trigger(events::on_disconnect, new events::event_entity_t(entity));
 }

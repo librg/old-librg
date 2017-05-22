@@ -292,9 +292,9 @@ namespace librg
                  */
                 void flush()
                 {
-                    read_offset = 0;
+                    read_offset  = 0;
                     write_offset = 0;
-                    buffer_size = 0;
+                    buffer_size  = 0;
 
                     if (raw_buffer != nullptr) {
                         free(raw_buffer);
@@ -305,6 +305,24 @@ namespace librg
                  * Returns raw buffer data usefull for sending over network
                  */
                 void* raw() { return raw_buffer; }
+
+                /**
+                 * Move cursor to different position
+                 */
+                void move(size_t position) {
+                    librg_assert(position <= buffer_size, "bitstream_t::move Unable to move to unallocated memory!");
+
+                    write_offset = position;
+                    read_offset  = position;
+                }
+
+                /**
+                 * Skip some bytes while reading
+                 * @param amount
+                 */
+                void skip(size_t amount) {
+                    move(read_offset + amount);
+                }
 
                 /**
                  * Get raw size of the raw buffer
