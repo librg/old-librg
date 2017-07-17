@@ -1,6 +1,9 @@
 # ReGuider Framework
+This framework offers a \*complete\* suite to host cross-platform multiplayer games and applications.
 
-This framework offers a complete suite to host multiplayer games and applications.
+# Warning
+This is an **archived** version of librg. New one is **still under development**.
+I **wouldn't suggest you to use it** for your projects. It's **not supported** anymore.
 
 ## Pre-install
 Before starting, make sure you have installed [CMake](https://cmake.org/). It will be used to generate make files for your system.
@@ -30,14 +33,14 @@ If you are using Visual Studio, proper project/solution files should be generate
 Run build, and enjoy.
 
 ## Used dependencies
-* [libuv/libuv](https://github.com/libuv/libuv) 1.9.0 via cmake interface [Inlife/libuv-cmake](https://github.com/Inlife/libuv-cmake)
-* [Inlife/RakNet](https://github.com/Inlife/RakNet) 4.081 (slightly modified version)
-* [inlife/squirrel-lang](https://github.com/inlife/squirrel-lang) 3.0 stable with cmake interface
+* enet
+* entityx
+* libuv
+* sqrat
+* squirrel-lang
+* tiny-xml
 
 ## Compilation tested on
 * macos 10.12.2 with g++ 4.2.1
 * ubuntu 16.04 with g++
 * windows 10 with msvc 14.0
-
-## Bugs
-* windows 10 mingw 5.3.0, problems with RakNet
