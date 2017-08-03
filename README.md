@@ -1,4 +1,4 @@
-# ReGuider Framework
+# librg
 This framework offers a \*complete\* suite to host cross-platform multiplayer games and applications.
 
 # Warning
@@ -12,9 +12,20 @@ Also make sure you have installed a working compiler for your system.
 ## Installation
 
 ```sh
-$ git clone --recursive git@gitlab.com:reguider/reguider.git
-$ mkdir -p build && cd build
-$ cmake ..
+$ git clone git@github.com:reguider/old_librg.git vendor/librg
+```
+
+Attach project inside your cmake project:
+```
+add_directory(vendor/librg)
+
+# add includes dir
+include_directories(
+    vendor/librg/include
+)
+
+# and link static lib to ur executable
+target_link_libraries(myapp librg)
 ```
 
 ## Building
